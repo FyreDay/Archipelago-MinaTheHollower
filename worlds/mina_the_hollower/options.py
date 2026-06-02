@@ -67,7 +67,7 @@ mina_the_hollower_option_groups= [
 ]
 
 @dataclass
-class MineTheHollowerOptions(PerGameCommonOptions):
+class MinaTheHollowerOptions(PerGameCommonOptions):
     goal: Goal
     entrance_rando: EntranceRando
     death_link: DeathLink
