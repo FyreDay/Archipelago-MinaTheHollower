@@ -16,6 +16,13 @@ class EntranceRando(Toggle):
     """
     display_name = "Entrance Rando"
 
+class AbilityRando(Toggle):
+    """
+    Randomize abilities
+    """
+    display_name = "Abilty Rando"
+
+
 #game rando options
 class ShuffledSidearms(Toggle):
     """
@@ -57,6 +64,7 @@ mina_the_hollower_option_groups= [
     OptionGroup("AP Options", [
         Goal,
         EntranceRando,
+        AbilityRando,
         DeathLink,
     ]),
     OptionGroup("Game Options", [
@@ -70,8 +78,10 @@ mina_the_hollower_option_groups= [
 class MinaTheHollowerOptions(PerGameCommonOptions):
     goal: Goal
     entrance_rando: EntranceRando
+    ability_rando: AbilityRando
     death_link: DeathLink
     shuffled_sidearms: ShuffledSidearms
     shuffle_enemy_level: ShuffleEnemyLevel
     shuffled_items: ShuffledItems
+
 
