@@ -1,7 +1,7 @@
 from BaseClasses import LocationProgressType
 from rule_builder.rules import Has, CanReachLocation
 from .. import LocationData
-from ... import RegionConnectionData, EntranceType
+from ... import RegionConnection, TransitionType, Transition
 from ...rules.ability_rules import CanBurrow, CanJumpOneTile, CanBounce, CanJumpTiles, CanClimb, CanCarry
 
 collectable_locations: dict[str, LocationData] = {
@@ -21,33 +21,50 @@ collectable_locations: dict[str, LocationData] = {
     "LL Boardwalk Sandfalls Ledge Chest": LocationData(30, "LL Boardwalk", CanBounce()),
 "LL Bridge Cliff Chest": LocationData(31, "LL Bridge"),
     "LL Shipwreck Beach" : LocationData(32,"Loners Landing"),
-"Bone Beach Outlook Chest": LocationData(32,"LL Boardwalk", CanBounce()),
+"Bone Beach Outlook Chest": LocationData(324,"LL Boardwalk", CanBounce()),
 }
 
-connections: dict[str, RegionConnectionData] = {
-    "LL Boardwalk_Southern Outskirts" : RegionConnectionData("LL Boardwalk", "Southern Outskirts", CanJumpTiles(distance=2)),
+regions: set[str] = {
+"LL Shipwreck",
+"LL Blighted Docks Tall Room",
+"LL Blighted Docks Side Cave",
+"LL Blighted Docks Bridge",
+"LL Blighted Docks Residence",
+"LL Blighted Docks Burrow",
+"LL Boardwalk Fire Bounce",
+"LL Boardwalk Sandfalls Ledge",
+"LL Shipwreck Beach",
+"LL Belowdecks",
+"LL Boardwalk Fence Room",
+}
 
-    "Loners Landing_Shipwreck" : RegionConnectionData("Loners Landing", "ShipWreck", CanReachLocation("Thorne 1", parent_region_name="mansion"), EntranceType.DOORS),
-    "Shipwreck_Loners Landing" : RegionConnectionData("ShipWreck", "Loners Landing", entrance_group=EntranceType.DOORS),
+connections: dict[str, RegionConnection] = {
+    "LL Boardwalk_Southern Outskirts" : RegionConnection("LL Boardwalk", "Southern Outskirts", CanJumpTiles(distance=2)),
 
-    "LL Fences_Loners Landing" : RegionConnectionData("LL Fences", "Loners Landing", CanJumpOneTile() & CanBurrow()),
-    "Loners Landing_LL Fences" : RegionConnectionData("Loners Landing", "LL Fences", CanJumpOneTile() & CanBurrow() & CanCarry()),
+    "Loners Landing_Shipwreck" : RegionConnection("Loners Landing", "ShipWreck", CanReachLocation("Thorne 1", parent_region_name="mansion"), EntranceType.DOORS),
+    "Shipwreck_Loners Landing" : RegionConnection("ShipWreck", "Loners Landing", entrance_group=EntranceType.DOORS),
 
-    "LL Bridge_LL Lower Bridge" : RegionConnectionData("LL Bridge", "LL Lower Bridge", CanClimb()),
-    "LL Lower Bridge_LL Bridge" : RegionConnectionData("LL Lower Bridge", "LL Bridge", CanClimb()),
+    "LL Fences_Loners Landing" : RegionConnection("LL Fences", "Loners Landing", CanJumpOneTile() & CanBurrow()),
+    "Loners Landing_LL Fences" : RegionConnection("Loners Landing", "LL Fences", CanJumpOneTile() & CanBurrow() & CanCarry()),
 
-    "LL Residence Road_LL Lower Bridge" : RegionConnectionData("LL Residence Road", "LL Lower Bridge", CanJumpTiles(distance=1)),
+    "LL Bridge_LL Lower Bridge" : RegionConnection("LL Bridge", "LL Lower Bridge", CanClimb()),
+    "LL Lower Bridge_LL Bridge" : RegionConnection("LL Lower Bridge", "LL Bridge", CanClimb()),
 
-    "LL Lower Bridge_LL Fences" : RegionConnectionData("LL Lower Bridge", "LL Fences", CanJumpOneTile() & CanBurrow()),
-    "LL Fences_LL Lower Bridge" : RegionConnectionData("LL Fences", "LL Lower Bridge", CanJumpOneTile() & CanBurrow()),
+    "LL Residence Road_LL Lower Bridge" : RegionConnection("LL Residence Road", "LL Lower Bridge", CanJumpTiles(distance=1)),
 
-    "LL Bridge_LL Residence Road" : RegionConnectionData("LL Bridge", "LL Residence Road", CanBounce() & CanClimb() & CanJumpOneTile),
+    "LL Lower Bridge_LL Fences" : RegionConnection("LL Lower Bridge", "LL Fences", CanJumpOneTile() & CanBurrow()),
+    "LL Fences_LL Lower Bridge" : RegionConnection("LL Fences", "LL Lower Bridge", CanJumpOneTile() & CanBurrow()),
 
-    "LL Residence_LL Residence Road" : RegionConnectionData("LL Residence", "LL Residence Road", CanBurrow()),
-    "LL Residence Road_LL Residence" : RegionConnectionData("LL Residence Road", "LL Residence", CanBurrow()),
+    "LL Bridge_LL Residence Road" : RegionConnection("LL Bridge", "LL Residence Road", CanBounce() & CanClimb() & CanJumpOneTile),
 
-    "LL Boardwalk_LL Residence Road" : RegionConnectionData("LL Boardwalk", "LL Residence Road", CanJumpTiles(distance=2) & Has("LL Boardwalk Kear")),
-    "LL Residence Road_LL Boardwalk" : RegionConnectionData("LL Residence Road", "LL Boardwalk", CanJumpTiles(distance=2) & Has("LL Boardwalk Kear")),
+    "LL Residence_LL Residence Road" : RegionConnection("LL Residence", "LL Residence Road", CanBurrow()),
+    "LL Residence Road_LL Residence" : RegionConnection("LL Residence Road", "LL Residence", CanBurrow()),
 
+    "LL Boardwalk_LL Residence Road" : RegionConnection("LL Boardwalk", "LL Residence Road", CanJumpTiles(distance=2) & Has("LL Boardwalk Kear")),
+    "LL Residence Road_LL Boardwalk" : RegionConnection("LL Residence Road", "LL Boardwalk", CanJumpTiles(distance=2) & Has("LL Boardwalk Kear")),
+}
+
+transitions: dict[str, Transition] = {
 
 }
+

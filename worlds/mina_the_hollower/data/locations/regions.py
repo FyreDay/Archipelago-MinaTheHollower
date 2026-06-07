@@ -26,14 +26,7 @@ actual_list: set[str] = {
 
     "Emporium",
 
-    "Loners Landing",
-    "Shipwreck",
-    "LL Fences",
-    "LL Bridge",
-    "LL Lower Bridge",
-    "LL Residence Road",
-    "LL Residence",
-    "LL Boardwalk",
+
     
     "Bayou Entrance",
 
