@@ -101,7 +101,6 @@ transitions: dict[str, Transition] = {
     "Ossex City Center Bike Geyser Drop": Transition("Ossex City Center Bike Geyser Drop", "Ossex City Center Bike",
                                                      "Ossex Gutterways", DirectionType.SOUTH, TransitionType.GEYSER_DOWN,
                                                      CanBurrow()),
-    # GEYSER not in enum - guessed direction SOUTH; entering screen is Ossex Gutterways (the geyser drops you there)  # noqa: custom type GEYSER
     "Ossex City Center Bike To Main": Transition("Ossex City Center Bike To Main", "Ossex City Center Bike",
                                                  "Ossex City Center Main", DirectionType.SOUTH, TransitionType.SCREENS),
     "Ossex City Center Bike South Residence": Transition("Ossex City Center Bike South Residence",
@@ -144,13 +143,12 @@ transitions: dict[str, Transition] = {
                                               "Ossex City Center Main", DirectionType.SOUTH, TransitionType.DOORS),
     "Ossex Guild Hall North": Transition("Ossex Guild Hall North", "Ossex Guild Hall", "Ossex Guild Back Room",
                                          DirectionType.NORTH, TransitionType.BURROW),
-    # two separate south exits from guild hall - door vs open transition
 
     # --- Ossex Guild Back Room ---
     "Ossex Guild Back Room South To Back": Transition("Ossex Guild Back Room North To Secret", "Ossex Guild Back Room",
                                                       "Ossex Guild Secret Room", DirectionType.NORTH,
                                                       TransitionType.SCREENS, HasVialsCount(count=1) & Has("Ossex Guild Secret Kear")),
-    # sheet says "[transition] South - Ossex Guild Back Room" which is self-referential; guessing this is the entrance from the burrow tunnel # noqa: self-ref
+
     "Ossex Guild Back Room South To Hall": Transition("Ossex Guild Back Room South To Hall", "Ossex Guild Back Room",
                                                       "Ossex Guild Hall", DirectionType.SOUTH, TransitionType.BURROW,
                                                       CanBurrow()),
@@ -246,13 +244,12 @@ transitions: dict[str, Transition] = {
                                                       "Ossex Entry Western Wall Right", "Ossex Entry Western Wall Left",
                                                       DirectionType.WEST, TransitionType.SCREENS,
                                                       CanBurrow() & CanBounce()),
-    # Left->Right and Right->Left both require Burrow+Bounce
 
     # --- Ossex Station ---
     "Ossex Station Burrow South Underside": Transition("Ossex Station Burrow South Underside", "Ossex Station",
                                                        "Ossex Station Underside Main", DirectionType.SOUTH,
                                                        TransitionType.BURROW, CanBurrow() & CanClimb()),
-    # "Burrow, Climb" - guessed CanClimb() # noqa: custom rule CanClimb()
+
     "Ossex Station Door South Bowery Upper": Transition("Ossex Station Door South Bowery Upper", "Ossex Station",
                                                         "Ossex Bowery Upper", DirectionType.SOUTH,
                                                         TransitionType.DOORS),
@@ -266,7 +263,6 @@ transitions: dict[str, Transition] = {
     "Ossex Station Underside Upper To Main": Transition("Ossex Station Underside Upper To Main",
                                                         "Ossex Station Underside Upper", "Ossex Station Underside Main",
                                                         DirectionType.SOUTH, TransitionType.SCREENS),
-    # guessed direction SOUTH (Upper->Main)
 
     # --- Ossex Music Hall ---
     "Ossex Music Hall Door South": Transition("Ossex Music Hall Door South", "Ossex Music Hall", "Ossex Bowery Main",
@@ -368,11 +364,10 @@ transitions: dict[str, Transition] = {
                                                                     DirectionType.SOUTH,
                                                                     TransitionType.DO_NOT_RANDOMIZE_ENTRANCE,
                                                                     CanBurrow()),
-    # NOT RANDOMIZED; guessed SOUTH direction
     "Ossex Balcony West NR City Center": Transition("Ossex Balcony West NR City Center", "Ossex Balcony West",
                                                     "Ossex City Center Main", DirectionType.SOUTH,
                                                     TransitionType.DO_NOT_RANDOMIZE_ENTRANCE, CanBurrow()),
-    # NOT RANDOMIZED; guessed SOUTH direction
+
 
     # --- Ossex High Street Residence Balcony East ---
     "Ossex High Street Residence Balcony East Stair North Puzzle": Transition(
@@ -484,7 +479,6 @@ connections: dict[str, RegionConnection] = {
     # --- Ossex City Center Upper ---
     "Ossex City Center Upper_Ossex City Center Main": RegionConnection("Ossex City Center Upper",
                                                                        "Ossex City Center Main", CanBurrow()),
-    # Upper->Main requires Burrow
 
     # --- Ossex Entry Western Wall ---
     "Ossex Entry Western Wall Left_Ossex Entry Western Wall Right": RegionConnection("Ossex Entry Western Wall Left",
@@ -502,12 +496,9 @@ connections: dict[str, RegionConnection] = {
     "Ossex South Western Wall_Southern Outskirts Commons Western Pit Room": RegionConnection("Ossex South Western Wall",
                                                                                              "Southern Outskirts Commons Western Pit Room",
                                                                                              CanClimb()),
-    # "Climb" - guessed CanClimb() # noqa: custom rule CanClimb()
 
     # --- Ossex Bowery Main ---
-    # NOTE: sheet has "Jump 4, 4 vials" as a loose note under Bowery Main with no target - skipped, unclear what location or connection this applies to
     "Ossex Bowery Main_Ossex Bowery Upper": RegionConnection("Ossex Bowery Main", "Ossex Bowery Upper", CanClimb()),
-    # "Climb" to reach Upper from Main # noqa: custom rule CanClimb()
 
     # --- Ossex High Street Main ---
     "Ossex High Street Main_Ossex High Street Balcony": RegionConnection("Ossex High Street Main",
