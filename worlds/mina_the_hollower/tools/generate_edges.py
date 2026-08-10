@@ -23,7 +23,7 @@ BANNER = (
 )
 
 IMPORTS = (
-    "from .regions import Regions"
+    "from .regions import Regions\n"
     "from rule_builder.rules import Has, True_, CanReachLocation\n"
     "from ... import RegionConnection, Transition, DirectionType, TransitionType, RegionTypeEnum,ConnectionTypeEnum, TransitionTypeEnum\n"
     "from ...rules.ability_rules import (\n"
