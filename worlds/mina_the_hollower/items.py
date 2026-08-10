@@ -34,9 +34,7 @@ def create_single_item(world: "MinaTheHollowerWorld", item_type: ItemTypeEnum):
 
 
 def create_items(world: "MinaTheHollowerWorld"):
-    is_ut = getattr(world.multiworld, "generation_is_fake", False)
-    #crashed. will do later
-    # is_ut = world.using_ut
+
     all_items: list[ItemData] = []
     trinket_types = set(Trinkets)
     bone_cap_types = {*BoneUps, GenericBoneUp.ALL_BONE_UP_CAP}
@@ -65,14 +63,14 @@ def create_items(world: "MinaTheHollowerWorld"):
         for _ in range(9):
             all_items.append(ItemData(GenericBoneUp.ALL_BONE_UP_CAP, 1))
 
-    starting_items: list[Item] = [] if not is_ut else world.starting_items
+    starting_items: list[Item] = [] if not world.is_ut else world.starting_items
 
     # starting items
     if world.options.random_starting_items:
         for item in base_items:
             for _ in range(item.amount):
                 all_items.append(ItemData(item.type, 1))
-        if is_ut:
+        if world.is_ut:
             for item in starting_items:
                 item_data = next(
                     (x for x in all_items if x.type.item_id == item.code),

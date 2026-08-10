@@ -109,7 +109,8 @@ class MinaTheHollowerWorld(MinaTheHollowerBase):
         self.starting_items = []
         self.lit_generators:list[int] = []
         self.broken_generators:list[int] = []
-
+        self.removed_locations: list[int] = []
+        self.is_ut = False
         super().__init__(multiworld, player)
 
     def generate_early(self) -> None:
@@ -137,13 +138,19 @@ class MinaTheHollowerWorld(MinaTheHollowerBase):
 
         if len(self.options.ability_rando.value) != 0:
             self.options.ossex_start.value = self.options.ossex_start.option_true
+
+        self.is_ut = (hasattr(self.multiworld, "re_gen_passthrough")
+            and isinstance(self.multiworld.re_gen_passthrough, dict)
+            and self.game in self.multiworld.re_gen_passthrough)
         self.handle_ut_yamless(None)
 
     def create_regions(self):
         self.regions = locations.get_regions(self)
-        locations.create_regions(self, self.regions)
+        self.removed_locations = locations.create_regions(self, self.regions)
         items.create_events(self)
         locations.create_entrances(self, self.regions)
+        print(self.removed_locations)
+        t = input()
 
     def connect_entrances(self) -> None:
         if self.entrance_rando:
@@ -204,7 +211,8 @@ class MinaTheHollowerWorld(MinaTheHollowerBase):
             "starting_items": [
                 item.name
                 for item in self.starting_items
-            ]
+            ],
+            "removed_locations": self.removed_locations
         }
 
     @override
@@ -266,16 +274,10 @@ class MinaTheHollowerWorld(MinaTheHollowerBase):
         self, slot_data: dict[str, Any] | None
     ) -> dict[str, Any] | None:
 
-        if (
-            not slot_data
-            and hasattr(self.multiworld, "re_gen_passthrough")
-            and isinstance(self.multiworld.re_gen_passthrough, dict)
-            and self.game in self.multiworld.re_gen_passthrough
-        ):
-            slot_data = self.multiworld.re_gen_passthrough[self.game]
-
         if not slot_data:
-            return None
+            slot_data = self.multiworld.re_gen_passthrough[self.game]
+            if not slot_data:
+                return None
 
         self.options.goal.value = slot_data["goal_config"]
         self.options.goal_generators.value = slot_data["goal_generators"]

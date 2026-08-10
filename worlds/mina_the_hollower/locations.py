@@ -48,16 +48,17 @@ def create_region(world: "MinaTheHollowerWorld", name: str, hint: str = ""):
 def create_regions(world: "MinaTheHollowerWorld", regions: set[str]):
     # TODO: check if regions being a set introduces nondeterminism
     menu = create_region(world, "Menu")
+    excluded_locations: list[int] = []
     for region in regions:
         create_region(world, region)
     for index, loc_map in dungeon_locations.items():
         for name, data in loc_map.items():
             override = index == RADIANT_MANOR_DATA.index and world.options.goal.value == world.options.goal.option_fixGenerators
-            create_location(world, name, data, bonestone=(index in world.lit_generators) or override)
-
-    is_ut = getattr(world.multiworld, "generation_is_fake", False)
-
-    if is_ut:
+            if (index in world.lit_generators) or override:
+                excluded_locations.append(data.location_id)
+            else:
+                create_location(world, name, data)
+    if world.is_ut:
         world.create_entrance(menu, create_region(world, "Burrow Region"), name="Menu To Burrow", rule=Has(Abilities.BURROW.value))
         world.create_entrance(menu, create_region(world, "Swim Region"), name="Menu To Swim", rule=Has(Abilities.SWIM.value))
         world.create_entrance(menu, create_region(world, "Carry Region"), name="Menu To Carry", rule=Has(Abilities.CARRY.value))
@@ -89,6 +90,7 @@ def create_regions(world: "MinaTheHollowerWorld", regions: set[str]):
         create_location(world, "Bone Beach Ticket", LocationData(None, "Bone Beach Ticket Region", lambda _: False))
         create_location(world, "Coltrane Peak Ticket", LocationData(None, "Coltrane Peak Ticket Region", lambda _: False))
 
+    return excluded_locations
 
 
 
