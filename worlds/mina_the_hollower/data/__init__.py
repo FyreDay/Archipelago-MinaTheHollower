@@ -166,10 +166,3 @@ class RepairEventData(NamedTuple):
     gen_name: str
     index: int
     kear_item_type: ItemTypeEnum
-
-class EventData(NamedTuple):
-    location_id: int
-    region: str
-    rule: CollectionRule | Rule[MinaTheHollowerBase] = True_()
-    progress_type: LocationProgressType = LocationProgressType.DEFAULT
-

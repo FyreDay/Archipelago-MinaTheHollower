@@ -26,7 +26,7 @@ class MinaTheHollowerItem(Item):
     game: str = MINA_THE_HOLLOWER
 
 
-def create_item(world, item: ItemData):
+def create_item(world: "MinaTheHollowerWorld", item: ItemData):
     for i in range(item.amount):
         world.itempool.append(world.create_item(item.type.value))
 
@@ -158,7 +158,15 @@ def create_items(world: "MinaTheHollowerWorld"):
         create_item(world, item)
 
     if world.options.kear_rando == KearRandomization.option_vanilla:
-        create_item(world, ItemData(Kear.UNIVERSAL_KEAR, 50))
+        create_item(world, ItemData(Kear.UNIVERSAL_KEAR, 42))
+    if world.options.kear_rando == KearRandomization.option_vanilla:
+        for i in range(8):
+            world.itempool.append(MinaTheHollowerItem(
+            Kear.UNIVERSAL_KEAR.value,
+            ItemClassification.useful,
+            Kear.UNIVERSAL_KEAR.item_id,
+            world.player,
+        ))
     elif world.options.kear_rando == KearRandomization.option_apItems:
         excluded_kears = [data.kear_item_type for data in all_generator_data if data.index in world.lit_generators]
         for item_type in SingleKears:

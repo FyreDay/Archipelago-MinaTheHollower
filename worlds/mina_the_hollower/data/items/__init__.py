@@ -104,6 +104,7 @@ movement_trinkets: list[ItemTypeEnum] = [
     Trinkets.BRISK_BREW,
     Trinkets.WALLOWERS_GAUNTLETS,
     Trinkets.DUMMY_CACHE,
+    Trinkets.TUNNELING_CODEX
 ]
 #Raft?
 all_movement_items: list[ItemTypeEnum] = [

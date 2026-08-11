@@ -30,7 +30,8 @@ all_collectables: list[LocationTypeEnum] = [
     *septemburg.Locations,
     *southern_outskirts.Locations,
     *backwaters.Locations,
-    *western_wilds.Locations
+    *western_wilds.Locations,
+    *radiant_manor.PermanentLocations
 ]
 
 all_optional_locations: list[LocationTypeEnum] =[
@@ -88,8 +89,7 @@ all_permanent_locations: list[LocationTypeEnum] = [
     *backwaters.Locations,
     *backwaters.BossLocations,
     *western_wilds.Locations,
-    *radiant_manor.Locations,
-    *radiant_manor.BossLocations,
+    *radiant_manor.PermanentLocations
 ]
 
 all_regions: list[RegionTypeEnum] = [*Regions]

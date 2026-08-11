@@ -116,6 +116,10 @@ class MinaTheHollowerWorld(MinaTheHollowerBase):
     def generate_early(self) -> None:
 
         if self.options.goal.value == self.options.goal.option_fixGenerators:
+
+            if self.options.goal_generators.value <= 2 and self.options.max_stat_level.value > 20:
+                self.options.max_stat_level.value = 20
+
             if self.options.goal_generators.value <= 3:
                 valid_generators = [QUEENSBURY_CRYPT, NOXS_BAYOU, SEPTEMBURG, BONE_BEACH]
                 if self.options.goal_generators == 1:
@@ -139,6 +143,7 @@ class MinaTheHollowerWorld(MinaTheHollowerBase):
         if len(self.options.ability_rando.value) != 0:
             self.options.ossex_start.value = self.options.ossex_start.option_true
 
+
         self.is_ut = (hasattr(self.multiworld, "re_gen_passthrough")
             and isinstance(self.multiworld.re_gen_passthrough, dict)
             and self.game in self.multiworld.re_gen_passthrough)
@@ -148,8 +153,6 @@ class MinaTheHollowerWorld(MinaTheHollowerBase):
         self.removed_locations = locations.create_regions(self)
         items.create_events(self)
         locations.create_entrances(self)
-        print(self.removed_locations)
-        # t = input()
 
     def connect_entrances(self) -> None:
         if self.entrance_rando:
@@ -175,16 +178,16 @@ class MinaTheHollowerWorld(MinaTheHollowerBase):
         set_goal(self)
 
 
-    def generate_output(self, output_directory: str):
-        print("Generating Output")
-        visualize_regions(
-            self.multiworld.get_region("Menu", self.player),
-            f"Player{self.player}_output.puml",
-            show_entrance_names=True,
-            regions_to_highlight=self.multiworld.get_all_state(
-                self.player
-            ).reachable_regions[self.player],
-        )
+    # def generate_output(self, output_directory: str):
+    #     print("Generating Output")
+    #     visualize_regions(
+    #         self.multiworld.get_region("Menu", self.player),
+    #         f"Player{self.player}_output.puml",
+    #         show_entrance_names=True,
+    #         regions_to_highlight=self.multiworld.get_all_state(
+    #             self.player
+    #         ).reachable_regions[self.player],
+    #     )
 
     def fill_slot_data(self) -> id:
         ability_rando = self.options.ability_rando.value
