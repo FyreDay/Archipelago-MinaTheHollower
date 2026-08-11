@@ -1,37 +1,95 @@
 from BaseClasses import LocationProgressType
 from rule_builder.options import OptionFilter
 from rule_builder.rules import Has, True_, CanReachLocation
-from ... import RegionConnection, Transition, LocationData, TransitionType, DirectionType
+from .._generated.regions import Regions
+from ... import TransitionType, DirectionType, LocationTypeEnum
 from ...items import Trinkets, SingleKears, PermanentUpgrades, Wallets, PlayerUpgrades, Sidearms
 from ...rules.ability_rules import CanBurrow, CanBounce, HasReachingSideArm, CanClimb, \
     CanSwim, HasFishingRod
 from ...rules.state_rules import HasKear, RepairedGeneratorCount
 from ...rules.movement_rules import CanJumpTiles
 
-collectable_locations: dict[str, LocationData] = {
-    "EH Maxi Fight Reward" : LocationData(221, "Eastern Heath Grassland", RepairedGeneratorCount(count=1)),
-    "EH Fish Dork Eyes" : LocationData(241, "Eastern Heath Grassland Bridge Left", HasFishingRod()), #needs fishing rod,
-    "EH Ossex Entry Chest" : LocationData(231, "Eastern Heath I Screen", CanBurrow()),
-    "EH Bush Room Locked Bonestone" : LocationData(236, "Eastern Heath Bush Room", HasKear(kear=SingleKears.EASTERN_HEATH_GRASSLAND_BUSHROOM_KEAR.value)), #needs kear,
-    "EH Riverbed Chest" : LocationData(233, "Eastern Heath Grassland Riverbed Bottom", item_rule=lambda item: item.name != Wallets.WALLET_SIZE.value),
-    "EH Choppe Shoppe Trinket" : LocationData(226, "Eastern Heath Choppe Shoppe"),
-    "EH Hidden Slime Cave Chest" : LocationData(228, "Eastern Heath Hidden Grotto"),
-    "EH Beside Kite Chest" : LocationData(234, "Eastern Heath Grassland Waterfall Second Level"),
-    "EH Kite Trinket" : LocationData(223, "Eastern Heath Grassland Waterfall Second Level", HasReachingSideArm() & (
-            (CanJumpTiles(distance=4, has_wall=True, no_sidearms=True)) |
-            (CanJumpTiles(distance=4, has_wall=True) & Has(PermanentUpgrades.DOUBLE_SIDEARM_PERMIT.value)) |
-            (CanBurrow() & CanClimb()) |
-            (CanBurrow() & HasKear(kear=SingleKears.EASTERN_HEATH_WATERFALL_KEAR.value)) |
-            (Has(PermanentUpgrades.COLTRANE_PEAK_TICKET.value) & Has(PermanentUpgrades.TRAIN_PASS.value) & CanClimb()))
-    ),
-    "EH Mimic Chest" : LocationData(230, "Eastern Heath Under Bridge West"),
-    "EH Buckler's Bluff Joule Box" : LocationData(229, "Eastern Heath Buckler's Bluff Cliff", CanClimb() & (Has(PlayerUpgrades.JOULE_BOX.value, count=2) & Has(Sidearms.DRIVER_DRILL.value))),
-    "EH Poppit Cave Chest" : LocationData(235, "Eastern Heath Grassland Poppit Cave"),
-    "EH Poppit Cave Willow" : LocationData(239, "Eastern Heath Poppit"),
-    "EH Poppit Cave Kear" : LocationData(240, "Eastern Heath Poppit"),
-    "EH Frozen Pass Trinket" : LocationData(237, "Coltrane Peak Frozen Pass Bottom"),
-}
+class Locations(LocationTypeEnum):
+    EH_MAXI_FIGHT_REWARD = (
+        "EH Maxi Fight Reward", 221, Regions.EASTERN_HEATH_GRASSLAND, RepairedGeneratorCount(count=1),
+    )
 
-boss_locations: dict[str, LocationData] = {
-    "EH Maxi": LocationData(1018, "Eastern Heath Grassland", RepairedGeneratorCount(count=1)),
-}
+    EH_FISH_DORK_EYES = (
+        "EH Fish Dork Eyes", 241, Regions.EASTERN_HEATH_GRASSLAND_BRIDGE_LEFT, HasFishingRod(),
+    )  # needs fishing rod,
+
+    EH_OSSEX_ENTRY_CHEST = (
+        "EH Ossex Entry Chest", 231, Regions.EASTERN_HEATH_I_SCREEN, CanBurrow(),
+    )
+
+    EH_BUSH_ROOM_LOCKED_BONESTONE = (
+        "EH Bush Room Locked Bonestone", 236, Regions.EASTERN_HEATH_BUSH_ROOM, HasKear(kear=SingleKears.EASTERN_HEATH_GRASSLAND_BUSHROOM_KEAR.value),
+    )  # needs kear,
+
+    EH_RIVERBED_CHEST = (
+        "EH Riverbed Chest", 233, Regions.EASTERN_HEATH_GRASSLAND_RIVERBED_BOTTOM
+    )
+
+    EH_CHOPPE_SHOPPE_TRINKET = (
+        "EH Choppe Shoppe Trinket", 226, Regions.EASTERN_HEATH_CHOPPE_SHOPPE,
+    )
+
+    EH_HIDDEN_SLIME_CAVE_CHEST = (
+        "EH Hidden Slime Cave Chest", 228, Regions.EASTERN_HEATH_HIDDEN_GROTTO,
+    )
+
+    EH_BESIDE_KITE_CHEST = (
+        "EH Beside Kite Chest", 234, Regions.EASTERN_HEATH_GRASSLAND_WATERFALL_SECOND_LEVEL,
+    )
+
+    EH_KITE_TRINKET = (
+        "EH Kite Trinket", 223, Regions.EASTERN_HEATH_GRASSLAND_WATERFALL_SECOND_LEVEL, HasReachingSideArm()
+        & (
+            CanJumpTiles(distance=4, has_wall=True, no_sidearms=True)
+            | (
+                CanJumpTiles(distance=4, has_wall=True)
+                & Has(PermanentUpgrades.DOUBLE_SIDEARM_PERMIT.value)
+            )
+            | (CanBurrow() & CanClimb())
+            | (
+                CanBurrow()
+                & HasKear(kear=SingleKears.EASTERN_HEATH_WATERFALL_KEAR.value)
+            )
+            | (
+                Has(PermanentUpgrades.COLTRANE_PEAK_TICKET.value)
+                & Has(PermanentUpgrades.TRAIN_PASS.value)
+                & CanClimb()
+            )
+        ),
+    )
+
+    EH_MIMIC_CHEST = (
+        "EH Mimic Chest", 230, Regions.EASTERN_HEATH_UNDER_BRIDGE_WEST,
+    )
+
+    EH_BUCKLER_S_BLUFF_JOULE_BOX = (
+        "EH Buckler's Bluff Joule Box", 229, Regions.EASTERN_HEATH_BUCKLERS_BLUFF_CLIFF, CanClimb()
+        & (
+            Has(PlayerUpgrades.JOULE_BOX.value, count=2)
+            & Has(Sidearms.DRIVER_DRILL.value)
+        ),
+    )
+
+    EH_POPPIT_CAVE_CHEST = (
+        "EH Poppit Cave Chest", 235, Regions.EASTERN_HEATH_GRASSLAND_POPPIT_CAVE,
+    )
+
+    EH_POPPIT_CAVE_WILLOW = (
+        "EH Poppit Cave Willow", 239, Regions.EASTERN_HEATH_POPPIT,
+    )
+
+    EH_POPPIT_CAVE_KEAR = (
+        "EH Poppit Cave Kear", 240, Regions.EASTERN_HEATH_POPPIT,
+    )
+
+    EH_FROZEN_PASS_TRINKET = (
+        "EH Frozen Pass Trinket", 237, Regions.COLTRANE_PEAK_FROZEN_PASS_BOTTOM,
+    )
+
+class BossLocations(LocationTypeEnum):
+    EH_DEFEAT_MAXI = ("NB Defeat Maxi", 1018, Regions.EASTERN_HEATH_GRASSLAND, RepairedGeneratorCount(count=1))

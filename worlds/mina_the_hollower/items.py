@@ -6,12 +6,14 @@ from worlds.mina_the_hollower.data.events.events import MirrorsEndSwitches
 from . import repair_generator_data
 from .data.events import all_generator_data
 from .data.items.kears import kear_area_lookup
+from .data.locations import Regions
+from .data.locations.areas import backwaters
 from .world_base import MinaTheHollowerBase
 from .constants import MINA_THE_HOLLOWER
 from .data import ItemData, ItemTypeEnum, ItemFiller
 from .data.items import Kear, SingleKears, AreaKears, base_items, Abilities, BoneUps, GenericBoneUp, all_filler_items, \
     PermanentUpgrades, PlayerUpgrades, upgrade_items, Trinkets, BASE_ITEM_TOTAL, \
-    valid_power_types, FilledJug, FillerUpgrades, Wallets, all_starting_upgrades
+    valid_power_types, FilledJug, FillerUpgrades, all_starting_upgrades
 
 from .data.rules.state_rules import sidearm_rules
 from .options import BoneUpCap, KearRandomization, Goal
@@ -221,13 +223,11 @@ def create_event(world: "MinaTheHollowerWorld", region_name: str, item_name: str
 
 def create_events(world: "MinaTheHollowerWorld"):
 
-    plasma_jug_loc = world.get_location("BW Buffo The Frog Fight Plasma Jug")
+    plasma_jug_loc = world.get_location(backwaters.BossLocations.BW_DEFEAT_BUFFO_THE_FROG.value)
     plasma_jug_loc.place_locked_item(MinaTheHollowerItem(FilledJug.PLASMA_JUG.value, ItemClassification.useful, FilledJug.PLASMA_JUG.item_id, world.player))
 
-    starting_region = "Ossex City Center Main" # if world.options.ossex_start else "Loner's Landing Shipwreck"
-
     for itemShortcut in sidearm_rules:
-        create_event(world, starting_region, itemShortcut.type.value, rule=itemShortcut.access_rule)
+        create_event(world, Regions.OSSEX_CITY_CENTER_MAIN.value, itemShortcut.type.value, rule=itemShortcut.access_rule)
         # starting_items.append(Item(item_type.value, item_type.classification, item_type.item_id, world.player))
 
     for data in repair_generator_data:

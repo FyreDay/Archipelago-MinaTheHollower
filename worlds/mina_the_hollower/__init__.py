@@ -57,7 +57,7 @@ class MinaTheHollowerWorld(MinaTheHollowerBase):
         item.value: item.item_id for item in all_items
     }
     location_name_to_id: ClassVar[dict[str, int]] = {
-        loc_name: loc_data.location_id for loc_name, loc_data in all_locations.items()
+        loc.value: loc.location_id for loc in all_locations
     }
 
     item_lookup = {item.value: item for item in all_items}
@@ -145,12 +145,11 @@ class MinaTheHollowerWorld(MinaTheHollowerBase):
         self.handle_ut_yamless(None)
 
     def create_regions(self):
-        self.regions = locations.get_regions(self)
-        self.removed_locations = locations.create_regions(self, self.regions)
+        self.removed_locations = locations.create_regions(self)
         items.create_events(self)
-        locations.create_entrances(self, self.regions)
+        locations.create_entrances(self)
         print(self.removed_locations)
-        t = input()
+        # t = input()
 
     def connect_entrances(self) -> None:
         if self.entrance_rando:
@@ -176,16 +175,16 @@ class MinaTheHollowerWorld(MinaTheHollowerBase):
         set_goal(self)
 
 
-    # def generate_output(self, output_directory: str):
-    #     print("Generating Output")
-    #     visualize_regions(
-    #         self.multiworld.get_region("Menu", self.player),
-    #         f"Player{self.player}_output.puml",
-    #         show_entrance_names=True,
-    #         regions_to_highlight=self.multiworld.get_all_state(
-    #             self.player
-    #         ).reachable_regions[self.player],
-    #     )
+    def generate_output(self, output_directory: str):
+        print("Generating Output")
+        visualize_regions(
+            self.multiworld.get_region("Menu", self.player),
+            f"Player{self.player}_output.puml",
+            show_entrance_names=True,
+            regions_to_highlight=self.multiworld.get_all_state(
+                self.player
+            ).reachable_regions[self.player],
+        )
 
     def fill_slot_data(self) -> id:
         ability_rando = self.options.ability_rando.value
@@ -273,11 +272,10 @@ class MinaTheHollowerWorld(MinaTheHollowerBase):
     def handle_ut_yamless(
         self, slot_data: dict[str, Any] | None
     ) -> dict[str, Any] | None:
-
-        if not slot_data:
+        if self.is_ut and not slot_data:
             slot_data = self.multiworld.re_gen_passthrough[self.game]
-            if not slot_data:
-                return None
+        if not slot_data:
+            return None
 
         self.options.goal.value = slot_data["goal_config"]
         self.options.goal_generators.value = slot_data["goal_generators"]

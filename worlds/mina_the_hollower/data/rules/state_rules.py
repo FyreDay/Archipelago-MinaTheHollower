@@ -87,7 +87,7 @@ class HasAllKears(Rule[MinaTheHollowerBase], game=MINA_THE_HOLLOWER):
         @override
         def _evaluate(self, state: CollectionState) -> bool:
             if self.kear_rando == 0:
-                return state.has(Kear.UNIVERSAL_KEAR.value, self.player,50)
+                return state.has(Kear.UNIVERSAL_KEAR.value, self.player,42)
             elif self.kear_rando == 1:
                 for item in SingleKears:
                     if not state.has(item.value, self.player):

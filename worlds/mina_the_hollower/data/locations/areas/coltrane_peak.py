@@ -1,36 +1,86 @@
 from BaseClasses import LocationProgressType
 from rule_builder.rules import Has, CanReachLocation
-from ... import RegionConnection, Transition, LocationData
+from .._generated.regions import Regions
+from ... import LocationTypeEnum
 from ...items import SingleKears, PermanentUpgrades
 from ...rules.ability_rules import CanBurrow, CanBounce, CanClimb, CanCarry, HasFishingRod
 from ...rules.movement_rules import CanJumpTiles
 from ...rules.state_rules import HasKear
 
-collectable_locations: dict[str, LocationData] = {
-    "CTP Frigid Station Missed Train Chest": LocationData(113, "Coltrane Peak Station Tracks"),
-    "CTP Frozen Pass Rope Chest": LocationData(112, "Coltrane Peak Frozen Pass", CanClimb()),
-    "CTP Dead Man's Gorge Trinket": LocationData(110, "Coltrane Peak Gorge Ice Gauntlet"),
-    "CTP Dead Man's Gorge Rail Kear": LocationData(111, "Coltrane Peak Train Tracks Secret", CanBurrow()),
-    "CTP Mirren Fight Reward": LocationData(114, "Coltrane Peak Frostbite Woods"),
-    "CTP Rail Yard Beside Pipe Chest": LocationData(118, "Coltrane Peak Rail Yard"),
-    "CTP Rail Yard Cliff Chest": LocationData(117, "Coltrane Peak Rail Yard"),
-    "CTP Rail Yard Weapon Chest": LocationData(119, "Coltrane Peak Rail Yard Chest"),
-    "CTP Fish Fishcicle Core": LocationData(122, "Coltrane Peak Frozen River", CanBurrow() & HasFishingRod()),
-    "CTP Rail Yard Kear Room Rupert Shop Trinket": LocationData(120, "Coltrane Peak Frozen River", CanBurrow()),
-    "CTP Rail Yard Kear Room Rupert Shop Kear": LocationData(121, "Coltrane Peak Frozen River", CanBurrow()),
-    "CTP Spiral Summit Kear": LocationData(116, "Coltrane Peak Spiral Summit Secret", CanBurrow() & CanClimb()),
-    "CTP Agnes Express Mimic Bonestone": LocationData(123, "Coltrane Peak Agnes Express Rear"),
-    "CTP Locomotress Fight Reward": LocationData(124, "Coltrane Peak Agnes Express Arena"),
-    "CTP Frozen Pass Chest": LocationData(232, "Coltrane Peak Frozen Pass"),
-    "WW Balcony Snowball Escort Trinket": LocationData(242, "Western Wilds Balcony", HasKear(kear=SingleKears.WESTERN_WILDS_BALCONY_KEAR.value) & CanBurrow() & CanCarry() & CanClimb()
-                                                           & Has(PermanentUpgrades.TRAIN_PASS.value) & Has(PermanentUpgrades.COLTRANE_PEAK_TICKET.value)),
-}
+class Locations(LocationTypeEnum):
+    CTP_FRIGID_STATION_MISSED_TRAIN_CHEST = (
+        "CTP Frigid Station Missed Train Chest", 113, Regions.COLTRANE_PEAK_STATION_TRACKS,
+    )
 
+    CTP_FROZEN_PASS_ROPE_CHEST = (
+        "CTP Frozen Pass Rope Chest", 112, Regions.COLTRANE_PEAK_FROZEN_PASS, CanClimb(),
+    )
 
-boss_locations: dict[str, LocationData] = {
-    "CTP Frozen Generator Activated": LocationData(None, "Coltrane Peak Frozen Generator"),
-    "CTP Maelstrom Locomotress Agnes Boss": LocationData(None, "Coltrane Peak Agnes Express Arena"),
-    "CTP Icebound Cavern Frozen Horror Boss": LocationData(None, "Coltrane Peak Frozen Horror Arena"),
-    "CTP Frostbite Woods Mirren": LocationData(None, "Coltrane Peak Mirren Room"),
-    "CTP Fateful Cliff Thorne CTP Boss": LocationData(None, "Coltrane Peak Thorne Arena"),  # needs climb,
-}
+    CTP_DEAD_MAN_S_GORGE_TRINKET = (
+        "CTP Dead Man's Gorge Trinket", 110, Regions.COLTRANE_PEAK_GORGE_ICE_GAUNTLET,
+    )
+
+    CTP_DEAD_MAN_S_GORGE_RAIL_KEAR = (
+        "CTP Dead Man's Gorge Rail Kear", 111, Regions.COLTRANE_PEAK_TRAIN_TRACKS_SECRET, CanBurrow(),
+    )
+
+    CTP_MIRREN_FIGHT_REWARD = (
+        "CTP Mirren Fight Reward", 114, Regions.COLTRANE_PEAK_FROSTBITE_WOODS,
+    )
+
+    CTP_RAIL_YARD_BESIDE_PIPE_CHEST = (
+        "CTP Rail Yard Beside Pipe Chest", 118, Regions.COLTRANE_PEAK_RAIL_YARD,
+    )
+
+    CTP_RAIL_YARD_CLIFF_CHEST = (
+        "CTP Rail Yard Cliff Chest", 117, Regions.COLTRANE_PEAK_RAIL_YARD,
+    )
+
+    CTP_RAIL_YARD_WEAPON_CHEST = (
+        "CTP Rail Yard Weapon Chest", 119, Regions.COLTRANE_PEAK_RAIL_YARD_CHEST,
+    )
+
+    CTP_FISH_FISHCICLE_CORE = (
+        "CTP Fish Fishcicle Core", 122, Regions.COLTRANE_PEAK_FROZEN_RIVER, CanBurrow() & HasFishingRod(),
+    )
+
+    CTP_RAIL_YARD_KEAR_ROOM_RUPERT_SHOP_TRINKET = (
+        "CTP Rail Yard Kear Room Rupert Shop Trinket", 120, Regions.COLTRANE_PEAK_FROZEN_RIVER, CanBurrow(),
+    )
+
+    CTP_RAIL_YARD_KEAR_ROOM_RUPERT_SHOP_KEAR = (
+        "CTP Rail Yard Kear Room Rupert Shop Kear", 121, Regions.COLTRANE_PEAK_FROZEN_RIVER, CanBurrow(),
+    )
+
+    CTP_SPIRAL_SUMMIT_KEAR = (
+        "CTP Spiral Summit Kear", 116, Regions.COLTRANE_PEAK_SPIRAL_SUMMIT_SECRET, CanBurrow() & CanClimb(),
+    )
+
+    CTP_AGNES_EXPRESS_MIMIC_BONESTONE = (
+        "CTP Agnes Express Mimic Bonestone", 123, Regions.COLTRANE_PEAK_AGNES_EXPRESS_REAR,
+    )
+
+    CTP_LOCOMOTRESS_FIGHT_REWARD = (
+        "CTP Locomotress Fight Reward", 124, Regions.COLTRANE_PEAK_AGNES_EXPRESS_ARENA,
+    )
+
+    CTP_FROZEN_PASS_CHEST = (
+        "CTP Frozen Pass Chest", 232, Regions.COLTRANE_PEAK_FROZEN_PASS,
+    )
+
+    WW_BALCONY_SNOWBALL_ESCORT_TRINKET = (
+        "WW Balcony Snowball Escort Trinket", 242, Regions.WESTERN_WILDS_BALCONY, HasKear(kear=SingleKears.WESTERN_WILDS_BALCONY_KEAR.value)
+        & CanBurrow()
+        & CanCarry()
+        & CanClimb()
+        & Has(PermanentUpgrades.TRAIN_PASS.value)
+        & Has(PermanentUpgrades.COLTRANE_PEAK_TICKET.value),
+    )
+
+class BossLocations(LocationTypeEnum):
+    CTP_DEFEAT_THORNE_2 = ("CTP Defeat Thorne 2", 1009, Regions.COLTRANE_PEAK_THORNE_ARENA)
+    CTP_DEFEAT_MIRREN = ("CTP Defeat Mirren", 1025, Regions.COLTRANE_PEAK_MIRREN_ROOM)
+    CTP_DEFEAT_FROZEN_HORROR = ("CTP Defeat Frozen Horror", 1015, Regions.COLTRANE_PEAK_FROZEN_HORROR_ARENA)
+    CTP_DEFEAT_LOCOMOTRESS_AGNESS = ("CTP Defeat Locomotress", 1005, Regions.COLTRANE_PEAK_AGNES_EXPRESS_ARENA)
+    # CTP_FROZEN_GENERATOR = ("CTP Frozen Generator Repaired", 6004, Regions.COLTRANE_PEAK_FROZEN_GENERATOR)
+

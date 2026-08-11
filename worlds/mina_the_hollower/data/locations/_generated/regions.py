@@ -3,34 +3,7 @@
 #   python -m worlds.mina_the_hollower.tools.generate_edges <edges.csv>
 # The spreadsheet is the source of truth, not this file.
 
-from .regions import Regions
-from rule_builder.rules import Has, True_, CanReachLocation
-from ... import RegionConnection, Transition, DirectionType, TransitionType, RegionTypeEnum,ConnectionTypeEnum, TransitionTypeEnum
-from ...rules.ability_rules import (
-    CanBurrow, CanCarry, CanClimb, CanSwim, CanBounce, PowerLevelThreshold,
-    HasVialsCount, HasReachingSideArm, HasFishingRod, CanSpring, HasTrinket 
-)
-from ...rules.movement_rules import (
-    CanJumpTiles, 
-)
-from ...rules.state_rules import (
-   HasLadder, HasAccessToTorch, StartedInOssex, 
-   AnyThreeAstralPlatforms, HasKear, HasSparks, 
-   RepairedGenerator, RepairedGeneratorCount,
-)
-from ...events import (
-   QUEENSBURY_CRYPT_DATA, NOXS_BAYOU_DATA, SEPTEMBURG_DATA, 
-   BONE_BEACH_DATA, COLTRANE_PEAK_DATA, ASTRAL_ORRERY_DATA, 
-)
-from ...items.game_items import (
-   PermanentUpgrades, PlayerUpgrades, Trinkets, Sidearms
-)
-from ...items.kears import (
-   SingleKears,
-)
-from ...items.blockers import (
-   AstralPlatforms,
-)
+from ... import RegionTypeEnum
 
 
 class Regions(RegionTypeEnum):
@@ -43,14 +16,14 @@ class Regions(RegionTypeEnum):
     ASTRAL_ORRERY_GRAVITY_ZONE_END = 'Astral Orrery Gravity Zone End'
     ASTRAL_ORRERY_HALL_OF_SCHOLARS = 'Astral Orrery Hall Of Scholars'
     ASTRAL_ORRERY_HALL_OF_SCHOLARS_END = 'Astral Orrery Hall Of Scholars End'
-    ASTRAL_ORRERY_MIRROR_S_END = "Astral Orrery Mirror's End"
-    ASTRAL_ORRERY_MIRROR_S_END_BLUE_CHEST = "Astral Orrery Mirror's End Blue Chest"
-    ASTRAL_ORRERY_MIRROR_S_END_BLUE_STAIRS = "Astral Orrery Mirror's End Blue Stairs"
-    ASTRAL_ORRERY_MIRROR_S_END_MOVING_PLATFORMS = "Astral Orrery Mirror's End Moving Platforms"
-    ASTRAL_ORRERY_MIRROR_S_END_MOVING_STAIRS = "Astral Orrery Mirror's End Moving Stairs"
-    ASTRAL_ORRERY_MIRROR_S_END_RED_CHEST = "Astral Orrery Mirror's End Red Chest"
-    ASTRAL_ORRERY_MIRROR_S_END_TOP = "Astral Orrery Mirror's End Top"
-    ASTRAL_ORRERY_MIRROR_S_END_UNDER_RED_SWITCH = "Astral Orrery Mirror's End Under Red Switch"
+    ASTRAL_ORRERY_MIRRORS_END = "Astral Orrery Mirror's End"
+    ASTRAL_ORRERY_MIRRORS_END_BLUE_CHEST = "Astral Orrery Mirror's End Blue Chest"
+    ASTRAL_ORRERY_MIRRORS_END_BLUE_STAIRS = "Astral Orrery Mirror's End Blue Stairs"
+    ASTRAL_ORRERY_MIRRORS_END_MOVING_PLATFORMS = "Astral Orrery Mirror's End Moving Platforms"
+    ASTRAL_ORRERY_MIRRORS_END_MOVING_STAIRS = "Astral Orrery Mirror's End Moving Stairs"
+    ASTRAL_ORRERY_MIRRORS_END_RED_CHEST = "Astral Orrery Mirror's End Red Chest"
+    ASTRAL_ORRERY_MIRRORS_END_TOP = "Astral Orrery Mirror's End Top"
+    ASTRAL_ORRERY_MIRRORS_END_UNDER_RED_SWITCH = "Astral Orrery Mirror's End Under Red Switch"
     ASTRAL_ORRERY_MUTANT_LAB = 'Astral Orrery Mutant Lab'
     ASTRAL_ORRERY_MUTANT_LAB_END = 'Astral Orrery Mutant Lab End'
     ASTRAL_ORRERY_QUEENSBURY_MIRROR = 'Astral Orrery Queensbury Mirror'
@@ -80,7 +53,7 @@ class Regions(RegionTypeEnum):
     BACKWATERS_LOWER_SWAMP_SHANTY_BAND = 'Backwaters Lower Swamp Shanty Band'
     BACKWATERS_LOWER_SWAMP_STATION = 'Backwaters Lower Swamp Station'
     BACKWATERS_LOWER_SWAMP_STATION_ENTRANCE = 'Backwaters Lower Swamp Station Entrance'
-    BACKWATERS_LUCKY_S_LAIR = "Backwaters Lucky's Lair"
+    BACKWATERS_LUCKYS_LAIR = "Backwaters Lucky's Lair"
     BACKWATERS_PINKY_BACK_POND_BOARD = 'Backwaters Pinky Back Pond Board'
     BACKWATERS_PINKY_BACK_POND_LAWN = 'Backwaters Pinky Back Pond Lawn'
     BACKWATERS_PINKY_FRONT_LAWN_EAST = 'Backwaters Pinky Front Lawn East'
@@ -113,7 +86,7 @@ class Regions(RegionTypeEnum):
     BONE_BEACH_BONE_RUSH_MINE = 'Bone Beach Bone Rush Mine'
     BONE_BEACH_BONE_RUSH_PLATFORMS = 'Bone Beach Bone Rush Platforms'
     BONE_BEACH_BONE_RUSH_THIN_CONVEYOR = 'Bone Beach Bone Rush Thin Conveyor'
-    BONE_BEACH_BRAC_S_TENT = "Bone Beach Brac's Tent"
+    BONE_BEACH_BRACS_TENT = "Bone Beach Brac's Tent"
     BONE_BEACH_BRAIN_ALCOVE = 'Bone Beach Brain Alcove'
     BONE_BEACH_BRAIN_ALCOVE_END = 'Bone Beach Brain Alcove End'
     BONE_BEACH_CALCIFIED_AMBUSH = 'Bone Beach Calcified Ambush'
@@ -229,9 +202,9 @@ class Regions(RegionTypeEnum):
     COLTRANE_PEAK_TRAIN_TRACKS = 'Coltrane Peak Train Tracks'
     COLTRANE_PEAK_TRAIN_TRACKS_END = 'Coltrane Peak Train Tracks End'
     COLTRANE_PEAK_TRAIN_TRACKS_SECRET = 'Coltrane Peak Train Tracks Secret'
-    EASTERN_HEATH_BUCKLER_S_BLUFF_BUCKLERS = "Eastern Heath Buckler's Bluff Bucklers"
-    EASTERN_HEATH_BUCKLER_S_BLUFF_CLIFF = "Eastern Heath Buckler's Bluff Cliff"
-    EASTERN_HEATH_BUCKLER_S_BLUFF_START = "Eastern Heath Buckler's Bluff Start"
+    EASTERN_HEATH_BUCKLERS_BLUFF_BUCKLERS = "Eastern Heath Buckler's Bluff Bucklers"
+    EASTERN_HEATH_BUCKLERS_BLUFF_CLIFF = "Eastern Heath Buckler's Bluff Cliff"
+    EASTERN_HEATH_BUCKLERS_BLUFF_START = "Eastern Heath Buckler's Bluff Start"
     EASTERN_HEATH_BUSH_ROOM = 'Eastern Heath Bush Room'
     EASTERN_HEATH_CHOPPE_SHOPPE = 'Eastern Heath Choppe Shoppe'
     EASTERN_HEATH_CHOPPE_SHOPPE_ENTRY = 'Eastern Heath Choppe Shoppe Entry'
@@ -293,157 +266,157 @@ class Regions(RegionTypeEnum):
     KINDLEWOOD_SCHOOL_SIDE = 'Kindlewood School Side'
     KINDLEWOOD_SCHOOL_YARD = 'Kindlewood School Yard'
     KINDLEWOOD_TRAIN_TRACKS = 'Kindlewood Train Tracks'
-    KINDLEWOOD_WALLOWER_S_PATH_CLIFF_BUSH = "Kindlewood Wallower's Path Cliff Bush"
+    KINDLEWOOD_WALLOWERS_PATH_CLIFF_BUSH = "Kindlewood Wallower's Path Cliff Bush"
     KINDLEWOOD_WALLOWERS_PATH = 'Kindlewood Wallowers Path'
     KINDLEWOOD_WALLOWERS_PATH_END = 'Kindlewood Wallowers Path End'
-    LONER_S_LANDING_BAY = "Loner's Landing Bay"
-    LONER_S_LANDING_BAY_CLIFF = "Loner's Landing Bay Cliff"
-    LONER_S_LANDING_BELOWDECKS = "Loner's Landing Belowdecks"
-    LONER_S_LANDING_BELOWDECKS_CHESTS = "Loner's Landing Belowdecks Chests"
-    LONER_S_LANDING_BELOWDECKS_FRONT = "Loner's Landing Belowdecks Front"
-    LONER_S_LANDING_BLIGHTED_DOCKS_BRIDGE = "Loner's Landing Blighted Docks Bridge"
-    LONER_S_LANDING_BLIGHTED_DOCKS_BRIDGE_CLIFF = "Loner's Landing Blighted Docks Bridge Cliff"
-    LONER_S_LANDING_BLIGHTED_DOCKS_BRIDGE_GATE = "Loner's Landing Blighted Docks Bridge Gate"
-    LONER_S_LANDING_BLIGHTED_DOCKS_BURROW = "Loner's Landing Blighted Docks Burrow"
-    LONER_S_LANDING_BLIGHTED_DOCKS_FENCES_BOTTOM = "Loner's Landing Blighted Docks Fences Bottom"
-    LONER_S_LANDING_BLIGHTED_DOCKS_FENCES_TOP = "Loner's Landing Blighted Docks Fences Top"
-    LONER_S_LANDING_BLIGHTED_DOCKS_FIRST_BURROW = "Loner's Landing Blighted Docks First Burrow"
-    LONER_S_LANDING_BLIGHTED_DOCKS_FIRST_BURROW_TOP = "Loner's Landing Blighted Docks First Burrow Top"
-    LONER_S_LANDING_BLIGHTED_DOCKS_FIRST_CARRY = "Loner's Landing Blighted Docks First Carry"
-    LONER_S_LANDING_BLIGHTED_DOCKS_GANGPLANK = "Loner's Landing Blighted Docks Gangplank"
-    LONER_S_LANDING_BLIGHTED_DOCKS_LOWER_BRIDGE = "Loner's Landing Blighted Docks Lower Bridge"
-    LONER_S_LANDING_BLIGHTED_DOCKS_RESIDENCE = "Loner's Landing Blighted Docks Residence"
-    LONER_S_LANDING_BLIGHTED_DOCKS_ROAD = "Loner's Landing Blighted Docks Road"
-    LONER_S_LANDING_BLIGHTED_DOCKS_ROAD_LOWER = "Loner's Landing Blighted Docks Road Lower"
-    LONER_S_LANDING_BLIGHTED_DOCKS_ROAD_UPPER = "Loner's Landing Blighted Docks Road Upper"
-    LONER_S_LANDING_BLIGHTED_DOCKS_SIDE_CAVE = "Loner's Landing Blighted Docks Side Cave"
-    LONER_S_LANDING_BOARDWALK_FIRE_BOUNCE = "Loner's Landing Boardwalk Fire Bounce"
-    LONER_S_LANDING_BOARDWALK_FIREWALK = "Loner's Landing Boardwalk Firewalk"
-    LONER_S_LANDING_BOARDWALK_PIPE_LANDING = "Loner's Landing Boardwalk Pipe Landing"
-    LONER_S_LANDING_BOARDWALK_ROAD = "Loner's Landing Boardwalk Road"
-    LONER_S_LANDING_BOARDWALK_SANDFALLS_LAKE = "Loner's Landing Boardwalk Sandfalls Lake"
-    LONER_S_LANDING_BOARDWALK_SANDFALLS_LEDGE = "Loner's Landing Boardwalk Sandfalls Ledge"
-    LONER_S_LANDING_BOARDWALK_SANDFALLS_PIPE_LAKE = "Loner's Landing Boardwalk Sandfalls Pipe Lake"
-    LONER_S_LANDING_BOARDWALK_SPIKE_CAVE = "Loner's Landing Boardwalk Spike Cave"
-    LONER_S_LANDING_BOARDWALK_SPIKE_GATE = "Loner's Landing Boardwalk Spike Gate"
-    LONER_S_LANDING_BOARDWALK_SPIKE_PATH = "Loner's Landing Boardwalk Spike Path"
-    LONER_S_LANDING_BOARDWALK_SPIKE_PATH_UPPER = "Loner's Landing Boardwalk Spike Path Upper"
-    LONER_S_LANDING_BOAT_SIDE = "Loner's Landing Boat Side"
-    LONER_S_LANDING_CLIFF = "Loner's Landing Cliff"
-    LONER_S_LANDING_DOCK = "Loner's Landing Dock"
-    LONER_S_LANDING_SHIPWRECK = "Loner's Landing Shipwreck"
-    LONER_S_LANDING_SHIPWRECK_BLOCKED = "Loner's Landing Shipwreck Blocked"
-    LONER_S_LANDING_WATERFALL = "Loner's Landing Waterfall"
-    MOURNER_S_MILE_DARK_SHALLOW_TOMB_DARK = "Mourner's Mile Dark Shallow Tomb Dark"
-    MOURNER_S_MILE_DARK_SHALLOW_TOMB_PEEKHOLE = "Mourner's Mile Dark Shallow Tomb Peekhole"
-    MOURNER_S_MILE_GRAVEYARD = "Mourner's Mile Graveyard"
-    MOURNER_S_MILE_GRAVEYARD_LEDGE = "Mourner's Mile Graveyard ledge"
-    MOURNER_S_MILE_HIDDEN_GRAVES = "Mourner's Mile Hidden Graves"
-    MOURNER_S_MILE_KNIGHT_S_GATE_BUTTON = "Mourner's Mile Knight's Gate Button"
-    MOURNER_S_MILE_KNIGHT_S_GATE_MAIN = "Mourner's Mile Knight's Gate Main"
-    MOURNER_S_MILE_KNIGHT_S_GUARD_BIKE = "Mourner's Mile Knight's Guard Bike"
-    MOURNER_S_MILE_KNIGHT_S_GUARD_GENERATOR = "Mourner's Mile Knight's Guard Generator"
-    MOURNER_S_MILE_KNIGHT_S_GUARD_HILL = "Mourner's Mile Knight's Guard Hill"
-    MOURNER_S_MILE_KNIGHT_S_GUARD_LEDGE = "Mourner's Mile Knight's Guard Ledge"
-    MOURNER_S_MILE_KNIGHT_S_GUARD_MAIN = "Mourner's Mile Knight's Guard Main"
-    MOURNER_S_MILE_KNIGHT_S_REST_CHEST = "Mourner's Mile Knight's Rest Chest"
-    MOURNER_S_MILE_KNIGHT_S_REST_MAIN = "Mourner's Mile Knight's Rest Main"
-    MOURNER_S_MILE_MINA_S_GRAVE = "Mourner's Mile Mina's Grave"
-    MOURNER_S_MILE_SHALLOW_TOMB = "Mourner's Mile Shallow Tomb"
-    MOURNER_S_MILE_SPIKE_HELL_MOURNER = "Mourner's Mile Spike Hell Mourner"
-    MOURNER_S_MILE_SPIKE_HELL_SANDFALL = "Mourner's Mile Spike Hell Sandfall"
-    MOURNER_S_MILE_SPIKE_VAULT_HIDDEN = "Mourner's Mile Spike Vault Hidden"
-    MOURNER_S_MILE_SPIKE_VAULT_HIDDEN_ROOM = "Mourner's Mile Spike Vault Hidden Room"
-    MOURNER_S_MILE_SPIKE_VAULT_MAIN = "Mourner's Mile Spike Vault Main"
-    MOURNER_S_MILE_SPIKE_VAULT_UPPER = "Mourner's Mile Spike Vault Upper"
-    MOURNER_S_MILE_STAIRS = "Mourner's Mile Stairs"
-    MOURNER_S_MILE_STATUE_ROOM_MAIN = "Mourner's Mile Statue Room Main"
-    MOURNER_S_MILE_STATUE_ROOM_ROPE = "Mourner's Mile Statue Room Rope"
-    MOURNER_S_MILE_TOWER_TUNNEL_DARK = "Mourner's Mile Tower Tunnel Dark"
-    MOURNER_S_MILE_TOWER_TUNNEL_MAIN = "Mourner's Mile Tower Tunnel Main"
-    NOX_S_BAYOU_BIG_LAGOON_DARK = "Nox's Bayou Big Lagoon Dark"
-    NOX_S_BAYOU_BIG_LAGOON_EAST_SIDE_ROOM = "Nox's Bayou Big Lagoon East Side Room"
-    NOX_S_BAYOU_BIG_LAGOON_HIGH = "Nox's Bayou Big Lagoon High"
-    NOX_S_BAYOU_BIG_LAGOON_HIGH_EDGE = "Nox's Bayou Big Lagoon High Edge"
-    NOX_S_BAYOU_BIG_LAGOON_LOW = "Nox's Bayou Big Lagoon Low"
-    NOX_S_BAYOU_BIG_LAGOON_SOUTH_WALL = "Nox's Bayou Big Lagoon South Wall"
-    NOX_S_BAYOU_BIG_LAGOON_SOUTH_WALL_ROOF = "Nox's Bayou Big Lagoon South Wall Roof"
-    NOX_S_BAYOU_BOARDWALK = "Nox's Bayou Boardwalk"
-    NOX_S_BAYOU_BOARDWALK_GRASS = "Nox's Bayou Boardwalk Grass"
-    NOX_S_BAYOU_BOAT = "Nox's Bayou Boat"
-    NOX_S_BAYOU_BOAT_BOG = "Nox's Bayou Boat Bog"
-    NOX_S_BAYOU_BOAT_BOG_END = "Nox's Bayou Boat Bog End"
-    NOX_S_BAYOU_BOAT_DOCK = "Nox's Bayou Boat Dock"
-    NOX_S_BAYOU_BOAT_FALLS_BOTTOM = "Nox's Bayou Boat Falls Bottom"
-    NOX_S_BAYOU_BOAT_FALLS_DOCK = "Nox's Bayou Boat Falls Dock"
-    NOX_S_BAYOU_BOAT_FALLS_TOP = "Nox's Bayou Boat Falls Top"
-    NOX_S_BAYOU_BOAT_STATION = "Nox's Bayou Boat Station"
-    NOX_S_BAYOU_BOAT_STATION_PATH = "Nox's Bayou Boat Station Path"
-    NOX_S_BAYOU_BOG_PIPE_ROOM = "Nox's Bayou Bog Pipe Room"
-    NOX_S_BAYOU_CANOPY_BRIDGE = "Nox's Bayou Canopy Bridge"
-    NOX_S_BAYOU_CANOPY_BRIDGE_BOTTOM = "Nox's Bayou Canopy Bridge Bottom"
-    NOX_S_BAYOU_CANOPY_BRIDGE_CAVE = "Nox's Bayou Canopy Bridge Cave"
-    NOX_S_BAYOU_DOCK = "Nox's Bayou Dock"
-    NOX_S_BAYOU_DUAL_LILYS_EMPTY_LEFT = "Nox's Bayou Dual Lilys Empty Left"
-    NOX_S_BAYOU_DUAL_LILYS_EMPTY_RIGHT = "Nox's Bayou Dual Lilys Empty Right"
-    NOX_S_BAYOU_DUAL_LILYS_FULL_LEFT = "Nox's Bayou Dual Lilys Full Left"
-    NOX_S_BAYOU_DUAL_LILYS_TOP = "Nox's Bayou Dual Lilys Top"
-    NOX_S_BAYOU_FIREBOMB_GRATES = "Nox's Bayou FireBomb Grates"
-    NOX_S_BAYOU_FIREBOMB_GRATES_HILL = "Nox's Bayou FireBomb Grates Hill"
-    NOX_S_BAYOU_FIREBOMB_INTRO = "Nox's Bayou FireBomb Intro"
-    NOX_S_BAYOU_FIREBOMB_INTRO_HILL = "Nox's Bayou FireBomb Intro Hill"
-    NOX_S_BAYOU_FROG_BRIDGE = "Nox's Bayou Frog Bridge"
-    NOX_S_BAYOU_FROG_CLIFF = "Nox's Bayou Frog Cliff"
-    NOX_S_BAYOU_FROG_CLIFF_DROP = "Nox's Bayou Frog Cliff Drop"
-    NOX_S_BAYOU_FROG_DOCKS = "Nox's Bayou Frog Docks"
-    NOX_S_BAYOU_FROG_PLATFORMS = "Nox's Bayou Frog Platforms"
-    NOX_S_BAYOU_FROG_PLATFORMS_FENCE = "Nox's Bayou Frog Platforms Fence"
-    NOX_S_BAYOU_GUARD_ROOM = "Nox's Bayou Guard Room"
-    NOX_S_BAYOU_LILY_EMPTY_PUMP_ROOM = "Nox's Bayou Lily Empty Pump Room"
-    NOX_S_BAYOU_LILY_EMPTY_PUMP_ROOM_TOP = "Nox's Bayou Lily Empty Pump Room Top"
-    NOX_S_BAYOU_LILY_FULL_PUMP_ROOM = "Nox's Bayou Lily Full Pump Room"
-    NOX_S_BAYOU_LILY_FULL_PUMP_ROOM_TOP = "Nox's Bayou Lily Full Pump Room Top"
-    NOX_S_BAYOU_MOONLIT_ARENA = "Nox's Bayou Moonlit Arena"
-    NOX_S_BAYOU_MOONLIT_MIRROR = "Nox's Bayou Moonlit Mirror"
-    NOX_S_BAYOU_MOONLIT_PATH = "Nox's Bayou Moonlit Path"
-    NOX_S_BAYOU_MOONLIT_PATH_END = "Nox's Bayou Moonlit Path End"
-    NOX_S_BAYOU_MOONLIT_PATH_LAGOON_CLIFF = "Nox's Bayou Moonlit Path Lagoon Cliff"
-    NOX_S_BAYOU_MOONLIT_PATH_SHORTCUT = "Nox's Bayou Moonlit Path Shortcut"
-    NOX_S_BAYOU_MOONLIT_PATH_WATERFALL = "Nox's Bayou Moonlit Path Waterfall"
-    NOX_S_BAYOU_SHALLOW_POOL = "Nox's Bayou Shallow Pool"
-    NOX_S_BAYOU_SWAMP_SHACK = "Nox's Bayou Swamp Shack"
-    NOX_S_BAYOU_SWAMPY_GENERATOR = "Nox's Bayou Swampy Generator"
-    NOX_S_BAYOU_TAINTED_AMBUSH_FULL = "Nox's Bayou Tainted Ambush Full"
-    NOX_S_BAYOU_TAINTED_AMBUSH_LOW = "Nox's Bayou Tainted Ambush Low"
-    NOX_S_BAYOU_TAINTED_AMBUSH_MEDIUM = "Nox's Bayou Tainted Ambush Medium"
-    NOX_S_BAYOU_TAINTED_LAIR_ARENA = "Nox's Bayou Tainted Lair Arena"
-    NOX_S_BAYOU_TAINTED_LAIR_BOATS = "Nox's Bayou Tainted Lair Boats"
-    NOX_S_BAYOU_TAINTED_LAIR_BOATS_CLIFF = "Nox's Bayou Tainted Lair Boats Cliff"
-    NOX_S_BAYOU_TAINTED_LAIR_CLIFF = "Nox's Bayou Tainted Lair Cliff"
-    NOX_S_BAYOU_TAINTED_LAIR_FULL = "Nox's Bayou Tainted Lair Full"
-    NOX_S_BAYOU_TAINTED_LAIR_FULL_EXIT = "Nox's Bayou Tainted Lair Full Exit"
-    NOX_S_BAYOU_TAINTED_LAIR_FULL_RIGHT = "Nox's Bayou Tainted Lair Full Right"
-    NOX_S_BAYOU_TAINTED_LAIR_GRATE_BRIDGE = "Nox's Bayou Tainted Lair Grate Bridge"
-    NOX_S_BAYOU_TAINTED_LAIR_LEFT_PUMP = "Nox's Bayou Tainted Lair Left Pump"
-    NOX_S_BAYOU_TAINTED_LAIR_LOW = "Nox's Bayou Tainted Lair Low"
-    NOX_S_BAYOU_TAINTED_LAIR_MEDIUM = "Nox's Bayou Tainted Lair Medium"
-    NOX_S_BAYOU_TAINTED_LAIR_RIGHT_PUMP = "Nox's Bayou Tainted Lair Right Pump"
-    NOX_S_BAYOU_TAINTED_TUNNEL = "Nox's Bayou Tainted Tunnel"
-    NOX_S_BAYOU_THICK_PLANT = "Nox's Bayou Thick Plant"
-    NOX_S_BAYOU_THICK_PLANT_POND = "Nox's Bayou Thick Plant Pond"
-    NOX_S_BAYOU_THICK_PLANT_POND_CAVE = "Nox's Bayou Thick Plant Pond Cave"
-    NOX_S_BAYOU_THICK_POND = "Nox's Bayou Thick Pond"
-    NOX_S_BAYOU_THICK_POND_CLIFF = "Nox's Bayou Thick Pond Cliff"
-    NOX_S_BAYOU_THICK_POND_RAFT = "Nox's Bayou Thick Pond Raft"
-    NOX_S_BAYOU_THICK_THICKET = "Nox's Bayou Thick Thicket"
-    NOX_S_BAYOU_THICK_THICKET_PATH = "Nox's Bayou Thick Thicket Path"
-    NOX_S_BAYOU_THICK_THICKET_WET = "Nox's Bayou Thick Thicket Wet"
-    NOX_S_BAYOU_THICKET_BRIDGE_EAST = "Nox's Bayou Thicket Bridge East"
-    NOX_S_BAYOU_THICKET_BRIDGE_WEST = "Nox's Bayou Thicket Bridge West"
-    NOX_S_BAYOU_TWIN_THICKET = "Nox's Bayou Twin Thicket"
-    NOX_S_BAYOU_WATERFALL = "Nox's Bayou Waterfall"
-    NOX_S_BAYOU_WATERFALL_CLIFF = "Nox's Bayou Waterfall Cliff"
-    NOX_S_BAYOU_WATERFALL_TRINKET = "Nox's Bayou Waterfall Trinket"
+    LONERS_LANDING_BAY = "Loner's Landing Bay"
+    LONERS_LANDING_BAY_CLIFF = "Loner's Landing Bay Cliff"
+    LONERS_LANDING_BELOWDECKS = "Loner's Landing Belowdecks"
+    LONERS_LANDING_BELOWDECKS_CHESTS = "Loner's Landing Belowdecks Chests"
+    LONERS_LANDING_BELOWDECKS_FRONT = "Loner's Landing Belowdecks Front"
+    LONERS_LANDING_BLIGHTED_DOCKS_BRIDGE = "Loner's Landing Blighted Docks Bridge"
+    LONERS_LANDING_BLIGHTED_DOCKS_BRIDGE_CLIFF = "Loner's Landing Blighted Docks Bridge Cliff"
+    LONERS_LANDING_BLIGHTED_DOCKS_BRIDGE_GATE = "Loner's Landing Blighted Docks Bridge Gate"
+    LONERS_LANDING_BLIGHTED_DOCKS_BURROW = "Loner's Landing Blighted Docks Burrow"
+    LONERS_LANDING_BLIGHTED_DOCKS_FENCES_BOTTOM = "Loner's Landing Blighted Docks Fences Bottom"
+    LONERS_LANDING_BLIGHTED_DOCKS_FENCES_TOP = "Loner's Landing Blighted Docks Fences Top"
+    LONERS_LANDING_BLIGHTED_DOCKS_FIRST_BURROW = "Loner's Landing Blighted Docks First Burrow"
+    LONERS_LANDING_BLIGHTED_DOCKS_FIRST_BURROW_TOP = "Loner's Landing Blighted Docks First Burrow Top"
+    LONERS_LANDING_BLIGHTED_DOCKS_FIRST_CARRY = "Loner's Landing Blighted Docks First Carry"
+    LONERS_LANDING_BLIGHTED_DOCKS_GANGPLANK = "Loner's Landing Blighted Docks Gangplank"
+    LONERS_LANDING_BLIGHTED_DOCKS_LOWER_BRIDGE = "Loner's Landing Blighted Docks Lower Bridge"
+    LONERS_LANDING_BLIGHTED_DOCKS_RESIDENCE = "Loner's Landing Blighted Docks Residence"
+    LONERS_LANDING_BLIGHTED_DOCKS_ROAD = "Loner's Landing Blighted Docks Road"
+    LONERS_LANDING_BLIGHTED_DOCKS_ROAD_LOWER = "Loner's Landing Blighted Docks Road Lower"
+    LONERS_LANDING_BLIGHTED_DOCKS_ROAD_UPPER = "Loner's Landing Blighted Docks Road Upper"
+    LONERS_LANDING_BLIGHTED_DOCKS_SIDE_CAVE = "Loner's Landing Blighted Docks Side Cave"
+    LONERS_LANDING_BOARDWALK_FIRE_BOUNCE = "Loner's Landing Boardwalk Fire Bounce"
+    LONERS_LANDING_BOARDWALK_FIREWALK = "Loner's Landing Boardwalk Firewalk"
+    LONERS_LANDING_BOARDWALK_PIPE_LANDING = "Loner's Landing Boardwalk Pipe Landing"
+    LONERS_LANDING_BOARDWALK_ROAD = "Loner's Landing Boardwalk Road"
+    LONERS_LANDING_BOARDWALK_SANDFALLS_LAKE = "Loner's Landing Boardwalk Sandfalls Lake"
+    LONERS_LANDING_BOARDWALK_SANDFALLS_LEDGE = "Loner's Landing Boardwalk Sandfalls Ledge"
+    LONERS_LANDING_BOARDWALK_SANDFALLS_PIPE_LAKE = "Loner's Landing Boardwalk Sandfalls Pipe Lake"
+    LONERS_LANDING_BOARDWALK_SPIKE_CAVE = "Loner's Landing Boardwalk Spike Cave"
+    LONERS_LANDING_BOARDWALK_SPIKE_GATE = "Loner's Landing Boardwalk Spike Gate"
+    LONERS_LANDING_BOARDWALK_SPIKE_PATH = "Loner's Landing Boardwalk Spike Path"
+    LONERS_LANDING_BOARDWALK_SPIKE_PATH_UPPER = "Loner's Landing Boardwalk Spike Path Upper"
+    LONERS_LANDING_BOAT_SIDE = "Loner's Landing Boat Side"
+    LONERS_LANDING_CLIFF = "Loner's Landing Cliff"
+    LONERS_LANDING_DOCK = "Loner's Landing Dock"
+    LONERS_LANDING_SHIPWRECK = "Loner's Landing Shipwreck"
+    LONERS_LANDING_SHIPWRECK_BLOCKED = "Loner's Landing Shipwreck Blocked"
+    LONERS_LANDING_WATERFALL = "Loner's Landing Waterfall"
+    MOURNERS_MILE_DARK_SHALLOW_TOMB_DARK = "Mourner's Mile Dark Shallow Tomb Dark"
+    MOURNERS_MILE_DARK_SHALLOW_TOMB_PEEKHOLE = "Mourner's Mile Dark Shallow Tomb Peekhole"
+    MOURNERS_MILE_GRAVEYARD = "Mourner's Mile Graveyard"
+    MOURNERS_MILE_GRAVEYARD_LEDGE = "Mourner's Mile Graveyard ledge"
+    MOURNERS_MILE_HIDDEN_GRAVES = "Mourner's Mile Hidden Graves"
+    MOURNERS_MILE_KNIGHTS_GATE_BUTTON = "Mourner's Mile Knight's Gate Button"
+    MOURNERS_MILE_KNIGHTS_GATE_MAIN = "Mourner's Mile Knight's Gate Main"
+    MOURNERS_MILE_KNIGHTS_GUARD_BIKE = "Mourner's Mile Knight's Guard Bike"
+    MOURNERS_MILE_KNIGHTS_GUARD_GENERATOR = "Mourner's Mile Knight's Guard Generator"
+    MOURNERS_MILE_KNIGHTS_GUARD_HILL = "Mourner's Mile Knight's Guard Hill"
+    MOURNERS_MILE_KNIGHTS_GUARD_LEDGE = "Mourner's Mile Knight's Guard Ledge"
+    MOURNERS_MILE_KNIGHTS_GUARD_MAIN = "Mourner's Mile Knight's Guard Main"
+    MOURNERS_MILE_KNIGHTS_REST_CHEST = "Mourner's Mile Knight's Rest Chest"
+    MOURNERS_MILE_KNIGHTS_REST_MAIN = "Mourner's Mile Knight's Rest Main"
+    MOURNERS_MILE_MINAS_GRAVE = "Mourner's Mile Mina's Grave"
+    MOURNERS_MILE_SHALLOW_TOMB = "Mourner's Mile Shallow Tomb"
+    MOURNERS_MILE_SPIKE_HELL_MOURNER = "Mourner's Mile Spike Hell Mourner"
+    MOURNERS_MILE_SPIKE_HELL_SANDFALL = "Mourner's Mile Spike Hell Sandfall"
+    MOURNERS_MILE_SPIKE_VAULT_HIDDEN = "Mourner's Mile Spike Vault Hidden"
+    MOURNERS_MILE_SPIKE_VAULT_HIDDEN_ROOM = "Mourner's Mile Spike Vault Hidden Room"
+    MOURNERS_MILE_SPIKE_VAULT_MAIN = "Mourner's Mile Spike Vault Main"
+    MOURNERS_MILE_SPIKE_VAULT_UPPER = "Mourner's Mile Spike Vault Upper"
+    MOURNERS_MILE_STAIRS = "Mourner's Mile Stairs"
+    MOURNERS_MILE_STATUE_ROOM_MAIN = "Mourner's Mile Statue Room Main"
+    MOURNERS_MILE_STATUE_ROOM_ROPE = "Mourner's Mile Statue Room Rope"
+    MOURNERS_MILE_TOWER_TUNNEL_DARK = "Mourner's Mile Tower Tunnel Dark"
+    MOURNERS_MILE_TOWER_TUNNEL_MAIN = "Mourner's Mile Tower Tunnel Main"
+    NOXS_BAYOU_BIG_LAGOON_DARK = "Nox's Bayou Big Lagoon Dark"
+    NOXS_BAYOU_BIG_LAGOON_EAST_SIDE_ROOM = "Nox's Bayou Big Lagoon East Side Room"
+    NOXS_BAYOU_BIG_LAGOON_HIGH = "Nox's Bayou Big Lagoon High"
+    NOXS_BAYOU_BIG_LAGOON_HIGH_EDGE = "Nox's Bayou Big Lagoon High Edge"
+    NOXS_BAYOU_BIG_LAGOON_LOW = "Nox's Bayou Big Lagoon Low"
+    NOXS_BAYOU_BIG_LAGOON_SOUTH_WALL = "Nox's Bayou Big Lagoon South Wall"
+    NOXS_BAYOU_BIG_LAGOON_SOUTH_WALL_ROOF = "Nox's Bayou Big Lagoon South Wall Roof"
+    NOXS_BAYOU_BOARDWALK = "Nox's Bayou Boardwalk"
+    NOXS_BAYOU_BOARDWALK_GRASS = "Nox's Bayou Boardwalk Grass"
+    NOXS_BAYOU_BOAT = "Nox's Bayou Boat"
+    NOXS_BAYOU_BOAT_BOG = "Nox's Bayou Boat Bog"
+    NOXS_BAYOU_BOAT_BOG_END = "Nox's Bayou Boat Bog End"
+    NOXS_BAYOU_BOAT_DOCK = "Nox's Bayou Boat Dock"
+    NOXS_BAYOU_BOAT_FALLS_BOTTOM = "Nox's Bayou Boat Falls Bottom"
+    NOXS_BAYOU_BOAT_FALLS_DOCK = "Nox's Bayou Boat Falls Dock"
+    NOXS_BAYOU_BOAT_FALLS_TOP = "Nox's Bayou Boat Falls Top"
+    NOXS_BAYOU_BOAT_STATION = "Nox's Bayou Boat Station"
+    NOXS_BAYOU_BOAT_STATION_PATH = "Nox's Bayou Boat Station Path"
+    NOXS_BAYOU_BOG_PIPE_ROOM = "Nox's Bayou Bog Pipe Room"
+    NOXS_BAYOU_CANOPY_BRIDGE = "Nox's Bayou Canopy Bridge"
+    NOXS_BAYOU_CANOPY_BRIDGE_BOTTOM = "Nox's Bayou Canopy Bridge Bottom"
+    NOXS_BAYOU_CANOPY_BRIDGE_CAVE = "Nox's Bayou Canopy Bridge Cave"
+    NOXS_BAYOU_DOCK = "Nox's Bayou Dock"
+    NOXS_BAYOU_DUAL_LILYS_EMPTY_LEFT = "Nox's Bayou Dual Lilys Empty Left"
+    NOXS_BAYOU_DUAL_LILYS_EMPTY_RIGHT = "Nox's Bayou Dual Lilys Empty Right"
+    NOXS_BAYOU_DUAL_LILYS_FULL_LEFT = "Nox's Bayou Dual Lilys Full Left"
+    NOXS_BAYOU_DUAL_LILYS_TOP = "Nox's Bayou Dual Lilys Top"
+    NOXS_BAYOU_FIREBOMB_GRATES = "Nox's Bayou FireBomb Grates"
+    NOXS_BAYOU_FIREBOMB_GRATES_HILL = "Nox's Bayou FireBomb Grates Hill"
+    NOXS_BAYOU_FIREBOMB_INTRO = "Nox's Bayou FireBomb Intro"
+    NOXS_BAYOU_FIREBOMB_INTRO_HILL = "Nox's Bayou FireBomb Intro Hill"
+    NOXS_BAYOU_FROG_BRIDGE = "Nox's Bayou Frog Bridge"
+    NOXS_BAYOU_FROG_CLIFF = "Nox's Bayou Frog Cliff"
+    NOXS_BAYOU_FROG_CLIFF_DROP = "Nox's Bayou Frog Cliff Drop"
+    NOXS_BAYOU_FROG_DOCKS = "Nox's Bayou Frog Docks"
+    NOXS_BAYOU_FROG_PLATFORMS = "Nox's Bayou Frog Platforms"
+    NOXS_BAYOU_FROG_PLATFORMS_FENCE = "Nox's Bayou Frog Platforms Fence"
+    NOXS_BAYOU_GUARD_ROOM = "Nox's Bayou Guard Room"
+    NOXS_BAYOU_LILY_EMPTY_PUMP_ROOM = "Nox's Bayou Lily Empty Pump Room"
+    NOXS_BAYOU_LILY_EMPTY_PUMP_ROOM_TOP = "Nox's Bayou Lily Empty Pump Room Top"
+    NOXS_BAYOU_LILY_FULL_PUMP_ROOM = "Nox's Bayou Lily Full Pump Room"
+    NOXS_BAYOU_LILY_FULL_PUMP_ROOM_TOP = "Nox's Bayou Lily Full Pump Room Top"
+    NOXS_BAYOU_MOONLIT_ARENA = "Nox's Bayou Moonlit Arena"
+    NOXS_BAYOU_MOONLIT_MIRROR = "Nox's Bayou Moonlit Mirror"
+    NOXS_BAYOU_MOONLIT_PATH = "Nox's Bayou Moonlit Path"
+    NOXS_BAYOU_MOONLIT_PATH_END = "Nox's Bayou Moonlit Path End"
+    NOXS_BAYOU_MOONLIT_PATH_LAGOON_CLIFF = "Nox's Bayou Moonlit Path Lagoon Cliff"
+    NOXS_BAYOU_MOONLIT_PATH_SHORTCUT = "Nox's Bayou Moonlit Path Shortcut"
+    NOXS_BAYOU_MOONLIT_PATH_WATERFALL = "Nox's Bayou Moonlit Path Waterfall"
+    NOXS_BAYOU_SHALLOW_POOL = "Nox's Bayou Shallow Pool"
+    NOXS_BAYOU_SWAMP_SHACK = "Nox's Bayou Swamp Shack"
+    NOXS_BAYOU_SWAMPY_GENERATOR = "Nox's Bayou Swampy Generator"
+    NOXS_BAYOU_TAINTED_AMBUSH_FULL = "Nox's Bayou Tainted Ambush Full"
+    NOXS_BAYOU_TAINTED_AMBUSH_LOW = "Nox's Bayou Tainted Ambush Low"
+    NOXS_BAYOU_TAINTED_AMBUSH_MEDIUM = "Nox's Bayou Tainted Ambush Medium"
+    NOXS_BAYOU_TAINTED_LAIR_ARENA = "Nox's Bayou Tainted Lair Arena"
+    NOXS_BAYOU_TAINTED_LAIR_BOATS = "Nox's Bayou Tainted Lair Boats"
+    NOXS_BAYOU_TAINTED_LAIR_BOATS_CLIFF = "Nox's Bayou Tainted Lair Boats Cliff"
+    NOXS_BAYOU_TAINTED_LAIR_CLIFF = "Nox's Bayou Tainted Lair Cliff"
+    NOXS_BAYOU_TAINTED_LAIR_FULL = "Nox's Bayou Tainted Lair Full"
+    NOXS_BAYOU_TAINTED_LAIR_FULL_EXIT = "Nox's Bayou Tainted Lair Full Exit"
+    NOXS_BAYOU_TAINTED_LAIR_FULL_RIGHT = "Nox's Bayou Tainted Lair Full Right"
+    NOXS_BAYOU_TAINTED_LAIR_GRATE_BRIDGE = "Nox's Bayou Tainted Lair Grate Bridge"
+    NOXS_BAYOU_TAINTED_LAIR_LEFT_PUMP = "Nox's Bayou Tainted Lair Left Pump"
+    NOXS_BAYOU_TAINTED_LAIR_LOW = "Nox's Bayou Tainted Lair Low"
+    NOXS_BAYOU_TAINTED_LAIR_MEDIUM = "Nox's Bayou Tainted Lair Medium"
+    NOXS_BAYOU_TAINTED_LAIR_RIGHT_PUMP = "Nox's Bayou Tainted Lair Right Pump"
+    NOXS_BAYOU_TAINTED_TUNNEL = "Nox's Bayou Tainted Tunnel"
+    NOXS_BAYOU_THICK_PLANT = "Nox's Bayou Thick Plant"
+    NOXS_BAYOU_THICK_PLANT_POND = "Nox's Bayou Thick Plant Pond"
+    NOXS_BAYOU_THICK_PLANT_POND_CAVE = "Nox's Bayou Thick Plant Pond Cave"
+    NOXS_BAYOU_THICK_POND = "Nox's Bayou Thick Pond"
+    NOXS_BAYOU_THICK_POND_CLIFF = "Nox's Bayou Thick Pond Cliff"
+    NOXS_BAYOU_THICK_POND_RAFT = "Nox's Bayou Thick Pond Raft"
+    NOXS_BAYOU_THICK_THICKET = "Nox's Bayou Thick Thicket"
+    NOXS_BAYOU_THICK_THICKET_PATH = "Nox's Bayou Thick Thicket Path"
+    NOXS_BAYOU_THICK_THICKET_WET = "Nox's Bayou Thick Thicket Wet"
+    NOXS_BAYOU_THICKET_BRIDGE_EAST = "Nox's Bayou Thicket Bridge East"
+    NOXS_BAYOU_THICKET_BRIDGE_WEST = "Nox's Bayou Thicket Bridge West"
+    NOXS_BAYOU_TWIN_THICKET = "Nox's Bayou Twin Thicket"
+    NOXS_BAYOU_WATERFALL = "Nox's Bayou Waterfall"
+    NOXS_BAYOU_WATERFALL_CLIFF = "Nox's Bayou Waterfall Cliff"
+    NOXS_BAYOU_WATERFALL_TRINKET = "Nox's Bayou Waterfall Trinket"
     OSSEX_ATELIER = 'Ossex Atelier'
     OSSEX_BALCONY_EAST = 'Ossex Balcony East'
     OSSEX_BALCONY_WEST = 'Ossex Balcony West'
@@ -461,7 +434,7 @@ class Regions(RegionTypeEnum):
     OSSEX_CITY_CENTER_EXCHANGE = 'Ossex City Center Exchange'
     OSSEX_CITY_CENTER_MAIN = 'Ossex City Center Main'
     OSSEX_CITY_CENTER_UPPER = 'Ossex City Center Upper'
-    OSSEX_COUPLE_S_QUARTER = "Ossex Couple's Quarter"
+    OSSEX_COUPLES_QUARTER = "Ossex Couple's Quarter"
     OSSEX_COURTYARD = 'Ossex Courtyard'
     OSSEX_COURTYARD_EAST = 'Ossex Courtyard East'
     OSSEX_COURTYARD_EAST_GAP = 'Ossex Courtyard East Gap'
@@ -476,10 +449,10 @@ class Regions(RegionTypeEnum):
     OSSEX_ENTRY_WESTERN_WALL_CHEST = 'Ossex Entry Western Wall Chest'
     OSSEX_ENTRY_WESTERN_WALL_LEFT = 'Ossex Entry Western Wall Left'
     OSSEX_ENTRY_WESTERN_WALL_RIGHT = 'Ossex Entry Western Wall Right'
-    OSSEX_GODDRED_S_GRAVE = "Ossex Goddred's Grave"
-    OSSEX_GODDRED_S_GRAVE_ARENA = "Ossex Goddred's Grave Arena"
-    OSSEX_GODDRED_S_GRAVE_END = "Ossex Goddred's Grave End"
-    OSSEX_GODDRED_S_GRAVE_HALL = "Ossex Goddred's Grave Hall"
+    OSSEX_GODDREDS_GRAVE = "Ossex Goddred's Grave"
+    OSSEX_GODDREDS_GRAVE_ARENA = "Ossex Goddred's Grave Arena"
+    OSSEX_GODDREDS_GRAVE_END = "Ossex Goddred's Grave End"
+    OSSEX_GODDREDS_GRAVE_HALL = "Ossex Goddred's Grave Hall"
     OSSEX_GUILD_BACK_ROOM = 'Ossex Guild Back Room'
     OSSEX_GUILD_HALL = 'Ossex Guild Hall'
     OSSEX_GUTTERWAYS = 'Ossex Gutterways'
@@ -495,8 +468,8 @@ class Regions(RegionTypeEnum):
     OSSEX_HIGH_STREET_SE_GARDEN_SEWER = 'Ossex High Street SE Garden Sewer'
     OSSEX_HIGH_STREET_SEWER = 'Ossex High Street Sewer'
     OSSEX_KEAR_INSTITUTE = 'Ossex Kear Institute'
-    OSSEX_LEGOVICH_S_ARMS = "Ossex Legovich's Arms"
-    OSSEX_LEGOVICH_S_ARMS_BASEMENT = "Ossex Legovich's Arms Basement"
+    OSSEX_LEGOVICHS_ARMS = "Ossex Legovich's Arms"
+    OSSEX_LEGOVICHS_ARMS_BASEMENT = "Ossex Legovich's Arms Basement"
     OSSEX_MUSIC_HALL = 'Ossex Music Hall'
     OSSEX_PAWNTY_EXCHANGE = 'Ossex Pawnty Exchange'
     OSSEX_SOUTH_EASTERN_WALL = 'Ossex South Eastern Wall'
@@ -605,7 +578,7 @@ class Regions(RegionTypeEnum):
     RADIANT_MANOR_GREENHOUSE_STATUES_BRIDGE = 'Radiant Manor Greenhouse Statues Bridge'
     RADIANT_MANOR_GREENHOUSE_WING = 'Radiant Manor Greenhouse Wing'
     RADIANT_MANOR_GREENHOUSE_WING_EXIT = 'Radiant Manor Greenhouse Wing Exit'
-    RADIANT_MANOR_MEOWSTRO_S_CHAMBER = "Radiant Manor Meowstro's Chamber"
+    RADIANT_MANOR_MEOWSTROS_CHAMBER = "Radiant Manor Meowstro's Chamber"
     RADIANT_MANOR_MIMIC_CHAMBER = 'Radiant Manor Mimic Chamber'
     RADIANT_MANOR_ORPHANAGE = 'Radiant Manor Orphanage'
     RADIANT_MANOR_ORPHANAGE_BEDS = 'Radiant Manor Orphanage Beds'
@@ -624,8 +597,8 @@ class Regions(RegionTypeEnum):
     RADIANT_MANOR_ROOFTOP_PANELS_BUSH_WEST = 'Radiant Manor Rooftop Panels Bush West'
     RADIANT_MANOR_ROOFTOP_PANELS_EAST = 'Radiant Manor Rooftop Panels East'
     RADIANT_MANOR_ROOFTOP_PANELS_WEST = 'Radiant Manor Rooftop Panels West'
-    RADIANT_MANOR_SERVANT_S_ARENA = "Radiant Manor Servant's Arena"
-    RADIANT_MANOR_SERVANT_S_QUARTERS = "Radiant Manor Servant's Quarters"
+    RADIANT_MANOR_SERVANTS_ARENA = "Radiant Manor Servant's Arena"
+    RADIANT_MANOR_SERVANTS_QUARTERS = "Radiant Manor Servant's Quarters"
     RADIANT_MANOR_STUDY = 'Radiant Manor Study'
     RADIANT_MANOR_WEST_CHAMBER = 'Radiant Manor West Chamber'
     SANDFALLS_BONE_JUNCTION = 'Sandfalls Bone Junction'

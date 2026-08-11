@@ -25,7 +25,7 @@ BANNER = (
 IMPORTS = (
     "from .regions import Regions\n"
     "from rule_builder.rules import Has, True_, CanReachLocation\n"
-    "from ... import RegionConnection, Transition, DirectionType, TransitionType, RegionTypeEnum,ConnectionTypeEnum, TransitionTypeEnum\n"
+    "from ... import DirectionType, TransitionType, ConnectionTypeEnum, TransitionTypeEnum\n"
     "from ...rules.ability_rules import (\n"
     "    CanBurrow, CanCarry, CanClimb, CanSwim, CanBounce, PowerLevelThreshold,\n"
     "    HasVialsCount, HasReachingSideArm, HasFishingRod, CanSpring, HasTrinket \n"
@@ -69,13 +69,14 @@ def _comment(notes: str) -> str:
     return f"  # {notes}" if notes else ""
 
 def make_enum_name(value: str) -> str:
-    name = re.sub(r"[^a-zA-Z0-9]+", "_", value)
+    name = value.replace("'", "")
+    name = re.sub(r"[^a-zA-Z0-9]+", "_", name)
     name = re.sub(r"_+", "_", name)
     return name.strip("_").upper()
 
 def render_region_enum(edges: "list[es.Edge]"):
     regions = sorted({e.from_region for e in edges})
-    out: list[str] = [BANNER, IMPORTS, ""]
+    out: list[str] = [BANNER, "from ... import RegionTypeEnum\n", ""]
     out.append("class Regions(RegionTypeEnum):")
     for r in regions:
         enum_name = make_enum_name(r)
@@ -92,8 +93,8 @@ def render_area_module(area: str, edges: "list[es.Edge]") -> str:
 
     out: list[str] = [BANNER, IMPORTS, ""]
 
-
-    out.append("class RegionConnections(ConnectionTypeEnum):")
+    if connections:
+        out.append("class RegionConnections(ConnectionTypeEnum):")
     for e in connections:
         out.append(
             f"    {make_enum_name(e.resolved_name)} = ("
@@ -101,12 +102,12 @@ def render_area_module(area: str, edges: "list[es.Edge]") -> str:
             f"Regions.{make_enum_name(e.from_region)}, "
             f"Regions.{make_enum_name(e.to_region)}"
             f"{_rule_suffix(e.rule)}"
-            f"),"
+            f")"
             f"{_comment(e.notes)}"
         )
     out.append("")
-
-    out.append("class RegionTransitions(TransitionTypeEnum):")
+    if transitions:
+        out.append("class RegionTransitions(TransitionTypeEnum):")
     for e in transitions:
         out.append(
             f"    {make_enum_name(e.resolved_name)} = ("
@@ -115,7 +116,7 @@ def render_area_module(area: str, edges: "list[es.Edge]") -> str:
             f"Regions.{make_enum_name(e.to_region)}, "
             f"DirectionType.{e.direction}, TransitionType.{e.transition_type}"
             f"{_rule_suffix(e.rule)}"
-            f"),"
+            f")"
             f"{_comment(e.notes)}"
         )
     out.append("")

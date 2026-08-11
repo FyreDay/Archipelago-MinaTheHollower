@@ -1,39 +1,95 @@
 from BaseClasses import LocationProgressType
 from rule_builder.rules import Has, CanReachLocation
-from ... import RegionConnection, Transition, LocationData
+from .._generated.regions import Regions
+from ... import LocationTypeEnum
 from ...events import SEPTEMBURG_DATA
 from ...items import SingleKears
 from ...rules.ability_rules import CanBurrow, CanBounce, CanClimb, CanCarry, HasFishingRod, CanSpring
 from ...rules.state_rules import HasKear, HasSparks, RepairedGenerator
 from ...rules.movement_rules import CanJumpTiles
 
-collectable_locations: dict[str, LocationData] = {
-    "SB Launch Pad Secret Room Chest": LocationData(91, "Septemburg Withered Farms Hills Maze", CanSpring()),
-    "SB Launch Pad Crow Fight Reward": LocationData(89, "Septemburg Withered Farms Secret Springs", CanSpring()),
-    "SB Withered Farms Kid Room Chest": LocationData(92, "Septemburg Withered Farms Kid Room 1", CanBurrow()),
-    "SB Hidden Mandrake Room Chest": LocationData(93, "Septemburg Hidden Mandrake Room", CanJumpTiles(distance=2)),
-    "SB Hidden Crop Thresher Room Chest": LocationData(90, "Septemburg Tractor Chase", CanSpring() & CanBurrow() & CanClimb()),
-    "SB Rotten Barn Squealer Chest": LocationData(94, "Septemburg Rotten Barn Kid Room", CanBurrow()),
-    "SB Tunnel Locked Chest": LocationData(98, "Septemburg Crow Town Tunnel Top", HasKear(kear=SingleKears.SEPTEMBURG_CROW_TOWN_TUNNEL_KEAR.value)),
-    "SB Crow Town Shop Trinket": LocationData(102, "Septemburg Crow Town"),
-    "SB Crow Town Shop Kear": LocationData(103, "Septemburg Crow Town"),
-    "SB Crow Town Farmhouse Roof Weapon Chest": LocationData(99, "Septemburg Farm House Roof", CanBurrow() & CanCarry()),
-    "SB Tangled Woods Hidden Grove Chest": LocationData(97, "Septemburg Tangled Woods Hidden Grove", CanBurrow()),
-    "SB Tangled Woods Galloway Room Chest": LocationData(100, "Septemburg Tangled Woods Kid Room", CanBurrow() & CanSpring()),
-    "SB Stormwatch Way Chest": LocationData(101, "Septemburg Stormwatch Wind", CanBurrow()),
-    "SB Carving Man Fight Reward": LocationData(95, "Septemburg Carving Shack Arena"),
-    "SB Dark Deluxy Fight Reward": LocationData(353, "Septemburg Windy Generator", CanBurrow() & RepairedGenerator(event=SEPTEMBURG_DATA) & HasSparks(count=2)),
-    "SB Fish Spincer Pincers": LocationData(108, "Septemburg Wastewater Canal Well Entrance", HasFishingRod()),
-    "SB Wastewater Canal Slime Room Chest": LocationData(106, "Septemburg Wastewater Canal Slime Room", CanBurrow()),
-    "SB Wastewater Canal Box Room Chest": LocationData(105, "Septemburg Wastewater Canal Boxes", CanBurrow()),
-    "SB Wastewater Canal Well Entrance Chest": LocationData(107, "Septemburg Wastewater Canal Well Entrance"),
-    "SB Save Students Trinket": LocationData(334, "Ossex Trinket Bazaar", RepairedGenerator(event=SEPTEMBURG_DATA)), # needs save """4""" students,
+class Locations(LocationTypeEnum):
+    SB_LAUNCH_PAD_SECRET_ROOM_CHEST = (
+        "SB Launch Pad Secret Room Chest",91,Regions.SEPTEMBURG_WITHERED_FARMS_HILLS_MAZE,CanSpring(),
+    )
 
-}
+    SB_LAUNCH_PAD_CROW_FIGHT_REWARD = (
+        "SB Launch Pad Crow Fight Reward",89,Regions.SEPTEMBURG_WITHERED_FARMS_SECRET_SPRINGS,CanSpring(),
+    )
 
+    SB_WITHERED_FARMS_KID_ROOM_CHEST = (
+        "SB Withered Farms Kid Room Chest",92,Regions.SEPTEMBURG_WITHERED_FARMS_KID_ROOM_1,CanBurrow(),
+    )
 
-boss_locations: dict[str, LocationData] = {
-    "SB The Carving Man": LocationData(None, "Septemburg Carving Shack Arena"),
-    "SB Windy Generator Activated": LocationData(None, "Septemburg Windy Generator"),  # needs float, burrow,
-    "SB Dark Deluxy": LocationData(None, "Septemburg Windy Generator"),  # needs burrow, pipes,
-}
+    SB_HIDDEN_MANDRAKE_ROOM_CHEST = (
+        "SB Hidden Mandrake Room Chest",93,Regions.SEPTEMBURG_HIDDEN_MANDRAKE_ROOM,CanJumpTiles(distance=2),
+    )
+
+    SB_HIDDEN_CROP_THRESHER_ROOM_CHEST = (
+        "SB Hidden Crop Thresher Room Chest",90,Regions.SEPTEMBURG_TRACTOR_CHASE,CanSpring() & CanBurrow() & CanClimb(),
+    )
+
+    SB_ROTTEN_BARN_SQUEALER_CHEST = (
+        "SB Rotten Barn Squealer Chest",94,Regions.SEPTEMBURG_ROTTEN_BARN_KID_ROOM,CanBurrow(),
+    )
+
+    SB_TUNNEL_LOCKED_CHEST = (
+        "SB Tunnel Locked Chest",98,Regions.SEPTEMBURG_CROW_TOWN_TUNNEL_TOP,HasKear(kear=SingleKears.SEPTEMBURG_CROW_TOWN_TUNNEL_KEAR.value),
+    )
+
+    SB_CROW_TOWN_SHOP_TRINKET = (
+        "SB Crow Town Shop Trinket",102,Regions.SEPTEMBURG_CROW_TOWN,
+    )
+
+    SB_CROW_TOWN_SHOP_KEAR = (
+        "SB Crow Town Shop Kear",103,Regions.SEPTEMBURG_CROW_TOWN,
+    )
+
+    SB_CROW_TOWN_FARMHOUSE_ROOF_WEAPON_CHEST = (
+        "SB Crow Town Farmhouse Roof Weapon Chest",99,Regions.SEPTEMBURG_FARM_HOUSE_ROOF,CanBurrow() & CanCarry(),
+    )
+
+    SB_TANGLED_WOODS_HIDDEN_GROVE_CHEST = (
+        "SB Tangled Woods Hidden Grove Chest",97,Regions.SEPTEMBURG_TANGLED_WOODS_HIDDEN_GROVE,CanBurrow(),
+    )
+
+    SB_TANGLED_WOODS_GALLOWAY_ROOM_CHEST = (
+        "SB Tangled Woods Galloway Room Chest",100,Regions.SEPTEMBURG_TANGLED_WOODS_KID_ROOM,CanBurrow() & CanSpring(),
+    )
+
+    SB_STORMWATCH_WAY_CHEST = (
+        "SB Stormwatch Way Chest",101,Regions.SEPTEMBURG_STORMWATCH_WIND,CanBurrow(),
+    )
+
+    SB_CARVING_MAN_FIGHT_REWARD = (
+        "SB Carving Man Fight Reward",95,Regions.SEPTEMBURG_CARVING_SHACK_ARENA,
+    )
+
+    SB_DARK_DELUXY_FIGHT_REWARD = (
+        "SB Dark Deluxy Fight Reward",353,Regions.SEPTEMBURG_WINDY_GENERATOR,CanBurrow() & RepairedGenerator(event=SEPTEMBURG_DATA) & HasSparks(count=2),
+    )
+
+    SB_FISH_SPINCER_PINCERS = (
+        "SB Fish Spincer Pincers",108,Regions.SEPTEMBURG_WASTEWATER_CANAL_WELL_ENTRANCE,HasFishingRod(),
+    )
+
+    SB_WASTEWATER_CANAL_SLIME_ROOM_CHEST = (
+        "SB Wastewater Canal Slime Room Chest",106,Regions.SEPTEMBURG_WASTEWATER_CANAL_SLIME_ROOM,CanBurrow(),
+    )
+
+    SB_WASTEWATER_CANAL_BOX_ROOM_CHEST = (
+        "SB Wastewater Canal Box Room Chest",105,Regions.SEPTEMBURG_WASTEWATER_CANAL_BOXES,CanBurrow(),
+    )
+
+    SB_WASTEWATER_CANAL_WELL_ENTRANCE_CHEST = (
+        "SB Wastewater Canal Well Entrance Chest",107,Regions.SEPTEMBURG_WASTEWATER_CANAL_WELL_ENTRANCE,
+    )
+
+    SB_SAVE_STUDENTS_TRINKET = (
+        "SB Save Students Trinket",334,Regions.OSSEX_TRINKET_BAZAAR,RepairedGenerator(event=SEPTEMBURG_DATA),
+    )
+
+class BossLocations(LocationTypeEnum):
+    SB_DEFEAT_THE_CARVING_MAN = ("SB Defeat The Carving Man", 1003, Regions.SEPTEMBURG_CARVING_SHACK_ARENA)
+    SB_DEFEAT_DARK_DELUXY = ("SB Defeat Dark Deluxy", 1024, Regions.SEPTEMBURG_WINDY_GENERATOR)
+    # SB_WINDY_GENERATOR = ("SB Windy Generator Repaired", 6002, Regions.SEPTEMBURG_WINDY_GENERATOR)
