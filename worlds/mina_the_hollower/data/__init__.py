@@ -133,14 +133,25 @@ class ConnectionTypeEnum(Enum):
         self.entering_region = entering_region
         self.rule = rule
 
+class TransitionTypeEnum(Enum):
+    def __init__(self, value: str, exiting_region: RegionTypeEnum, entering_region: RegionTypeEnum, direction_type: DirectionType, transition_type: TransitionType, rule: CollectionRule | Rule[MinaTheHollowerBase] = True_()):
+        # self._value_ must be set to the first element to support lookup by value
+        self._value_ = value
+        self.exiting_screen = exiting_region
+        self.entering_screen = entering_region
+        self.direction = direction_type
+        self.entrance_group = transition_type
+        self.rule = rule
+
 class LocationTypeEnum(Enum):
-    def __init__(self, value: str, location_id: int, region: RegionTypeEnum,rule: CollectionRule | Rule[MinaTheHollowerBase] = True_(), progress_type: LocationProgressType = LocationProgressType.DEFAULT):
+    def __init__(self, value: str, location_id: int, region: RegionTypeEnum,rule: CollectionRule | Rule[MinaTheHollowerBase] = True_(), progress_type: LocationProgressType = LocationProgressType.DEFAULT):#, item_rule: Callable[[Item], bool] =  lambda item: True_()):
         # self._value_ must be set to the first element to support lookup by value
         self._value_ = value
         self.region = region
         self.location_id = location_id
         self.rule = rule
         self.progress_type = progress_type
+        # self.item_rule: Callable[[Item], bool] = item_rule
 
 class EventTypeEnum(Enum):
     def __init__(self, value: str, region:str, event_item:str,  rule: CollectionRule | Rule[MinaTheHollowerBase] = True_()):
@@ -155,22 +166,3 @@ class RepairEventData(NamedTuple):
     gen_name: str
     index: int
     kear_item_type: ItemTypeEnum
-
-class RegionConnection(NamedTuple):
-    exiting_region: str
-    entering_region: str
-    rule: CollectionRule | Rule[MinaTheHollowerBase]
-
-class Transition(NamedTuple):
-    exiting_screen: str
-    entering_screen: str
-    direction: int
-    entrance_group: int
-    rule: CollectionRule | Rule[MinaTheHollowerBase]
-
-class LocationData(NamedTuple):
-    location_id: int
-    region: str
-    rule: CollectionRule | Rule[MinaTheHollowerBase] = True_()
-    progress_type: LocationProgressType = LocationProgressType.DEFAULT
-    item_rule: Callable[[Item], bool] = lambda item: True

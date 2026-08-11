@@ -3,8 +3,9 @@
 #   python -m worlds.mina_the_hollower.tools.generate_edges <edges.csv>
 # The spreadsheet is the source of truth, not this file.
 
+from .regions import Regions
 from rule_builder.rules import Has, True_, CanReachLocation
-from ... import RegionConnection, Transition, DirectionType, TransitionType
+from ... import DirectionType, TransitionType, ConnectionTypeEnum, TransitionTypeEnum
 from ...rules.ability_rules import (
     CanBurrow, CanCarry, CanClimb, CanSwim, CanBounce, PowerLevelThreshold,
     HasVialsCount, HasReachingSideArm, HasFishingRod, CanSpring, HasTrinket 
@@ -32,202 +33,135 @@ from ...items.blockers import (
 )
 
 
-regions: set[str] = {
-    'Coltrane Peak Agnes Express Arena',
-    'Coltrane Peak Agnes Express Double',
-    'Coltrane Peak Agnes Express Gauntet',
-    'Coltrane Peak Agnes Express Open Left',
-    'Coltrane Peak Agnes Express Open Right',
-    'Coltrane Peak Agnes Express Outside',
-    'Coltrane Peak Agnes Express Rear',
-    'Coltrane Peak Agnes Express Start',
-    'Coltrane Peak Agnes Express Top',
-    'Coltrane Peak Agnes Express Underlab',
-    'Coltrane Peak Frostbite Woods',
-    'Coltrane Peak Frostbite Woods Bush',
-    'Coltrane Peak Frostbite Woods Chains',
-    'Coltrane Peak Frostbite Woods Chains Door',
-    'Coltrane Peak Frostbite Woods Rope',
-    'Coltrane Peak Frozen Generator',
-    'Coltrane Peak Frozen Horror Arena',
-    'Coltrane Peak Frozen Mirror Room',
-    'Coltrane Peak Frozen Pass',
-    'Coltrane Peak Frozen Pass Bottom',
-    'Coltrane Peak Frozen Pass Top',
-    'Coltrane Peak Frozen Pipe',
-    'Coltrane Peak Frozen River',
-    'Coltrane Peak Gorge Engine',
-    'Coltrane Peak Gorge Engine Front',
-    'Coltrane Peak Gorge Engine Side',
-    'Coltrane Peak Gorge Ghost room',
-    'Coltrane Peak Gorge Hallower Ice',
-    'Coltrane Peak Gorge Hallower Pit',
-    'Coltrane Peak Gorge Ice Cubes',
-    'Coltrane Peak Gorge Ice Cubes End',
-    'Coltrane Peak Gorge Ice Gauntlet',
-    'Coltrane Peak Gorge Tracks',
-    'Coltrane Peak Gorge Underlab Left',
-    'Coltrane Peak Gorge Underlab Right',
-    'Coltrane Peak Icebound Cavern',
-    'Coltrane Peak Icebound Cavern Entrance',
-    'Coltrane Peak Icebound Cavern Pit',
-    'Coltrane Peak Icebound Cavern Pit Upper',
-    'Coltrane Peak Maelstorm',
-    'Coltrane Peak Mirren Room',
-    'Coltrane Peak Rail Yard',
-    'Coltrane Peak Rail Yard Chest',
-    'Coltrane Peak Rail Yard Circle',
-    'Coltrane Peak Rail Yard Knight',
-    'Coltrane Peak Spiral Summit',
-    'Coltrane Peak Spiral Summit Climb',
-    'Coltrane Peak Spiral Summit Climb Top',
-    'Coltrane Peak Spiral Summit Peak',
-    'Coltrane Peak Spiral Summit Platforms',
-    'Coltrane Peak Spiral Summit Platforms Rope',
-    'Coltrane Peak Spiral Summit Rope',
-    'Coltrane Peak Spiral Summit Secret',
-    'Coltrane Peak Spiral Summit Underlab',
-    'Coltrane Peak Spiral Wolf',
-    'Coltrane Peak Spiral Wolf Stairs',
-    'Coltrane Peak Station',
-    'Coltrane Peak Station Tracks',
-    'Coltrane Peak Thorne Arena',
-    'Coltrane Peak Thorne Bridge',
-    'Coltrane Peak Train Tracks',
-    'Coltrane Peak Train Tracks End',
-    'Coltrane Peak Train Tracks Secret',
-}
+class RegionConnections(ConnectionTypeEnum):
+    COLTRANE_PEAK_AGNES_EXPRESS_GAUNTET_COLTRANE_PEAK_AGNES_EXPRESS_UNDERLAB = ('Coltrane Peak Agnes Express Gauntet_Coltrane Peak Agnes Express Underlab', Regions.COLTRANE_PEAK_AGNES_EXPRESS_GAUNTET, Regions.COLTRANE_PEAK_AGNES_EXPRESS_UNDERLAB, CanBurrow())
+    COLTRANE_PEAK_AGNES_EXPRESS_OPEN_LEFT_COLTRANE_PEAK_AGNES_EXPRESS_OPEN_RIGHT = ('Coltrane Peak Agnes Express Open Left_Coltrane Peak Agnes Express Open Right', Regions.COLTRANE_PEAK_AGNES_EXPRESS_OPEN_LEFT, Regions.COLTRANE_PEAK_AGNES_EXPRESS_OPEN_RIGHT, True_())
+    COLTRANE_PEAK_AGNES_EXPRESS_OPEN_RIGHT_COLTRANE_PEAK_AGNES_EXPRESS_OPEN_LEFT = ('Coltrane Peak Agnes Express Open Right_Coltrane Peak Agnes Express Open Left', Regions.COLTRANE_PEAK_AGNES_EXPRESS_OPEN_RIGHT, Regions.COLTRANE_PEAK_AGNES_EXPRESS_OPEN_LEFT, True_())
+    COLTRANE_PEAK_AGNES_EXPRESS_UNDERLAB_COLTRANE_PEAK_AGNES_EXPRESS_GAUNTET = ('Coltrane Peak Agnes Express Underlab_Coltrane Peak Agnes Express Gauntet', Regions.COLTRANE_PEAK_AGNES_EXPRESS_UNDERLAB, Regions.COLTRANE_PEAK_AGNES_EXPRESS_GAUNTET, CanBurrow())
+    COLTRANE_PEAK_FROSTBITE_WOODS_CHAINS_DOOR_COLTRANE_PEAK_FROSTBITE_WOODS_CHAINS = ('Coltrane Peak Frostbite Woods Chains Door_Coltrane Peak Frostbite Woods Chains', Regions.COLTRANE_PEAK_FROSTBITE_WOODS_CHAINS_DOOR, Regions.COLTRANE_PEAK_FROSTBITE_WOODS_CHAINS, CanBurrow())
+    COLTRANE_PEAK_FROSTBITE_WOODS_CHAINS_COLTRANE_PEAK_FROSTBITE_WOODS_CHAINS_DOOR = ('Coltrane Peak Frostbite Woods Chains_Coltrane Peak Frostbite Woods Chains Door', Regions.COLTRANE_PEAK_FROSTBITE_WOODS_CHAINS, Regions.COLTRANE_PEAK_FROSTBITE_WOODS_CHAINS_DOOR, CanBurrow())
+    COLTRANE_PEAK_FROSTBITE_WOODS_ROPE_COLTRANE_PEAK_FROSTBITE_WOODS = ('Coltrane Peak Frostbite Woods Rope_Coltrane Peak Frostbite Woods', Regions.COLTRANE_PEAK_FROSTBITE_WOODS_ROPE, Regions.COLTRANE_PEAK_FROSTBITE_WOODS, True_())
+    COLTRANE_PEAK_FROSTBITE_WOODS_COLTRANE_PEAK_FROSTBITE_WOODS_ROPE = ('Coltrane Peak Frostbite Woods_Coltrane Peak Frostbite Woods Rope', Regions.COLTRANE_PEAK_FROSTBITE_WOODS, Regions.COLTRANE_PEAK_FROSTBITE_WOODS_ROPE, CanJumpTiles(distance=2))
+    COLTRANE_PEAK_FROZEN_PASS_TOP_COLTRANE_PEAK_FROZEN_PASS = ('Coltrane Peak Frozen Pass Top_Coltrane Peak Frozen Pass', Regions.COLTRANE_PEAK_FROZEN_PASS_TOP, Regions.COLTRANE_PEAK_FROZEN_PASS, True_())
+    COLTRANE_PEAK_FROZEN_PASS_COLTRANE_PEAK_FROZEN_PASS_BOTTOM = ('Coltrane Peak Frozen Pass_Coltrane Peak Frozen Pass Bottom', Regions.COLTRANE_PEAK_FROZEN_PASS, Regions.COLTRANE_PEAK_FROZEN_PASS_BOTTOM, True_())
+    COLTRANE_PEAK_FROZEN_PASS_COLTRANE_PEAK_FROZEN_PASS_TOP = ('Coltrane Peak Frozen Pass_Coltrane Peak Frozen Pass Top', Regions.COLTRANE_PEAK_FROZEN_PASS, Regions.COLTRANE_PEAK_FROZEN_PASS_TOP, HasKear(kear=SingleKears.FROZEN_PASS_KEAR.value) & CanBurrow())
+    COLTRANE_PEAK_GORGE_ENGINE_FRONT_COLTRANE_PEAK_GORGE_ENGINE_SIDE = ('Coltrane Peak Gorge Engine Front_Coltrane Peak Gorge Engine Side', Regions.COLTRANE_PEAK_GORGE_ENGINE_FRONT, Regions.COLTRANE_PEAK_GORGE_ENGINE_SIDE, CanJumpTiles(distance=3))
+    COLTRANE_PEAK_GORGE_ENGINE_SIDE_COLTRANE_PEAK_GORGE_ENGINE_FRONT = ('Coltrane Peak Gorge Engine Side_Coltrane Peak Gorge Engine Front', Regions.COLTRANE_PEAK_GORGE_ENGINE_SIDE, Regions.COLTRANE_PEAK_GORGE_ENGINE_FRONT, CanBurrow() | CanJumpTiles(distance=3))
+    COLTRANE_PEAK_GORGE_ICE_CUBES_END_COLTRANE_PEAK_GORGE_ICE_CUBES = ('Coltrane Peak Gorge Ice Cubes End_Coltrane Peak Gorge Ice Cubes', Regions.COLTRANE_PEAK_GORGE_ICE_CUBES_END, Regions.COLTRANE_PEAK_GORGE_ICE_CUBES, CanBurrow() | CanJumpTiles(distance=2))
+    COLTRANE_PEAK_GORGE_ICE_CUBES_COLTRANE_PEAK_GORGE_ICE_CUBES_END = ('Coltrane Peak Gorge Ice Cubes_Coltrane Peak Gorge Ice Cubes End', Regions.COLTRANE_PEAK_GORGE_ICE_CUBES, Regions.COLTRANE_PEAK_GORGE_ICE_CUBES_END, CanBurrow() | CanJumpTiles(distance=2))
+    COLTRANE_PEAK_GORGE_UNDERLAB_LEFT_COLTRANE_PEAK_GORGE_UNDERLAB_RIGHT = ('Coltrane Peak Gorge Underlab Left_Coltrane Peak Gorge Underlab Right', Regions.COLTRANE_PEAK_GORGE_UNDERLAB_LEFT, Regions.COLTRANE_PEAK_GORGE_UNDERLAB_RIGHT, CanBurrow() | CanJumpTiles(distance=3))
+    COLTRANE_PEAK_GORGE_UNDERLAB_RIGHT_COLTRANE_PEAK_GORGE_UNDERLAB_LEFT = ('Coltrane Peak Gorge Underlab Right_Coltrane Peak Gorge Underlab Left', Regions.COLTRANE_PEAK_GORGE_UNDERLAB_RIGHT, Regions.COLTRANE_PEAK_GORGE_UNDERLAB_LEFT, CanBurrow() | CanJumpTiles(distance=3))
+    COLTRANE_PEAK_ICEBOUND_CAVERN_ENTRANCE_COLTRANE_PEAK_ICEBOUND_CAVERN = ('Coltrane Peak Icebound Cavern Entrance_Coltrane Peak Icebound Cavern', Regions.COLTRANE_PEAK_ICEBOUND_CAVERN_ENTRANCE, Regions.COLTRANE_PEAK_ICEBOUND_CAVERN, True_())
+    COLTRANE_PEAK_ICEBOUND_CAVERN_PIT_UPPER_COLTRANE_PEAK_ICEBOUND_CAVERN_PIT = ('Coltrane Peak Icebound Cavern Pit Upper_Coltrane Peak Icebound Cavern Pit', Regions.COLTRANE_PEAK_ICEBOUND_CAVERN_PIT_UPPER, Regions.COLTRANE_PEAK_ICEBOUND_CAVERN_PIT, CanClimb())
+    COLTRANE_PEAK_ICEBOUND_CAVERN_PIT_COLTRANE_PEAK_ICEBOUND_CAVERN_PIT_UPPER = ('Coltrane Peak Icebound Cavern Pit_Coltrane Peak Icebound Cavern Pit Upper', Regions.COLTRANE_PEAK_ICEBOUND_CAVERN_PIT, Regions.COLTRANE_PEAK_ICEBOUND_CAVERN_PIT_UPPER, CanClimb())
+    COLTRANE_PEAK_ICEBOUND_CAVERN_COLTRANE_PEAK_ICEBOUND_CAVERN_ENTRANCE = ('Coltrane Peak Icebound Cavern_Coltrane Peak Icebound Cavern Entrance', Regions.COLTRANE_PEAK_ICEBOUND_CAVERN, Regions.COLTRANE_PEAK_ICEBOUND_CAVERN_ENTRANCE, CanBurrow())
+    COLTRANE_PEAK_RAIL_YARD_CHEST_COLTRANE_PEAK_RAIL_YARD = ('Coltrane Peak Rail Yard Chest_Coltrane Peak Rail Yard', Regions.COLTRANE_PEAK_RAIL_YARD_CHEST, Regions.COLTRANE_PEAK_RAIL_YARD, True_())
+    COLTRANE_PEAK_SPIRAL_SUMMIT_CLIMB_TOP_COLTRANE_PEAK_SPIRAL_SUMMIT_CLIMB = ('Coltrane Peak Spiral Summit Climb Top_Coltrane Peak Spiral Summit Climb', Regions.COLTRANE_PEAK_SPIRAL_SUMMIT_CLIMB_TOP, Regions.COLTRANE_PEAK_SPIRAL_SUMMIT_CLIMB, CanClimb())
+    COLTRANE_PEAK_SPIRAL_SUMMIT_CLIMB_COLTRANE_PEAK_SPIRAL_SUMMIT_CLIMB_TOP = ('Coltrane Peak Spiral Summit Climb_Coltrane Peak Spiral Summit Climb Top', Regions.COLTRANE_PEAK_SPIRAL_SUMMIT_CLIMB, Regions.COLTRANE_PEAK_SPIRAL_SUMMIT_CLIMB_TOP, CanClimb())
+    COLTRANE_PEAK_SPIRAL_SUMMIT_PLATFORMS_ROPE_COLTRANE_PEAK_SPIRAL_SUMMIT_PLATFORMS = ('Coltrane Peak Spiral Summit Platforms Rope_Coltrane Peak Spiral Summit Platforms', Regions.COLTRANE_PEAK_SPIRAL_SUMMIT_PLATFORMS_ROPE, Regions.COLTRANE_PEAK_SPIRAL_SUMMIT_PLATFORMS, CanBurrow() | CanJumpTiles(distance=2))
+    COLTRANE_PEAK_SPIRAL_SUMMIT_PLATFORMS_COLTRANE_PEAK_SPIRAL_SUMMIT_PLATFORMS_ROPE = ('Coltrane Peak Spiral Summit Platforms_Coltrane Peak Spiral Summit Platforms Rope', Regions.COLTRANE_PEAK_SPIRAL_SUMMIT_PLATFORMS, Regions.COLTRANE_PEAK_SPIRAL_SUMMIT_PLATFORMS_ROPE, CanBurrow() | CanJumpTiles(distance=2))
+    COLTRANE_PEAK_SPIRAL_SUMMIT_ROPE_COLTRANE_PEAK_SPIRAL_SUMMIT = ('Coltrane Peak Spiral Summit Rope_Coltrane Peak Spiral Summit', Regions.COLTRANE_PEAK_SPIRAL_SUMMIT_ROPE, Regions.COLTRANE_PEAK_SPIRAL_SUMMIT, CanBurrow() | CanJumpTiles(distance=2))
+    COLTRANE_PEAK_SPIRAL_SUMMIT_COLTRANE_PEAK_SPIRAL_SUMMIT_ROPE = ('Coltrane Peak Spiral Summit_Coltrane Peak Spiral Summit Rope', Regions.COLTRANE_PEAK_SPIRAL_SUMMIT, Regions.COLTRANE_PEAK_SPIRAL_SUMMIT_ROPE, CanBurrow() | CanJumpTiles(distance=2))
+    COLTRANE_PEAK_SPIRAL_WOLF_STAIRS_COLTRANE_PEAK_SPIRAL_WOLF = ('Coltrane Peak Spiral Wolf Stairs_Coltrane Peak Spiral Wolf', Regions.COLTRANE_PEAK_SPIRAL_WOLF_STAIRS, Regions.COLTRANE_PEAK_SPIRAL_WOLF, CanBurrow())
+    COLTRANE_PEAK_SPIRAL_WOLF_COLTRANE_PEAK_SPIRAL_WOLF_STAIRS = ('Coltrane Peak Spiral Wolf_Coltrane Peak Spiral Wolf Stairs', Regions.COLTRANE_PEAK_SPIRAL_WOLF, Regions.COLTRANE_PEAK_SPIRAL_WOLF_STAIRS, CanBurrow())
 
-connections: dict[str, RegionConnection] = {
-    'Coltrane Peak Agnes Express Gauntet_Coltrane Peak Agnes Express Underlab': RegionConnection('Coltrane Peak Agnes Express Gauntet', 'Coltrane Peak Agnes Express Underlab', CanBurrow()),
-    'Coltrane Peak Agnes Express Open Left_Coltrane Peak Agnes Express Open Right': RegionConnection('Coltrane Peak Agnes Express Open Left', 'Coltrane Peak Agnes Express Open Right', True_()),
-    'Coltrane Peak Agnes Express Open Right_Coltrane Peak Agnes Express Open Left': RegionConnection('Coltrane Peak Agnes Express Open Right', 'Coltrane Peak Agnes Express Open Left', True_()),
-    'Coltrane Peak Agnes Express Underlab_Coltrane Peak Agnes Express Gauntet': RegionConnection('Coltrane Peak Agnes Express Underlab', 'Coltrane Peak Agnes Express Gauntet', CanBurrow()),
-    'Coltrane Peak Frostbite Woods Chains Door_Coltrane Peak Frostbite Woods Chains': RegionConnection('Coltrane Peak Frostbite Woods Chains Door', 'Coltrane Peak Frostbite Woods Chains', CanBurrow()),
-    'Coltrane Peak Frostbite Woods Chains_Coltrane Peak Frostbite Woods Chains Door': RegionConnection('Coltrane Peak Frostbite Woods Chains', 'Coltrane Peak Frostbite Woods Chains Door', CanBurrow()),
-    'Coltrane Peak Frostbite Woods Rope_Coltrane Peak Frostbite Woods': RegionConnection('Coltrane Peak Frostbite Woods Rope', 'Coltrane Peak Frostbite Woods', True_()),
-    'Coltrane Peak Frostbite Woods_Coltrane Peak Frostbite Woods Rope': RegionConnection('Coltrane Peak Frostbite Woods', 'Coltrane Peak Frostbite Woods Rope', CanJumpTiles(distance=2)),
-    'Coltrane Peak Frozen Pass Top_Coltrane Peak Frozen Pass': RegionConnection('Coltrane Peak Frozen Pass Top', 'Coltrane Peak Frozen Pass', True_()),
-    'Coltrane Peak Frozen Pass_Coltrane Peak Frozen Pass Bottom': RegionConnection('Coltrane Peak Frozen Pass', 'Coltrane Peak Frozen Pass Bottom', True_()),
-    'Coltrane Peak Frozen Pass_Coltrane Peak Frozen Pass Top': RegionConnection('Coltrane Peak Frozen Pass', 'Coltrane Peak Frozen Pass Top', HasKear(kear=SingleKears.FROZEN_PASS_KEAR.value) & CanBurrow()),
-    'Coltrane Peak Gorge Engine Front_Coltrane Peak Gorge Engine Side': RegionConnection('Coltrane Peak Gorge Engine Front', 'Coltrane Peak Gorge Engine Side', CanJumpTiles(distance=3)),
-    'Coltrane Peak Gorge Engine Side_Coltrane Peak Gorge Engine Front': RegionConnection('Coltrane Peak Gorge Engine Side', 'Coltrane Peak Gorge Engine Front', CanBurrow() | CanJumpTiles(distance=3)),
-    'Coltrane Peak Gorge Ice Cubes End_Coltrane Peak Gorge Ice Cubes': RegionConnection('Coltrane Peak Gorge Ice Cubes End', 'Coltrane Peak Gorge Ice Cubes', CanBurrow() | CanJumpTiles(distance=2)),
-    'Coltrane Peak Gorge Ice Cubes_Coltrane Peak Gorge Ice Cubes End': RegionConnection('Coltrane Peak Gorge Ice Cubes', 'Coltrane Peak Gorge Ice Cubes End', CanBurrow() | CanJumpTiles(distance=2)),
-    'Coltrane Peak Gorge Underlab Left_Coltrane Peak Gorge Underlab Right': RegionConnection('Coltrane Peak Gorge Underlab Left', 'Coltrane Peak Gorge Underlab Right', CanBurrow() | CanJumpTiles(distance=3)),
-    'Coltrane Peak Gorge Underlab Right_Coltrane Peak Gorge Underlab Left': RegionConnection('Coltrane Peak Gorge Underlab Right', 'Coltrane Peak Gorge Underlab Left', CanBurrow() | CanJumpTiles(distance=3)),
-    'Coltrane Peak Icebound Cavern Entrance_Coltrane Peak Icebound Cavern': RegionConnection('Coltrane Peak Icebound Cavern Entrance', 'Coltrane Peak Icebound Cavern', True_()),
-    'Coltrane Peak Icebound Cavern Pit Upper_Coltrane Peak Icebound Cavern Pit': RegionConnection('Coltrane Peak Icebound Cavern Pit Upper', 'Coltrane Peak Icebound Cavern Pit', CanClimb()),
-    'Coltrane Peak Icebound Cavern Pit_Coltrane Peak Icebound Cavern Pit Upper': RegionConnection('Coltrane Peak Icebound Cavern Pit', 'Coltrane Peak Icebound Cavern Pit Upper', CanClimb()),
-    'Coltrane Peak Icebound Cavern_Coltrane Peak Icebound Cavern Entrance': RegionConnection('Coltrane Peak Icebound Cavern', 'Coltrane Peak Icebound Cavern Entrance', CanBurrow()),
-    'Coltrane Peak Rail Yard Chest_Coltrane Peak Rail Yard': RegionConnection('Coltrane Peak Rail Yard Chest', 'Coltrane Peak Rail Yard', True_()),
-    'Coltrane Peak Spiral Summit Climb Top_Coltrane Peak Spiral Summit Climb': RegionConnection('Coltrane Peak Spiral Summit Climb Top', 'Coltrane Peak Spiral Summit Climb', CanClimb()),
-    'Coltrane Peak Spiral Summit Climb_Coltrane Peak Spiral Summit Climb Top': RegionConnection('Coltrane Peak Spiral Summit Climb', 'Coltrane Peak Spiral Summit Climb Top', CanClimb()),
-    'Coltrane Peak Spiral Summit Platforms Rope_Coltrane Peak Spiral Summit Platforms': RegionConnection('Coltrane Peak Spiral Summit Platforms Rope', 'Coltrane Peak Spiral Summit Platforms', CanBurrow() | CanJumpTiles(distance=2)),
-    'Coltrane Peak Spiral Summit Platforms_Coltrane Peak Spiral Summit Platforms Rope': RegionConnection('Coltrane Peak Spiral Summit Platforms', 'Coltrane Peak Spiral Summit Platforms Rope', CanBurrow() | CanJumpTiles(distance=2)),
-    'Coltrane Peak Spiral Summit Rope_Coltrane Peak Spiral Summit': RegionConnection('Coltrane Peak Spiral Summit Rope', 'Coltrane Peak Spiral Summit', CanBurrow() | CanJumpTiles(distance=2)),
-    'Coltrane Peak Spiral Summit_Coltrane Peak Spiral Summit Rope': RegionConnection('Coltrane Peak Spiral Summit', 'Coltrane Peak Spiral Summit Rope', CanBurrow() | CanJumpTiles(distance=2)),
-    'Coltrane Peak Spiral Wolf Stairs_Coltrane Peak Spiral Wolf': RegionConnection('Coltrane Peak Spiral Wolf Stairs', 'Coltrane Peak Spiral Wolf', CanBurrow()),
-    'Coltrane Peak Spiral Wolf_Coltrane Peak Spiral Wolf Stairs': RegionConnection('Coltrane Peak Spiral Wolf', 'Coltrane Peak Spiral Wolf Stairs', CanBurrow()),
-}
+class RegionTransitions(TransitionTypeEnum):
+    COLTRANE_PEAK_AGNES_EXPRESS_ARENA_SOUTH_TRANSITION = ('Coltrane Peak Agnes Express Arena South Transition', Regions.COLTRANE_PEAK_AGNES_EXPRESS_ARENA, Regions.COLTRANE_PEAK_AGNES_EXPRESS_OUTSIDE, DirectionType.SOUTH, TransitionType.SCREENS, CanClimb() & PowerLevelThreshold(power=30))
+    COLTRANE_PEAK_AGNES_EXPRESS_ARENA_STAIRS = ('Coltrane Peak Agnes Express Arena Stairs', Regions.COLTRANE_PEAK_AGNES_EXPRESS_ARENA, Regions.COLTRANE_PEAK_AGNES_EXPRESS_GAUNTET, DirectionType.NORTH, TransitionType.STAIRS, PowerLevelThreshold(power=30))
+    COLTRANE_PEAK_AGNES_EXPRESS_DOUBLE_EAST_TRANSITION = ('Coltrane Peak Agnes Express Double East Transition', Regions.COLTRANE_PEAK_AGNES_EXPRESS_DOUBLE, Regions.COLTRANE_PEAK_AGNES_EXPRESS_OPEN_LEFT, DirectionType.EAST, TransitionType.SCREENS, True_())
+    COLTRANE_PEAK_AGNES_EXPRESS_DOUBLE_WEST_TRANSITION = ('Coltrane Peak Agnes Express Double West Transition', Regions.COLTRANE_PEAK_AGNES_EXPRESS_DOUBLE, Regions.COLTRANE_PEAK_AGNES_EXPRESS_START, DirectionType.WEST, TransitionType.SCREENS, True_())
+    COLTRANE_PEAK_AGNES_EXPRESS_GAUNTET_STAIRS = ('Coltrane Peak Agnes Express Gauntet Stairs', Regions.COLTRANE_PEAK_AGNES_EXPRESS_GAUNTET, Regions.COLTRANE_PEAK_AGNES_EXPRESS_ARENA, DirectionType.NORTH, TransitionType.STAIRS, True_())
+    COLTRANE_PEAK_AGNES_EXPRESS_GAUNTET_WEST_TRANSITION = ('Coltrane Peak Agnes Express Gauntet West Transition', Regions.COLTRANE_PEAK_AGNES_EXPRESS_GAUNTET, Regions.COLTRANE_PEAK_AGNES_EXPRESS_OPEN_RIGHT, DirectionType.WEST, TransitionType.SCREENS, True_())
+    COLTRANE_PEAK_AGNES_EXPRESS_OPEN_LEFT_WEST_TRANSITION = ('Coltrane Peak Agnes Express Open Left West Transition', Regions.COLTRANE_PEAK_AGNES_EXPRESS_OPEN_LEFT, Regions.COLTRANE_PEAK_AGNES_EXPRESS_DOUBLE, DirectionType.WEST, TransitionType.SCREENS, True_())
+    COLTRANE_PEAK_AGNES_EXPRESS_OPEN_RIGHT_EAST_TRANSITION = ('Coltrane Peak Agnes Express Open Right East Transition', Regions.COLTRANE_PEAK_AGNES_EXPRESS_OPEN_RIGHT, Regions.COLTRANE_PEAK_AGNES_EXPRESS_GAUNTET, DirectionType.EAST, TransitionType.SCREENS, True_())
+    COLTRANE_PEAK_AGNES_EXPRESS_OUTSIDE_DO_NOT_RANDOMIZE_ENTRANCE = ('Coltrane Peak Agnes Express Outside Do_Not_Randomize_Entrance', Regions.COLTRANE_PEAK_AGNES_EXPRESS_OUTSIDE, Regions.COLTRANE_PEAK_THORNE_BRIDGE, DirectionType.OVERWORLD, TransitionType.DO_NOT_RANDOMIZE_ENTRANCE, True_())
+    COLTRANE_PEAK_AGNES_EXPRESS_OUTSIDE_DOORS = ('Coltrane Peak Agnes Express Outside Doors', Regions.COLTRANE_PEAK_AGNES_EXPRESS_OUTSIDE, Regions.COLTRANE_PEAK_MAELSTORM, DirectionType.NORTH, TransitionType.DOORS, True_())
+    COLTRANE_PEAK_AGNES_EXPRESS_OUTSIDE_NORTH_TRANSITION = ('Coltrane Peak Agnes Express Outside North Transition', Regions.COLTRANE_PEAK_AGNES_EXPRESS_OUTSIDE, Regions.COLTRANE_PEAK_AGNES_EXPRESS_ARENA, DirectionType.NORTH, TransitionType.SCREENS, CanClimb())
+    COLTRANE_PEAK_AGNES_EXPRESS_REAR_EAST_TRANSITION = ('Coltrane Peak Agnes Express Rear East Transition', Regions.COLTRANE_PEAK_AGNES_EXPRESS_REAR, Regions.COLTRANE_PEAK_AGNES_EXPRESS_START, DirectionType.EAST, TransitionType.SCREENS, True_())
+    COLTRANE_PEAK_AGNES_EXPRESS_START_EAST_TRANSITION = ('Coltrane Peak Agnes Express Start East Transition', Regions.COLTRANE_PEAK_AGNES_EXPRESS_START, Regions.COLTRANE_PEAK_AGNES_EXPRESS_DOUBLE, DirectionType.EAST, TransitionType.SCREENS, True_())
+    COLTRANE_PEAK_AGNES_EXPRESS_START_GEYSER_UP = ('Coltrane Peak Agnes Express Start Geyser_Up', Regions.COLTRANE_PEAK_AGNES_EXPRESS_START, Regions.COLTRANE_PEAK_SPIRAL_SUMMIT_PEAK, DirectionType.OVERWORLD, TransitionType.GEYSER_UP, True_())
+    COLTRANE_PEAK_AGNES_EXPRESS_START_WEST_TRANSITION = ('Coltrane Peak Agnes Express Start West Transition', Regions.COLTRANE_PEAK_AGNES_EXPRESS_START, Regions.COLTRANE_PEAK_AGNES_EXPRESS_REAR, DirectionType.WEST, TransitionType.SCREENS, True_())
+    COLTRANE_PEAK_AGNES_EXPRESS_TOP_GEYSER_DOWN = ('Coltrane Peak Agnes Express Top Geyser_Down', Regions.COLTRANE_PEAK_AGNES_EXPRESS_TOP, Regions.COLTRANE_PEAK_AGNES_EXPRESS_START, DirectionType.OVERWORLD, TransitionType.GEYSER_DOWN, True_())
+    COLTRANE_PEAK_AGNES_EXPRESS_UNDERLAB_PIPE = ('Coltrane Peak Agnes Express Underlab Pipe', Regions.COLTRANE_PEAK_AGNES_EXPRESS_UNDERLAB, Regions.COLTRANE_PEAK_AGNES_EXPRESS_START, DirectionType.OVERWORLD, TransitionType.DO_NOT_RANDOMIZE_ENTRANCE, True_())
+    COLTRANE_PEAK_FROSTBITE_WOODS_BUSH_EAST_BURROW = ('Coltrane Peak Frostbite Woods Bush East Burrow', Regions.COLTRANE_PEAK_FROSTBITE_WOODS_BUSH, Regions.COLTRANE_PEAK_FROSTBITE_WOODS_CHAINS, DirectionType.EAST, TransitionType.BURROW, CanBurrow())
+    COLTRANE_PEAK_FROSTBITE_WOODS_BUSH_NORTH_TRANSITION = ('Coltrane Peak Frostbite Woods Bush North Transition', Regions.COLTRANE_PEAK_FROSTBITE_WOODS_BUSH, Regions.COLTRANE_PEAK_FROSTBITE_WOODS, DirectionType.NORTH, TransitionType.SCREENS, True_())
+    COLTRANE_PEAK_FROSTBITE_WOODS_BUSH_SOUTH_TRANSITION = ('Coltrane Peak Frostbite Woods Bush South Transition', Regions.COLTRANE_PEAK_FROSTBITE_WOODS_BUSH, Regions.COLTRANE_PEAK_TRAIN_TRACKS_END, DirectionType.SOUTH, TransitionType.SCREENS, True_())
+    COLTRANE_PEAK_FROSTBITE_WOODS_CHAINS_DOOR_DOORS = ('Coltrane Peak Frostbite Woods Chains Door Doors', Regions.COLTRANE_PEAK_FROSTBITE_WOODS_CHAINS_DOOR, Regions.COLTRANE_PEAK_MIRREN_ROOM, DirectionType.NORTH, TransitionType.DOORS, True_())
+    COLTRANE_PEAK_FROSTBITE_WOODS_CHAINS_WEST_BURROW = ('Coltrane Peak Frostbite Woods Chains West Burrow', Regions.COLTRANE_PEAK_FROSTBITE_WOODS_CHAINS, Regions.COLTRANE_PEAK_FROSTBITE_WOODS_BUSH, DirectionType.WEST, TransitionType.BURROW, CanBurrow())
+    COLTRANE_PEAK_FROSTBITE_WOODS_ROPE_NORTH_TRANSITION = ('Coltrane Peak Frostbite Woods Rope North Transition', Regions.COLTRANE_PEAK_FROSTBITE_WOODS_ROPE, Regions.COLTRANE_PEAK_RAIL_YARD, DirectionType.NORTH, TransitionType.SCREENS, True_())
+    COLTRANE_PEAK_FROSTBITE_WOODS_SOUTH_TRANSITION = ('Coltrane Peak Frostbite Woods South Transition', Regions.COLTRANE_PEAK_FROSTBITE_WOODS, Regions.COLTRANE_PEAK_FROSTBITE_WOODS_BUSH, DirectionType.SOUTH, TransitionType.SCREENS, True_())
+    COLTRANE_PEAK_FROZEN_GENERATOR_SOUTH_TRANSITION = ('Coltrane Peak Frozen Generator South Transition', Regions.COLTRANE_PEAK_FROZEN_GENERATOR, Regions.COLTRANE_PEAK_MAELSTORM, DirectionType.SOUTH, TransitionType.SCREENS, True_())
+    COLTRANE_PEAK_FROZEN_HORROR_ARENA_NORTH_TRANSITION = ('Coltrane Peak Frozen Horror Arena North Transition', Regions.COLTRANE_PEAK_FROZEN_HORROR_ARENA, Regions.COLTRANE_PEAK_FROZEN_PIPE, DirectionType.NORTH, TransitionType.SCREENS, PowerLevelThreshold(power=40))
+    COLTRANE_PEAK_FROZEN_HORROR_ARENA_SOUTH_TRANSITION = ('Coltrane Peak Frozen Horror Arena South Transition', Regions.COLTRANE_PEAK_FROZEN_HORROR_ARENA, Regions.COLTRANE_PEAK_ICEBOUND_CAVERN_PIT_UPPER, DirectionType.SOUTH, TransitionType.SCREENS, PowerLevelThreshold(power=30))
+    COLTRANE_PEAK_FROZEN_MIRROR_ROOM_MIRRORS = ('Coltrane Peak Frozen Mirror Room Mirrors', Regions.COLTRANE_PEAK_FROZEN_MIRROR_ROOM, Regions.ASTRAL_ORRERY_COLTRANE_PEAK_MIRROR, DirectionType.OVERWORLD, TransitionType.MIRRORS, True_())
+    COLTRANE_PEAK_FROZEN_MIRROR_ROOM_WEST_BURROW = ('Coltrane Peak Frozen Mirror Room West Burrow', Regions.COLTRANE_PEAK_FROZEN_MIRROR_ROOM, Regions.COLTRANE_PEAK_FROZEN_PIPE, DirectionType.WEST, TransitionType.BURROW, CanBurrow())
+    COLTRANE_PEAK_FROZEN_PASS_BOTTOM_SOUTH_AREA_TRANSITION = ('Coltrane Peak Frozen Pass Bottom South Area Transition', Regions.COLTRANE_PEAK_FROZEN_PASS_BOTTOM, Regions.EASTERN_HEATH_FROZEN_PASS, DirectionType.SOUTH, TransitionType.AREA_SCREENS, True_())
+    COLTRANE_PEAK_FROZEN_PASS_TOP_NORTH_TRANSITION = ('Coltrane Peak Frozen Pass Top North Transition', Regions.COLTRANE_PEAK_FROZEN_PASS_TOP, Regions.COLTRANE_PEAK_STATION, DirectionType.NORTH, TransitionType.SCREENS, True_())
+    COLTRANE_PEAK_FROZEN_PIPE_DOORS = ('Coltrane Peak Frozen Pipe Doors', Regions.COLTRANE_PEAK_FROZEN_PIPE, Regions.COLTRANE_PEAK_SPIRAL_SUMMIT_UNDERLAB, DirectionType.NORTH, TransitionType.DOORS, True_())
+    COLTRANE_PEAK_FROZEN_PIPE_EAST_BURROW = ('Coltrane Peak Frozen Pipe East Burrow', Regions.COLTRANE_PEAK_FROZEN_PIPE, Regions.COLTRANE_PEAK_FROZEN_MIRROR_ROOM, DirectionType.EAST, TransitionType.BURROW, CanBurrow())
+    COLTRANE_PEAK_FROZEN_PIPE_PIPE = ('Coltrane Peak Frozen Pipe Pipe', Regions.COLTRANE_PEAK_FROZEN_PIPE, Regions.COLTRANE_PEAK_RAIL_YARD, DirectionType.OVERWORLD, TransitionType.DO_NOT_RANDOMIZE_ENTRANCE, True_())
+    COLTRANE_PEAK_FROZEN_PIPE_SOUTH_TRANSITION = ('Coltrane Peak Frozen Pipe South Transition', Regions.COLTRANE_PEAK_FROZEN_PIPE, Regions.COLTRANE_PEAK_FROZEN_HORROR_ARENA, DirectionType.SOUTH, TransitionType.SCREENS, True_())
+    COLTRANE_PEAK_FROZEN_RIVER_EAST_TRANSITION = ('Coltrane Peak Frozen River East Transition', Regions.COLTRANE_PEAK_FROZEN_RIVER, Regions.COLTRANE_PEAK_RAIL_YARD, DirectionType.EAST, TransitionType.SCREENS, HasKear(kear=SingleKears.COLTRANE_RAIL_YARD_KEAR.value))
+    COLTRANE_PEAK_GORGE_ENGINE_FRONT_SOUTH_TRANSITION = ('Coltrane Peak Gorge Engine Front South Transition', Regions.COLTRANE_PEAK_GORGE_ENGINE_FRONT, Regions.COLTRANE_PEAK_GORGE_UNDERLAB_RIGHT, DirectionType.SOUTH, TransitionType.SCREENS, CanClimb())
+    COLTRANE_PEAK_GORGE_ENGINE_SIDE_EAST_TRANSITION = ('Coltrane Peak Gorge Engine Side East Transition', Regions.COLTRANE_PEAK_GORGE_ENGINE_SIDE, Regions.COLTRANE_PEAK_GORGE_TRACKS, DirectionType.EAST, TransitionType.SCREENS, True_())
+    COLTRANE_PEAK_GORGE_ENGINE_SOUTH_TRANSITION = ('Coltrane Peak Gorge Engine South Transition', Regions.COLTRANE_PEAK_GORGE_ENGINE, Regions.COLTRANE_PEAK_GORGE_UNDERLAB_LEFT, DirectionType.SOUTH, TransitionType.SCREENS, CanClimb())
+    COLTRANE_PEAK_GORGE_ENGINE_WEST_TRANSITION = ('Coltrane Peak Gorge Engine West Transition', Regions.COLTRANE_PEAK_GORGE_ENGINE, Regions.COLTRANE_PEAK_STATION, DirectionType.WEST, TransitionType.SCREENS, True_())
+    COLTRANE_PEAK_GORGE_GHOST_ROOM_NORTH_TRANSITION = ('Coltrane Peak Gorge Ghost room North Transition', Regions.COLTRANE_PEAK_GORGE_GHOST_ROOM, Regions.COLTRANE_PEAK_GORGE_UNDERLAB_RIGHT, DirectionType.NORTH, TransitionType.SCREENS, CanClimb())
+    COLTRANE_PEAK_GORGE_GHOST_ROOM_SOUTH_TRANSITION = ('Coltrane Peak Gorge Ghost room South Transition', Regions.COLTRANE_PEAK_GORGE_GHOST_ROOM, Regions.COLTRANE_PEAK_GORGE_ICE_CUBES, DirectionType.SOUTH, TransitionType.SCREENS, CanClimb())
+    COLTRANE_PEAK_GORGE_HALLOWER_ICE_NORTH_TRANSITION = ('Coltrane Peak Gorge Hallower Ice North Transition', Regions.COLTRANE_PEAK_GORGE_HALLOWER_ICE, Regions.COLTRANE_PEAK_GORGE_HALLOWER_PIT, DirectionType.NORTH, TransitionType.SCREENS, True_())
+    COLTRANE_PEAK_GORGE_HALLOWER_ICE_SOUTH_TRANSITION = ('Coltrane Peak Gorge Hallower Ice South Transition', Regions.COLTRANE_PEAK_GORGE_HALLOWER_ICE, Regions.COLTRANE_PEAK_GORGE_ICE_CUBES_END, DirectionType.SOUTH, TransitionType.SCREENS, True_())
+    COLTRANE_PEAK_GORGE_HALLOWER_PIT_NORTH_TRANSITION = ('Coltrane Peak Gorge Hallower Pit North Transition', Regions.COLTRANE_PEAK_GORGE_HALLOWER_PIT, Regions.COLTRANE_PEAK_GORGE_TRACKS, DirectionType.NORTH, TransitionType.SCREENS, CanClimb())
+    COLTRANE_PEAK_GORGE_HALLOWER_PIT_SOUTH_TRANSITION = ('Coltrane Peak Gorge Hallower Pit South Transition', Regions.COLTRANE_PEAK_GORGE_HALLOWER_PIT, Regions.COLTRANE_PEAK_GORGE_HALLOWER_ICE, DirectionType.SOUTH, TransitionType.SCREENS, True_())
+    COLTRANE_PEAK_GORGE_ICE_CUBES_END_EAST_BURROW = ('Coltrane Peak Gorge Ice Cubes End East Burrow', Regions.COLTRANE_PEAK_GORGE_ICE_CUBES_END, Regions.COLTRANE_PEAK_GORGE_ICE_GAUNTLET, DirectionType.EAST, TransitionType.BURROW, CanBurrow())
+    COLTRANE_PEAK_GORGE_ICE_CUBES_END_NORTH_TRANSITION = ('Coltrane Peak Gorge Ice Cubes End North Transition', Regions.COLTRANE_PEAK_GORGE_ICE_CUBES_END, Regions.COLTRANE_PEAK_GORGE_HALLOWER_ICE, DirectionType.NORTH, TransitionType.SCREENS, True_())
+    COLTRANE_PEAK_GORGE_ICE_CUBES_NORTH_TRANSITION = ('Coltrane Peak Gorge Ice Cubes North Transition', Regions.COLTRANE_PEAK_GORGE_ICE_CUBES, Regions.COLTRANE_PEAK_GORGE_GHOST_ROOM, DirectionType.NORTH, TransitionType.SCREENS, CanClimb())
+    COLTRANE_PEAK_GORGE_ICE_GAUNTLET_WEST_BURROW = ('Coltrane Peak Gorge Ice Gauntlet West Burrow', Regions.COLTRANE_PEAK_GORGE_ICE_GAUNTLET, Regions.COLTRANE_PEAK_GORGE_ICE_CUBES_END, DirectionType.WEST, TransitionType.BURROW, CanBurrow())
+    COLTRANE_PEAK_GORGE_TRACKS_EAST_TRANSITION = ('Coltrane Peak Gorge Tracks East Transition', Regions.COLTRANE_PEAK_GORGE_TRACKS, Regions.COLTRANE_PEAK_TRAIN_TRACKS, DirectionType.EAST, TransitionType.SCREENS, True_())
+    COLTRANE_PEAK_GORGE_TRACKS_SOUTH_TRANSITION = ('Coltrane Peak Gorge Tracks South Transition', Regions.COLTRANE_PEAK_GORGE_TRACKS, Regions.COLTRANE_PEAK_GORGE_HALLOWER_PIT, DirectionType.SOUTH, TransitionType.SCREENS, CanClimb())
+    COLTRANE_PEAK_GORGE_TRACKS_WEST_TRANSITION = ('Coltrane Peak Gorge Tracks West Transition', Regions.COLTRANE_PEAK_GORGE_TRACKS, Regions.COLTRANE_PEAK_GORGE_ENGINE_SIDE, DirectionType.WEST, TransitionType.SCREENS, True_())
+    COLTRANE_PEAK_GORGE_UNDERLAB_LEFT_NORTH_TRANSITION = ('Coltrane Peak Gorge Underlab Left North Transition', Regions.COLTRANE_PEAK_GORGE_UNDERLAB_LEFT, Regions.COLTRANE_PEAK_GORGE_ENGINE, DirectionType.NORTH, TransitionType.SCREENS, CanClimb())
+    COLTRANE_PEAK_GORGE_UNDERLAB_RIGHT_SOUTH_TRANSITION = ('Coltrane Peak Gorge Underlab Right South Transition', Regions.COLTRANE_PEAK_GORGE_UNDERLAB_RIGHT, Regions.COLTRANE_PEAK_GORGE_GHOST_ROOM, DirectionType.SOUTH, TransitionType.SCREENS, CanClimb())
+    COLTRANE_PEAK_ICEBOUND_CAVERN_EAST_TRANSITION = ('Coltrane Peak Icebound Cavern East Transition', Regions.COLTRANE_PEAK_ICEBOUND_CAVERN, Regions.COLTRANE_PEAK_ICEBOUND_CAVERN_PIT, DirectionType.EAST, TransitionType.SCREENS, True_())
+    COLTRANE_PEAK_ICEBOUND_CAVERN_ENTRANCE_DOORS = ('Coltrane Peak Icebound Cavern Entrance Doors', Regions.COLTRANE_PEAK_ICEBOUND_CAVERN_ENTRANCE, Regions.COLTRANE_PEAK_RAIL_YARD, DirectionType.SOUTH, TransitionType.DOORS, True_())
+    COLTRANE_PEAK_ICEBOUND_CAVERN_PIT_UPPER_NORTH_TRANSITION = ('Coltrane Peak Icebound Cavern Pit Upper North Transition', Regions.COLTRANE_PEAK_ICEBOUND_CAVERN_PIT_UPPER, Regions.COLTRANE_PEAK_FROZEN_HORROR_ARENA, DirectionType.NORTH, TransitionType.SCREENS, True_())
+    COLTRANE_PEAK_ICEBOUND_CAVERN_PIT_WEST_TRANSITION = ('Coltrane Peak Icebound Cavern Pit West Transition', Regions.COLTRANE_PEAK_ICEBOUND_CAVERN_PIT, Regions.COLTRANE_PEAK_ICEBOUND_CAVERN, DirectionType.WEST, TransitionType.SCREENS, True_())
+    COLTRANE_PEAK_MAELSTORM_DOORS = ('Coltrane Peak Maelstorm Doors', Regions.COLTRANE_PEAK_MAELSTORM, Regions.COLTRANE_PEAK_AGNES_EXPRESS_OUTSIDE, DirectionType.SOUTH, TransitionType.DOORS, True_())
+    COLTRANE_PEAK_MAELSTORM_NORTH_TRANSITION = ('Coltrane Peak Maelstorm North Transition', Regions.COLTRANE_PEAK_MAELSTORM, Regions.COLTRANE_PEAK_FROZEN_GENERATOR, DirectionType.NORTH, TransitionType.SCREENS, True_())
+    COLTRANE_PEAK_MIRREN_ROOM_DOORS = ('Coltrane Peak Mirren Room Doors', Regions.COLTRANE_PEAK_MIRREN_ROOM, Regions.COLTRANE_PEAK_FROSTBITE_WOODS_CHAINS_DOOR, DirectionType.SOUTH, TransitionType.DOORS, True_())
+    COLTRANE_PEAK_RAIL_YARD_CHEST_EAST_BURROW = ('Coltrane Peak Rail Yard Chest East Burrow', Regions.COLTRANE_PEAK_RAIL_YARD_CHEST, Regions.COLTRANE_PEAK_RAIL_YARD_KNIGHT, DirectionType.EAST, TransitionType.BURROW, CanBurrow())
+    COLTRANE_PEAK_RAIL_YARD_CIRCLE_NORTH_BURROW = ('Coltrane Peak Rail Yard Circle North Burrow', Regions.COLTRANE_PEAK_RAIL_YARD_CIRCLE, Regions.COLTRANE_PEAK_RAIL_YARD_KNIGHT, DirectionType.NORTH, TransitionType.BURROW, CanBurrow())
+    COLTRANE_PEAK_RAIL_YARD_CIRCLE_WEST_BURROW = ('Coltrane Peak Rail Yard Circle West Burrow', Regions.COLTRANE_PEAK_RAIL_YARD_CIRCLE, Regions.COLTRANE_PEAK_RAIL_YARD, DirectionType.WEST, TransitionType.BURROW, CanBurrow())
+    COLTRANE_PEAK_RAIL_YARD_DOORS = ('Coltrane Peak Rail Yard Doors', Regions.COLTRANE_PEAK_RAIL_YARD, Regions.COLTRANE_PEAK_ICEBOUND_CAVERN_ENTRANCE, DirectionType.NORTH, TransitionType.DOORS, True_())
+    COLTRANE_PEAK_RAIL_YARD_EAST_BURROW = ('Coltrane Peak Rail Yard East Burrow', Regions.COLTRANE_PEAK_RAIL_YARD, Regions.COLTRANE_PEAK_RAIL_YARD_CIRCLE, DirectionType.EAST, TransitionType.BURROW, CanBurrow())
+    COLTRANE_PEAK_RAIL_YARD_KNIGHT_SOUTH_BURROW = ('Coltrane Peak Rail Yard Knight South Burrow', Regions.COLTRANE_PEAK_RAIL_YARD_KNIGHT, Regions.COLTRANE_PEAK_RAIL_YARD_CIRCLE, DirectionType.SOUTH, TransitionType.BURROW, CanBurrow())
+    COLTRANE_PEAK_RAIL_YARD_KNIGHT_WEST_BURROW = ('Coltrane Peak Rail Yard Knight West Burrow', Regions.COLTRANE_PEAK_RAIL_YARD_KNIGHT, Regions.COLTRANE_PEAK_RAIL_YARD_CHEST, DirectionType.WEST, TransitionType.BURROW, CanBurrow())
+    COLTRANE_PEAK_RAIL_YARD_SOUTH_TRANSITION = ('Coltrane Peak Rail Yard South Transition', Regions.COLTRANE_PEAK_RAIL_YARD, Regions.COLTRANE_PEAK_FROSTBITE_WOODS_ROPE, DirectionType.SOUTH, TransitionType.SCREENS, True_())
+    COLTRANE_PEAK_RAIL_YARD_WEST_TRANSITION = ('Coltrane Peak Rail Yard West Transition', Regions.COLTRANE_PEAK_RAIL_YARD, Regions.COLTRANE_PEAK_FROZEN_RIVER, DirectionType.WEST, TransitionType.SCREENS, HasKear(kear=SingleKears.COLTRANE_RAIL_YARD_KEAR.value))
+    COLTRANE_PEAK_SPIRAL_SUMMIT_CLIMB_SOUTH_TRANSITION = ('Coltrane Peak Spiral Summit Climb South Transition', Regions.COLTRANE_PEAK_SPIRAL_SUMMIT_CLIMB, Regions.COLTRANE_PEAK_SPIRAL_WOLF_STAIRS, DirectionType.SOUTH, TransitionType.SCREENS, True_())
+    COLTRANE_PEAK_SPIRAL_SUMMIT_CLIMB_TOP_NORTH_TRANSITION = ('Coltrane Peak Spiral Summit Climb Top North Transition', Regions.COLTRANE_PEAK_SPIRAL_SUMMIT_CLIMB_TOP, Regions.COLTRANE_PEAK_SPIRAL_SUMMIT_PEAK, DirectionType.NORTH, TransitionType.SCREENS, True_())
+    COLTRANE_PEAK_SPIRAL_SUMMIT_PEAK_DROP = ('Coltrane Peak Spiral Summit Peak Drop', Regions.COLTRANE_PEAK_SPIRAL_SUMMIT_PEAK, Regions.COLTRANE_PEAK_AGNES_EXPRESS_TOP, DirectionType.OVERWORLD, TransitionType.DO_NOT_RANDOMIZE_ENTRANCE, True_())
+    COLTRANE_PEAK_SPIRAL_SUMMIT_PEAK_SOUTH_TRANSITION = ('Coltrane Peak Spiral Summit Peak South Transition', Regions.COLTRANE_PEAK_SPIRAL_SUMMIT_PEAK, Regions.COLTRANE_PEAK_SPIRAL_SUMMIT_CLIMB_TOP, DirectionType.SOUTH, TransitionType.SCREENS, True_())
+    COLTRANE_PEAK_SPIRAL_SUMMIT_PLATFORMS_ROPE_NORTH_TRANSITION = ('Coltrane Peak Spiral Summit Platforms Rope North Transition', Regions.COLTRANE_PEAK_SPIRAL_SUMMIT_PLATFORMS_ROPE, Regions.COLTRANE_PEAK_SPIRAL_WOLF, DirectionType.NORTH, TransitionType.SCREENS, CanClimb())
+    COLTRANE_PEAK_SPIRAL_SUMMIT_PLATFORMS_ROPE_WEST_TRANSITION = ('Coltrane Peak Spiral Summit Platforms Rope West Transition', Regions.COLTRANE_PEAK_SPIRAL_SUMMIT_PLATFORMS_ROPE, Regions.COLTRANE_PEAK_SPIRAL_SUMMIT_SECRET, DirectionType.WEST, TransitionType.SCREENS, True_())
+    COLTRANE_PEAK_SPIRAL_SUMMIT_PLATFORMS_SOUTH_TRANSITION = ('Coltrane Peak Spiral Summit Platforms South Transition', Regions.COLTRANE_PEAK_SPIRAL_SUMMIT_PLATFORMS, Regions.COLTRANE_PEAK_SPIRAL_SUMMIT_ROPE, DirectionType.SOUTH, TransitionType.SCREENS, CanClimb())
+    COLTRANE_PEAK_SPIRAL_SUMMIT_ROPE_NORTH_TRANSITION = ('Coltrane Peak Spiral Summit Rope North Transition', Regions.COLTRANE_PEAK_SPIRAL_SUMMIT_ROPE, Regions.COLTRANE_PEAK_SPIRAL_SUMMIT_PLATFORMS, DirectionType.NORTH, TransitionType.SCREENS, CanClimb())
+    COLTRANE_PEAK_SPIRAL_SUMMIT_SECRET_EAST_TRANSITION = ('Coltrane Peak Spiral Summit Secret East Transition', Regions.COLTRANE_PEAK_SPIRAL_SUMMIT_SECRET, Regions.COLTRANE_PEAK_SPIRAL_SUMMIT_PLATFORMS_ROPE, DirectionType.EAST, TransitionType.SCREENS, True_())
+    COLTRANE_PEAK_SPIRAL_SUMMIT_SOUTH_TRANSITION = ('Coltrane Peak Spiral Summit South Transition', Regions.COLTRANE_PEAK_SPIRAL_SUMMIT, Regions.COLTRANE_PEAK_SPIRAL_SUMMIT_UNDERLAB, DirectionType.SOUTH, TransitionType.SCREENS, True_())
+    COLTRANE_PEAK_SPIRAL_SUMMIT_UNDERLAB_DOORS = ('Coltrane Peak Spiral Summit Underlab Doors', Regions.COLTRANE_PEAK_SPIRAL_SUMMIT_UNDERLAB, Regions.COLTRANE_PEAK_FROZEN_PIPE, DirectionType.SOUTH, TransitionType.DOORS, True_())
+    COLTRANE_PEAK_SPIRAL_SUMMIT_UNDERLAB_NORTH_TRANSITION = ('Coltrane Peak Spiral Summit Underlab North Transition', Regions.COLTRANE_PEAK_SPIRAL_SUMMIT_UNDERLAB, Regions.COLTRANE_PEAK_SPIRAL_SUMMIT, DirectionType.NORTH, TransitionType.SCREENS, True_())
+    COLTRANE_PEAK_SPIRAL_WOLF_SOUTH_TRANSITION = ('Coltrane Peak Spiral Wolf South Transition', Regions.COLTRANE_PEAK_SPIRAL_WOLF, Regions.COLTRANE_PEAK_SPIRAL_SUMMIT_PLATFORMS_ROPE, DirectionType.SOUTH, TransitionType.SCREENS, CanClimb())
+    COLTRANE_PEAK_SPIRAL_WOLF_STAIRS_NORTH_TRANSITION = ('Coltrane Peak Spiral Wolf Stairs North Transition', Regions.COLTRANE_PEAK_SPIRAL_WOLF_STAIRS, Regions.COLTRANE_PEAK_SPIRAL_SUMMIT_CLIMB, DirectionType.NORTH, TransitionType.SCREENS, True_())
+    COLTRANE_PEAK_STATION_DO_NOT_RANDOMIZE_ENTRANCE = ('Coltrane Peak Station Do_Not_Randomize_Entrance', Regions.COLTRANE_PEAK_STATION, Regions.OSSEX_TRAIN_CABOOSE, DirectionType.OVERWORLD, TransitionType.DO_NOT_RANDOMIZE_ENTRANCE, Has(PermanentUpgrades.TRAIN_PASS.value))
+    COLTRANE_PEAK_STATION_EAST_TRANSITION = ('Coltrane Peak Station East Transition', Regions.COLTRANE_PEAK_STATION, Regions.COLTRANE_PEAK_GORGE_ENGINE, DirectionType.EAST, TransitionType.SCREENS, True_())
+    COLTRANE_PEAK_STATION_SOUTH_AREA_TRANSITION = ('Coltrane Peak Station South Area Transition', Regions.COLTRANE_PEAK_STATION, Regions.COLTRANE_PEAK_FROZEN_PASS_TOP, DirectionType.SOUTH, TransitionType.AREA_SCREENS, True_())
+    COLTRANE_PEAK_STATION_TRACKS_WEST_TRANSITION = ('Coltrane Peak Station Tracks West Transition', Regions.COLTRANE_PEAK_STATION_TRACKS, Regions.COLTRANE_PEAK_STATION, DirectionType.EAST, TransitionType.SCREENS, RepairedGenerator(event=COLTRANE_PEAK_DATA))
+    COLTRANE_PEAK_STATION_WEST_TRANSITION = ('Coltrane Peak Station West Transition', Regions.COLTRANE_PEAK_STATION, Regions.COLTRANE_PEAK_STATION_TRACKS, DirectionType.WEST, TransitionType.SCREENS, RepairedGenerator(event=COLTRANE_PEAK_DATA))
+    COLTRANE_PEAK_THORNE_ARENA_SOUTH_EXIT = ('Coltrane Peak Thorne Arena South Exit', Regions.COLTRANE_PEAK_THORNE_ARENA, Regions.COLTRANE_PEAK_THORNE_BRIDGE, DirectionType.OVERWORLD, TransitionType.DO_NOT_RANDOMIZE_ENTRANCE, True_())
+    COLTRANE_PEAK_THORNE_BRIDGE_SOUTH_DROP = ('Coltrane Peak Thorne Bridge South Drop', Regions.COLTRANE_PEAK_THORNE_BRIDGE, Regions.COLTRANE_PEAK_STATION, DirectionType.OVERWORLD, TransitionType.DO_NOT_RANDOMIZE_ENTRANCE, True_())
+    COLTRANE_PEAK_TRAIN_TRACKS_EAST_TRANSITION = ('Coltrane Peak Train Tracks East Transition', Regions.COLTRANE_PEAK_TRAIN_TRACKS, Regions.COLTRANE_PEAK_TRAIN_TRACKS_END, DirectionType.EAST, TransitionType.SCREENS, True_())
+    COLTRANE_PEAK_TRAIN_TRACKS_END_EAST_BURROW = ('Coltrane Peak Train Tracks End East Burrow', Regions.COLTRANE_PEAK_TRAIN_TRACKS_END, Regions.COLTRANE_PEAK_TRAIN_TRACKS_SECRET, DirectionType.EAST, TransitionType.BURROW, CanBurrow())
+    COLTRANE_PEAK_TRAIN_TRACKS_END_NORTH_TRANSITION = ('Coltrane Peak Train Tracks End North Transition', Regions.COLTRANE_PEAK_TRAIN_TRACKS_END, Regions.COLTRANE_PEAK_FROSTBITE_WOODS_BUSH, DirectionType.NORTH, TransitionType.SCREENS, True_())
+    COLTRANE_PEAK_TRAIN_TRACKS_END_WEST_TRANSITION = ('Coltrane Peak Train Tracks End West Transition', Regions.COLTRANE_PEAK_TRAIN_TRACKS_END, Regions.COLTRANE_PEAK_TRAIN_TRACKS, DirectionType.WEST, TransitionType.SCREENS, True_())
+    COLTRANE_PEAK_TRAIN_TRACKS_SECRET_WEST_BURROW = ('Coltrane Peak Train Tracks Secret West Burrow', Regions.COLTRANE_PEAK_TRAIN_TRACKS_SECRET, Regions.COLTRANE_PEAK_TRAIN_TRACKS_END, DirectionType.WEST, TransitionType.BURROW, CanBurrow())
+    COLTRANE_PEAK_TRAIN_TRACKS_WEST_TRANSITION = ('Coltrane Peak Train Tracks West Transition', Regions.COLTRANE_PEAK_TRAIN_TRACKS, Regions.COLTRANE_PEAK_GORGE_TRACKS, DirectionType.WEST, TransitionType.SCREENS, True_())
 
-transitions: dict[str, Transition] = {
-    'Coltrane Peak Agnes Express Arena South Transition': Transition('Coltrane Peak Agnes Express Arena', 'Coltrane Peak Agnes Express Outside', DirectionType.SOUTH, TransitionType.SCREENS, CanClimb() & PowerLevelThreshold(power=30)),
-    'Coltrane Peak Agnes Express Arena Stairs': Transition('Coltrane Peak Agnes Express Arena', 'Coltrane Peak Agnes Express Gauntet', DirectionType.NORTH, TransitionType.STAIRS, PowerLevelThreshold(power=30)),
-    'Coltrane Peak Agnes Express Double East Transition': Transition('Coltrane Peak Agnes Express Double', 'Coltrane Peak Agnes Express Open Left', DirectionType.EAST, TransitionType.SCREENS, True_()),
-    'Coltrane Peak Agnes Express Double West Transition': Transition('Coltrane Peak Agnes Express Double', 'Coltrane Peak Agnes Express Start', DirectionType.WEST, TransitionType.SCREENS, True_()),
-    'Coltrane Peak Agnes Express Gauntet Stairs': Transition('Coltrane Peak Agnes Express Gauntet', 'Coltrane Peak Agnes Express Arena', DirectionType.NORTH, TransitionType.STAIRS, True_()),
-    'Coltrane Peak Agnes Express Gauntet West Transition': Transition('Coltrane Peak Agnes Express Gauntet', 'Coltrane Peak Agnes Express Open Right', DirectionType.WEST, TransitionType.SCREENS, True_()),
-    'Coltrane Peak Agnes Express Open Left West Transition': Transition('Coltrane Peak Agnes Express Open Left', 'Coltrane Peak Agnes Express Double', DirectionType.WEST, TransitionType.SCREENS, True_()),
-    'Coltrane Peak Agnes Express Open Right East Transition': Transition('Coltrane Peak Agnes Express Open Right', 'Coltrane Peak Agnes Express Gauntet', DirectionType.EAST, TransitionType.SCREENS, True_()),
-    'Coltrane Peak Agnes Express Outside Do_Not_Randomize_Entrance': Transition('Coltrane Peak Agnes Express Outside', 'Coltrane Peak Thorne Bridge', DirectionType.OVERWORLD, TransitionType.DO_NOT_RANDOMIZE_ENTRANCE, True_()),
-    'Coltrane Peak Agnes Express Outside Doors': Transition('Coltrane Peak Agnes Express Outside', 'Coltrane Peak Maelstorm', DirectionType.NORTH, TransitionType.DOORS, True_()),
-    'Coltrane Peak Agnes Express Outside North Transition': Transition('Coltrane Peak Agnes Express Outside', 'Coltrane Peak Agnes Express Arena', DirectionType.NORTH, TransitionType.SCREENS, CanClimb()),
-    'Coltrane Peak Agnes Express Rear East Transition': Transition('Coltrane Peak Agnes Express Rear', 'Coltrane Peak Agnes Express Start', DirectionType.EAST, TransitionType.SCREENS, True_()),
-    'Coltrane Peak Agnes Express Start East Transition': Transition('Coltrane Peak Agnes Express Start', 'Coltrane Peak Agnes Express Double', DirectionType.EAST, TransitionType.SCREENS, True_()),
-    'Coltrane Peak Agnes Express Start Geyser_Up': Transition('Coltrane Peak Agnes Express Start', 'Coltrane Peak Spiral Summit Peak', DirectionType.OVERWORLD, TransitionType.GEYSER_UP, True_()),
-    'Coltrane Peak Agnes Express Start West Transition': Transition('Coltrane Peak Agnes Express Start', 'Coltrane Peak Agnes Express Rear', DirectionType.WEST, TransitionType.SCREENS, True_()),
-    'Coltrane Peak Agnes Express Top Geyser_Down': Transition('Coltrane Peak Agnes Express Top', 'Coltrane Peak Agnes Express Start', DirectionType.OVERWORLD, TransitionType.GEYSER_DOWN, True_()),
-    'Coltrane Peak Agnes Express Underlab Pipe': Transition('Coltrane Peak Agnes Express Underlab', 'Coltrane Peak Agnes Express Start', DirectionType.OVERWORLD, TransitionType.DO_NOT_RANDOMIZE_ENTRANCE, True_()),
-    'Coltrane Peak Frostbite Woods Bush East Burrow': Transition('Coltrane Peak Frostbite Woods Bush', 'Coltrane Peak Frostbite Woods Chains', DirectionType.EAST, TransitionType.BURROW, CanBurrow()),
-    'Coltrane Peak Frostbite Woods Bush North Transition': Transition('Coltrane Peak Frostbite Woods Bush', 'Coltrane Peak Frostbite Woods', DirectionType.NORTH, TransitionType.SCREENS, True_()),
-    'Coltrane Peak Frostbite Woods Bush South Transition': Transition('Coltrane Peak Frostbite Woods Bush', 'Coltrane Peak Train Tracks End', DirectionType.SOUTH, TransitionType.SCREENS, True_()),
-    'Coltrane Peak Frostbite Woods Chains Door Doors': Transition('Coltrane Peak Frostbite Woods Chains Door', 'Coltrane Peak Mirren Room', DirectionType.NORTH, TransitionType.DOORS, True_()),
-    'Coltrane Peak Frostbite Woods Chains West Burrow': Transition('Coltrane Peak Frostbite Woods Chains', 'Coltrane Peak Frostbite Woods Bush', DirectionType.WEST, TransitionType.BURROW, CanBurrow()),
-    'Coltrane Peak Frostbite Woods Rope North Transition': Transition('Coltrane Peak Frostbite Woods Rope', 'Coltrane Peak Rail Yard', DirectionType.NORTH, TransitionType.SCREENS, True_()),
-    'Coltrane Peak Frostbite Woods South Transition': Transition('Coltrane Peak Frostbite Woods', 'Coltrane Peak Frostbite Woods Bush', DirectionType.SOUTH, TransitionType.SCREENS, True_()),
-    'Coltrane Peak Frozen Generator South Transition': Transition('Coltrane Peak Frozen Generator', 'Coltrane Peak Maelstorm', DirectionType.SOUTH, TransitionType.SCREENS, True_()),
-    'Coltrane Peak Frozen Horror Arena North Transition': Transition('Coltrane Peak Frozen Horror Arena', 'Coltrane Peak Frozen Pipe', DirectionType.NORTH, TransitionType.SCREENS, PowerLevelThreshold(power=40)),
-    'Coltrane Peak Frozen Horror Arena South Transition': Transition('Coltrane Peak Frozen Horror Arena', 'Coltrane Peak Icebound Cavern Pit Upper', DirectionType.SOUTH, TransitionType.SCREENS, PowerLevelThreshold(power=30)),
-    'Coltrane Peak Frozen Mirror Room Mirrors': Transition('Coltrane Peak Frozen Mirror Room', 'Astral Orrery Coltrane Peak Mirror', DirectionType.OVERWORLD, TransitionType.MIRRORS, True_()),
-    'Coltrane Peak Frozen Mirror Room West Burrow': Transition('Coltrane Peak Frozen Mirror Room', 'Coltrane Peak Frozen Pipe', DirectionType.WEST, TransitionType.BURROW, CanBurrow()),
-    'Coltrane Peak Frozen Pass Bottom South Area Transition': Transition('Coltrane Peak Frozen Pass Bottom', 'Eastern Heath Frozen Pass', DirectionType.SOUTH, TransitionType.AREA_SCREENS, True_()),
-    'Coltrane Peak Frozen Pass Top North Transition': Transition('Coltrane Peak Frozen Pass Top', 'Coltrane Peak Station', DirectionType.NORTH, TransitionType.SCREENS, True_()),
-    'Coltrane Peak Frozen Pipe Doors': Transition('Coltrane Peak Frozen Pipe', 'Coltrane Peak Spiral Summit Underlab', DirectionType.NORTH, TransitionType.DOORS, True_()),
-    'Coltrane Peak Frozen Pipe East Burrow': Transition('Coltrane Peak Frozen Pipe', 'Coltrane Peak Frozen Mirror Room', DirectionType.EAST, TransitionType.BURROW, CanBurrow()),
-    'Coltrane Peak Frozen Pipe Pipe': Transition('Coltrane Peak Frozen Pipe', 'Coltrane Peak Rail Yard', DirectionType.OVERWORLD, TransitionType.DO_NOT_RANDOMIZE_ENTRANCE, True_()),
-    'Coltrane Peak Frozen Pipe South Transition': Transition('Coltrane Peak Frozen Pipe', 'Coltrane Peak Frozen Horror Arena', DirectionType.SOUTH, TransitionType.SCREENS, True_()),
-    'Coltrane Peak Frozen River East Transition': Transition('Coltrane Peak Frozen River', 'Coltrane Peak Rail Yard', DirectionType.EAST, TransitionType.SCREENS, HasKear(kear=SingleKears.COLTRANE_RAIL_YARD_KEAR.value)),
-    'Coltrane Peak Gorge Engine Front South Transition': Transition('Coltrane Peak Gorge Engine Front', 'Coltrane Peak Gorge Underlab Right', DirectionType.SOUTH, TransitionType.SCREENS, CanClimb()),
-    'Coltrane Peak Gorge Engine Side East Transition': Transition('Coltrane Peak Gorge Engine Side', 'Coltrane Peak Gorge Tracks', DirectionType.EAST, TransitionType.SCREENS, True_()),
-    'Coltrane Peak Gorge Engine South Transition': Transition('Coltrane Peak Gorge Engine', 'Coltrane Peak Gorge Underlab Left', DirectionType.SOUTH, TransitionType.SCREENS, CanClimb()),
-    'Coltrane Peak Gorge Engine West Transition': Transition('Coltrane Peak Gorge Engine', 'Coltrane Peak Station', DirectionType.WEST, TransitionType.SCREENS, True_()),
-    'Coltrane Peak Gorge Ghost room North Transition': Transition('Coltrane Peak Gorge Ghost room', 'Coltrane Peak Gorge Underlab Right', DirectionType.NORTH, TransitionType.SCREENS, CanClimb()),
-    'Coltrane Peak Gorge Ghost room South Transition': Transition('Coltrane Peak Gorge Ghost room', 'Coltrane Peak Gorge Ice Cubes', DirectionType.SOUTH, TransitionType.SCREENS, CanClimb()),
-    'Coltrane Peak Gorge Hallower Ice North Transition': Transition('Coltrane Peak Gorge Hallower Ice', 'Coltrane Peak Gorge Hallower Pit', DirectionType.NORTH, TransitionType.SCREENS, True_()),
-    'Coltrane Peak Gorge Hallower Ice South Transition': Transition('Coltrane Peak Gorge Hallower Ice', 'Coltrane Peak Gorge Ice Cubes End', DirectionType.SOUTH, TransitionType.SCREENS, True_()),
-    'Coltrane Peak Gorge Hallower Pit North Transition': Transition('Coltrane Peak Gorge Hallower Pit', 'Coltrane Peak Gorge Tracks', DirectionType.NORTH, TransitionType.SCREENS, CanClimb()),
-    'Coltrane Peak Gorge Hallower Pit South Transition': Transition('Coltrane Peak Gorge Hallower Pit', 'Coltrane Peak Gorge Hallower Ice', DirectionType.SOUTH, TransitionType.SCREENS, True_()),
-    'Coltrane Peak Gorge Ice Cubes End East Burrow': Transition('Coltrane Peak Gorge Ice Cubes End', 'Coltrane Peak Gorge Ice Gauntlet', DirectionType.EAST, TransitionType.BURROW, CanBurrow()),
-    'Coltrane Peak Gorge Ice Cubes End North Transition': Transition('Coltrane Peak Gorge Ice Cubes End', 'Coltrane Peak Gorge Hallower Ice', DirectionType.NORTH, TransitionType.SCREENS, True_()),
-    'Coltrane Peak Gorge Ice Cubes North Transition': Transition('Coltrane Peak Gorge Ice Cubes', 'Coltrane Peak Gorge Ghost room', DirectionType.NORTH, TransitionType.SCREENS, CanClimb()),
-    'Coltrane Peak Gorge Ice Gauntlet West Burrow': Transition('Coltrane Peak Gorge Ice Gauntlet', 'Coltrane Peak Gorge Ice Cubes End', DirectionType.WEST, TransitionType.BURROW, CanBurrow()),
-    'Coltrane Peak Gorge Tracks East Transition': Transition('Coltrane Peak Gorge Tracks', 'Coltrane Peak Train Tracks', DirectionType.EAST, TransitionType.SCREENS, True_()),
-    'Coltrane Peak Gorge Tracks South Transition': Transition('Coltrane Peak Gorge Tracks', 'Coltrane Peak Gorge Hallower Pit', DirectionType.SOUTH, TransitionType.SCREENS, CanClimb()),
-    'Coltrane Peak Gorge Tracks West Transition': Transition('Coltrane Peak Gorge Tracks', 'Coltrane Peak Gorge Engine Side', DirectionType.WEST, TransitionType.SCREENS, True_()),
-    'Coltrane Peak Gorge Underlab Left North Transition': Transition('Coltrane Peak Gorge Underlab Left', 'Coltrane Peak Gorge Engine', DirectionType.NORTH, TransitionType.SCREENS, CanClimb()),
-    'Coltrane Peak Gorge Underlab Right South Transition': Transition('Coltrane Peak Gorge Underlab Right', 'Coltrane Peak Gorge Ghost room', DirectionType.SOUTH, TransitionType.SCREENS, CanClimb()),
-    'Coltrane Peak Icebound Cavern East Transition': Transition('Coltrane Peak Icebound Cavern', 'Coltrane Peak Icebound Cavern Pit', DirectionType.EAST, TransitionType.SCREENS, True_()),
-    'Coltrane Peak Icebound Cavern Entrance Doors': Transition('Coltrane Peak Icebound Cavern Entrance', 'Coltrane Peak Rail Yard', DirectionType.SOUTH, TransitionType.DOORS, True_()),
-    'Coltrane Peak Icebound Cavern Pit Upper North Transition': Transition('Coltrane Peak Icebound Cavern Pit Upper', 'Coltrane Peak Frozen Horror Arena', DirectionType.NORTH, TransitionType.SCREENS, True_()),
-    'Coltrane Peak Icebound Cavern Pit West Transition': Transition('Coltrane Peak Icebound Cavern Pit', 'Coltrane Peak Icebound Cavern', DirectionType.WEST, TransitionType.SCREENS, True_()),
-    'Coltrane Peak Maelstorm Doors': Transition('Coltrane Peak Maelstorm', 'Coltrane Peak Agnes Express Outside', DirectionType.SOUTH, TransitionType.DOORS, True_()),
-    'Coltrane Peak Maelstorm North Transition': Transition('Coltrane Peak Maelstorm', 'Coltrane Peak Frozen Generator', DirectionType.NORTH, TransitionType.SCREENS, True_()),
-    'Coltrane Peak Mirren Room Doors': Transition('Coltrane Peak Mirren Room', 'Coltrane Peak Frostbite Woods Chains Door', DirectionType.SOUTH, TransitionType.DOORS, True_()),
-    'Coltrane Peak Rail Yard Chest East Burrow': Transition('Coltrane Peak Rail Yard Chest', 'Coltrane Peak Rail Yard Knight', DirectionType.EAST, TransitionType.BURROW, CanBurrow()),
-    'Coltrane Peak Rail Yard Circle North Burrow': Transition('Coltrane Peak Rail Yard Circle', 'Coltrane Peak Rail Yard Knight', DirectionType.NORTH, TransitionType.BURROW, CanBurrow()),
-    'Coltrane Peak Rail Yard Circle West Burrow': Transition('Coltrane Peak Rail Yard Circle', 'Coltrane Peak Rail Yard', DirectionType.WEST, TransitionType.BURROW, CanBurrow()),
-    'Coltrane Peak Rail Yard Doors': Transition('Coltrane Peak Rail Yard', 'Coltrane Peak Icebound Cavern Entrance', DirectionType.NORTH, TransitionType.DOORS, True_()),
-    'Coltrane Peak Rail Yard East Burrow': Transition('Coltrane Peak Rail Yard', 'Coltrane Peak Rail Yard Circle', DirectionType.EAST, TransitionType.BURROW, CanBurrow()),
-    'Coltrane Peak Rail Yard Knight South Burrow': Transition('Coltrane Peak Rail Yard Knight', 'Coltrane Peak Rail Yard Circle', DirectionType.SOUTH, TransitionType.BURROW, CanBurrow()),
-    'Coltrane Peak Rail Yard Knight West Burrow': Transition('Coltrane Peak Rail Yard Knight', 'Coltrane Peak Rail Yard Chest', DirectionType.WEST, TransitionType.BURROW, CanBurrow()),
-    'Coltrane Peak Rail Yard South Transition': Transition('Coltrane Peak Rail Yard', 'Coltrane Peak Frostbite Woods Rope', DirectionType.SOUTH, TransitionType.SCREENS, True_()),
-    'Coltrane Peak Rail Yard West Transition': Transition('Coltrane Peak Rail Yard', 'Coltrane Peak Frozen River', DirectionType.WEST, TransitionType.SCREENS, HasKear(kear=SingleKears.COLTRANE_RAIL_YARD_KEAR.value)),
-    'Coltrane Peak Spiral Summit Climb South Transition': Transition('Coltrane Peak Spiral Summit Climb', 'Coltrane Peak Spiral Wolf Stairs', DirectionType.SOUTH, TransitionType.SCREENS, True_()),
-    'Coltrane Peak Spiral Summit Climb Top North Transition': Transition('Coltrane Peak Spiral Summit Climb Top', 'Coltrane Peak Spiral Summit Peak', DirectionType.NORTH, TransitionType.SCREENS, True_()),
-    'Coltrane Peak Spiral Summit Peak Drop': Transition('Coltrane Peak Spiral Summit Peak', 'Coltrane Peak Agnes Express Top', DirectionType.OVERWORLD, TransitionType.DO_NOT_RANDOMIZE_ENTRANCE, True_()),
-    'Coltrane Peak Spiral Summit Peak South Transition': Transition('Coltrane Peak Spiral Summit Peak', 'Coltrane Peak Spiral Summit Climb Top', DirectionType.SOUTH, TransitionType.SCREENS, True_()),
-    'Coltrane Peak Spiral Summit Platforms Rope North Transition': Transition('Coltrane Peak Spiral Summit Platforms Rope', 'Coltrane Peak Spiral Wolf', DirectionType.NORTH, TransitionType.SCREENS, CanClimb()),
-    'Coltrane Peak Spiral Summit Platforms Rope West Transition': Transition('Coltrane Peak Spiral Summit Platforms Rope', 'Coltrane Peak Spiral Summit Secret', DirectionType.WEST, TransitionType.SCREENS, True_()),
-    'Coltrane Peak Spiral Summit Platforms South Transition': Transition('Coltrane Peak Spiral Summit Platforms', 'Coltrane Peak Spiral Summit Rope', DirectionType.SOUTH, TransitionType.SCREENS, CanClimb()),
-    'Coltrane Peak Spiral Summit Rope North Transition': Transition('Coltrane Peak Spiral Summit Rope', 'Coltrane Peak Spiral Summit Platforms', DirectionType.NORTH, TransitionType.SCREENS, CanClimb()),
-    'Coltrane Peak Spiral Summit Secret East Transition': Transition('Coltrane Peak Spiral Summit Secret', 'Coltrane Peak Spiral Summit Platforms Rope', DirectionType.EAST, TransitionType.SCREENS, True_()),
-    'Coltrane Peak Spiral Summit South Transition': Transition('Coltrane Peak Spiral Summit', 'Coltrane Peak Spiral Summit Underlab', DirectionType.SOUTH, TransitionType.SCREENS, True_()),
-    'Coltrane Peak Spiral Summit Underlab Doors': Transition('Coltrane Peak Spiral Summit Underlab', 'Coltrane Peak Frozen Pipe', DirectionType.SOUTH, TransitionType.DOORS, True_()),
-    'Coltrane Peak Spiral Summit Underlab North Transition': Transition('Coltrane Peak Spiral Summit Underlab', 'Coltrane Peak Spiral Summit', DirectionType.NORTH, TransitionType.SCREENS, True_()),
-    'Coltrane Peak Spiral Wolf South Transition': Transition('Coltrane Peak Spiral Wolf', 'Coltrane Peak Spiral Summit Platforms Rope', DirectionType.SOUTH, TransitionType.SCREENS, CanClimb()),
-    'Coltrane Peak Spiral Wolf Stairs North Transition': Transition('Coltrane Peak Spiral Wolf Stairs', 'Coltrane Peak Spiral Summit Climb', DirectionType.NORTH, TransitionType.SCREENS, True_()),
-    'Coltrane Peak Station Do_Not_Randomize_Entrance': Transition('Coltrane Peak Station', 'Ossex Train Caboose', DirectionType.OVERWORLD, TransitionType.DO_NOT_RANDOMIZE_ENTRANCE, Has(PermanentUpgrades.TRAIN_PASS.value)),
-    'Coltrane Peak Station East Transition': Transition('Coltrane Peak Station', 'Coltrane Peak Gorge Engine', DirectionType.EAST, TransitionType.SCREENS, True_()),
-    'Coltrane Peak Station South Area Transition': Transition('Coltrane Peak Station', 'Coltrane Peak Frozen Pass Top', DirectionType.SOUTH, TransitionType.AREA_SCREENS, True_()),
-    'Coltrane Peak Station Tracks West Transition': Transition('Coltrane Peak Station Tracks', 'Coltrane Peak Station', DirectionType.EAST, TransitionType.SCREENS, RepairedGenerator(event=COLTRANE_PEAK_DATA)),
-    'Coltrane Peak Station West Transition': Transition('Coltrane Peak Station', 'Coltrane Peak Station Tracks', DirectionType.WEST, TransitionType.SCREENS, RepairedGenerator(event=COLTRANE_PEAK_DATA)),
-    'Coltrane Peak Thorne Arena South Exit': Transition('Coltrane Peak Thorne Arena', 'Coltrane Peak Thorne Bridge', DirectionType.OVERWORLD, TransitionType.DO_NOT_RANDOMIZE_ENTRANCE, True_()),
-    'Coltrane Peak Thorne Bridge South Drop': Transition('Coltrane Peak Thorne Bridge', 'Coltrane Peak Station', DirectionType.OVERWORLD, TransitionType.DO_NOT_RANDOMIZE_ENTRANCE, True_()),
-    'Coltrane Peak Train Tracks East Transition': Transition('Coltrane Peak Train Tracks', 'Coltrane Peak Train Tracks End', DirectionType.EAST, TransitionType.SCREENS, True_()),
-    'Coltrane Peak Train Tracks End East Burrow': Transition('Coltrane Peak Train Tracks End', 'Coltrane Peak Train Tracks Secret', DirectionType.EAST, TransitionType.BURROW, CanBurrow()),
-    'Coltrane Peak Train Tracks End North Transition': Transition('Coltrane Peak Train Tracks End', 'Coltrane Peak Frostbite Woods Bush', DirectionType.NORTH, TransitionType.SCREENS, True_()),
-    'Coltrane Peak Train Tracks End West Transition': Transition('Coltrane Peak Train Tracks End', 'Coltrane Peak Train Tracks', DirectionType.WEST, TransitionType.SCREENS, True_()),
-    'Coltrane Peak Train Tracks Secret West Burrow': Transition('Coltrane Peak Train Tracks Secret', 'Coltrane Peak Train Tracks End', DirectionType.WEST, TransitionType.BURROW, CanBurrow()),
-    'Coltrane Peak Train Tracks West Transition': Transition('Coltrane Peak Train Tracks', 'Coltrane Peak Gorge Tracks', DirectionType.WEST, TransitionType.SCREENS, True_()),
-}

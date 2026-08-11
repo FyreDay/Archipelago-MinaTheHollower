@@ -3,8 +3,9 @@
 #   python -m worlds.mina_the_hollower.tools.generate_edges <edges.csv>
 # The spreadsheet is the source of truth, not this file.
 
+from .regions import Regions
 from rule_builder.rules import Has, True_, CanReachLocation
-from ... import RegionConnection, Transition, DirectionType, TransitionType
+from ... import DirectionType, TransitionType, ConnectionTypeEnum, TransitionTypeEnum
 from ...rules.ability_rules import (
     CanBurrow, CanCarry, CanClimb, CanSwim, CanBounce, PowerLevelThreshold,
     HasVialsCount, HasReachingSideArm, HasFishingRod, CanSpring, HasTrinket 
@@ -32,177 +33,116 @@ from ...items.blockers import (
 )
 
 
-regions: set[str] = {
-    'Ossex Entry Eastern Wall',
-    'Ossex Entry Eastern Wall Chest',
-    'Ossex Entry Western Wall Chest',
-    'Ossex Entry Western Wall Left',
-    'Ossex Entry Western Wall Right',
-    'Ossex South Eastern Wall',
-    'Ossex South Western Wall',
-    'Ossex Western Wall',
-    'Southern Outskirts Cave Deep Arena',
-    'Southern Outskirts Cave Deep Entrance',
-    'Southern Outskirts Cave Deep Exit',
-    'Southern Outskirts Cave Network Deep',
-    'Southern Outskirts Cave Network Deep Exit',
-    'Southern Outskirts Cave Network End',
-    'Southern Outskirts Cave Network Main',
-    'Southern Outskirts Cave Network Mining Passage Entrance Entrance',
-    'Southern Outskirts Commons Burned',
-    'Southern Outskirts Commons Cave Entrance',
-    'Southern Outskirts Commons Cliff',
-    'Southern Outskirts Commons East Ossex',
-    'Southern Outskirts Commons Main',
-    'Southern Outskirts Commons Ossex Entry',
-    'Southern Outskirts Commons Rebel Exit',
-    'Southern Outskirts Commons Residence Roof',
-    'Southern Outskirts Commons Southern Pit Room Main',
-    'Southern Outskirts Commons Southern Pit Room Roof',
-    'Southern Outskirts Commons Upper',
-    'Southern Outskirts Commons West Ossex',
-    'Southern Outskirts Commons Western Pit Room Main',
-    'Southern Outskirts Commons Western Pit Room Pit',
-    'Southern Outskirts Four Flowers Sandfall',
-    'Southern Outskirts Four Flowers Shortcut',
-    'Southern Outskirts Mining Passage Empty',
-    'Southern Outskirts Mining Passage Entrance',
-    'Southern Outskirts Mining Passage Entrance Exit',
-    'Southern Outskirts Mining Passage Entrance Main',
-    'Southern Outskirts Mining Passage Exit',
-    'Southern Outskirts Mining Passage Fence',
-    'Southern Outskirts Mining Passage Secret',
-    'Southern Outskirts Moonbath',
-    'Southern Outskirts Poppit',
-    'Southern Outskirts Rebel Barracks',
-    'Southern Outskirts Rebel Barracks Companion End',
-    'Southern Outskirts Rebel Barracks Companion Start',
-    'Southern Outskirts Rebel Barracks Fight',
-    'Southern Outskirts Rebel Barracks Gauntlet',
-    'Southern Outskirts Rebel Barracks Prison',
-    'Southern Outskirts Rebel Barracks Prison Drop',
-    'Southern Outskirts Rebel Barracks Prison East',
-    'Southern Outskirts Rebel Rooftop',
-    'Southern Outskirts Residence Basement',
-    'Southern Outskirts Residence Exit',
-    'Southern Outskirts Residence Main',
-    'Southern Outskirts Residence Top',
-}
+class RegionConnections(ConnectionTypeEnum):
+    OSSEX_ENTRY_EASTERN_WALL_CHEST_SOUTHERN_OUTSKIRTS_COMMONS_OSSEX_ENTRY = ('Ossex Entry Eastern Wall Chest_Southern Outskirts Commons Ossex Entry', Regions.OSSEX_ENTRY_EASTERN_WALL_CHEST, Regions.SOUTHERN_OUTSKIRTS_COMMONS_OSSEX_ENTRY, True_())
+    OSSEX_ENTRY_WESTERN_WALL_CHEST_ROPE = ('Ossex Entry Western Wall Chest Rope', Regions.OSSEX_ENTRY_WESTERN_WALL_CHEST, Regions.SOUTHERN_OUTSKIRTS_COMMONS_OSSEX_ENTRY, CanClimb())
+    OSSEX_ENTRY_WESTERN_WALL_LEFT_OSSEX_ENTRY_WESTERN_WALL_RIGHT = ('Ossex Entry Western Wall Left_Ossex Entry Western Wall Right', Regions.OSSEX_ENTRY_WESTERN_WALL_LEFT, Regions.OSSEX_ENTRY_WESTERN_WALL_RIGHT, CanBurrow() & CanBounce())
+    OSSEX_ENTRY_WESTERN_WALL_RIGHT_OSSEX_ENTRY_WESTERN_WALL_LEFT = ('Ossex Entry Western Wall Right_Ossex Entry Western Wall Left', Regions.OSSEX_ENTRY_WESTERN_WALL_RIGHT, Regions.OSSEX_ENTRY_WESTERN_WALL_LEFT, CanBurrow() & CanBounce())
+    OSSEX_SOUTH_WESTERN_WALL_SOUTHERN_OUTSKIRTS_COMMONS_WESTERN_PIT_ROOM_MAIN = ('Ossex South Western Wall_Southern Outskirts Commons Western Pit Room Main', Regions.OSSEX_SOUTH_WESTERN_WALL, Regions.SOUTHERN_OUTSKIRTS_COMMONS_WESTERN_PIT_ROOM_MAIN, CanClimb())
+    SOUTHERN_OUTSKIRTS_CAVE_DEEP_ARENA_SOUTHERN_OUTSKIRTS_CAVE_DEEP_EXIT = ('Southern Outskirts Cave Deep Arena_Southern Outskirts Cave Deep Exit', Regions.SOUTHERN_OUTSKIRTS_CAVE_DEEP_ARENA, Regions.SOUTHERN_OUTSKIRTS_CAVE_DEEP_EXIT, CanBurrow() & CanBounce())
+    SOUTHERN_OUTSKIRTS_CAVE_DEEP_ENTRANCE_SOUTHERN_OUTSKIRTS_CAVE_DEEP_ARENA = ('Southern Outskirts Cave Deep Entrance_Southern Outskirts Cave Deep Arena', Regions.SOUTHERN_OUTSKIRTS_CAVE_DEEP_ENTRANCE, Regions.SOUTHERN_OUTSKIRTS_CAVE_DEEP_ARENA, CanBurrow() & CanBounce())
+    SOUTHERN_OUTSKIRTS_CAVE_NETWORK_DEEP_EXIT_SOUTHERN_OUTSKIRTS_CAVE_NETWORK_DEEP = ('Southern Outskirts Cave Network Deep Exit_Southern Outskirts Cave Network Deep', Regions.SOUTHERN_OUTSKIRTS_CAVE_NETWORK_DEEP_EXIT, Regions.SOUTHERN_OUTSKIRTS_CAVE_NETWORK_DEEP, HasKear(kear=SingleKears.SOUTHERN_OUTSKIRTS_CAVE_NETWORK_KEAR.value) & CanBounce())
+    SOUTHERN_OUTSKIRTS_CAVE_NETWORK_DEEP_SOUTHERN_OUTSKIRTS_CAVE_NETWORK_MAIN = ('Southern Outskirts Cave Network Deep_Southern Outskirts Cave Network Main', Regions.SOUTHERN_OUTSKIRTS_CAVE_NETWORK_DEEP, Regions.SOUTHERN_OUTSKIRTS_CAVE_NETWORK_MAIN, HasKear(kear=SingleKears.SOUTHERN_OUTSKIRTS_CAVE_NETWORK_KEAR.value) & CanBounce())
+    SOUTHERN_OUTSKIRTS_CAVE_NETWORK_END_SOUTHERN_OUTSKIRTS_CAVE_NETWORK_MAIN = ('Southern Outskirts Cave Network End_Southern Outskirts Cave Network Main', Regions.SOUTHERN_OUTSKIRTS_CAVE_NETWORK_END, Regions.SOUTHERN_OUTSKIRTS_CAVE_NETWORK_MAIN, True_())
+    SOUTHERN_OUTSKIRTS_CAVE_NETWORK_MAIN_SOUTHERN_OUTSKIRTS_CAVE_NETWORK_DEEP = ('Southern Outskirts Cave Network Main_Southern Outskirts Cave Network Deep', Regions.SOUTHERN_OUTSKIRTS_CAVE_NETWORK_MAIN, Regions.SOUTHERN_OUTSKIRTS_CAVE_NETWORK_DEEP, HasKear(kear=SingleKears.SOUTHERN_OUTSKIRTS_CAVE_NETWORK_KEAR.value) & CanBounce() & CanBurrow())
+    SOUTHERN_OUTSKIRTS_CAVE_NETWORK_MAIN_SOUTHERN_OUTSKIRTS_CAVE_NETWORK_END = ('Southern Outskirts Cave Network Main_Southern Outskirts Cave Network End', Regions.SOUTHERN_OUTSKIRTS_CAVE_NETWORK_MAIN, Regions.SOUTHERN_OUTSKIRTS_CAVE_NETWORK_END, CanBounce())
+    SOUTHERN_OUTSKIRTS_COMMONS_BURNED_SOUTHERN_OUTSKIRTS_COMMONS_CLIFF = ('Southern Outskirts Commons Burned_Southern Outskirts Commons Cliff', Regions.SOUTHERN_OUTSKIRTS_COMMONS_BURNED, Regions.SOUTHERN_OUTSKIRTS_COMMONS_CLIFF, CanBurrow() & CanBounce())
+    SOUTHERN_OUTSKIRTS_COMMONS_BURNED_SOUTHERN_OUTSKIRTS_COMMONS_MAIN = ('Southern Outskirts Commons Burned_Southern Outskirts Commons Main', Regions.SOUTHERN_OUTSKIRTS_COMMONS_BURNED, Regions.SOUTHERN_OUTSKIRTS_COMMONS_MAIN, True_())
+    SOUTHERN_OUTSKIRTS_COMMONS_CAVE_ENTRANCE_SOUTHERN_OUTSKIRTS_COMMONS_MAIN = ('Southern Outskirts Commons Cave Entrance_Southern Outskirts Commons Main', Regions.SOUTHERN_OUTSKIRTS_COMMONS_CAVE_ENTRANCE, Regions.SOUTHERN_OUTSKIRTS_COMMONS_MAIN, CanBounce())
+    SOUTHERN_OUTSKIRTS_COMMONS_CLIFF_SOUTHERN_OUTSKIRTS_COMMONS_MAIN = ('Southern Outskirts Commons Cliff_Southern Outskirts Commons Main', Regions.SOUTHERN_OUTSKIRTS_COMMONS_CLIFF, Regions.SOUTHERN_OUTSKIRTS_COMMONS_MAIN, CanClimb())
+    SOUTHERN_OUTSKIRTS_COMMONS_MAIN_SOUTHERN_OUTSKIRTS_COMMONS_BURNED = ('Southern Outskirts Commons Main_Southern Outskirts Commons Burned', Regions.SOUTHERN_OUTSKIRTS_COMMONS_MAIN, Regions.SOUTHERN_OUTSKIRTS_COMMONS_BURNED, CanJumpTiles(distance=4, has_wall=True))
+    SOUTHERN_OUTSKIRTS_COMMONS_MAIN_SOUTHERN_OUTSKIRTS_COMMONS_CAVE_ENTRANCE = ('Southern Outskirts Commons Main_Southern Outskirts Commons Cave Entrance', Regions.SOUTHERN_OUTSKIRTS_COMMONS_MAIN, Regions.SOUTHERN_OUTSKIRTS_COMMONS_CAVE_ENTRANCE, CanBounce())
+    SOUTHERN_OUTSKIRTS_COMMONS_MAIN_SOUTHERN_OUTSKIRTS_REBEL_ROOFTOP = ('Southern Outskirts Commons Main_Southern Outskirts Rebel Rooftop', Regions.SOUTHERN_OUTSKIRTS_COMMONS_MAIN, Regions.SOUTHERN_OUTSKIRTS_REBEL_ROOFTOP, HasKear(kear=SingleKears.SOUTHERN_OUTSKIRTS_ROOFTOP_KEAR.value))
+    SOUTHERN_OUTSKIRTS_COMMONS_REBEL_EXIT_SOUTHERN_OUTSKIRTS_REBEL_ROOFTOP = ('Southern Outskirts Commons Rebel Exit_Southern Outskirts Rebel Rooftop', Regions.SOUTHERN_OUTSKIRTS_COMMONS_REBEL_EXIT, Regions.SOUTHERN_OUTSKIRTS_REBEL_ROOFTOP, CanClimb())
+    SOUTHERN_OUTSKIRTS_COMMONS_UPPER_SOUTHERN_OUTSKIRTS_COMMONS_BURNED = ('Southern Outskirts Commons Upper_Southern Outskirts Commons Burned', Regions.SOUTHERN_OUTSKIRTS_COMMONS_UPPER, Regions.SOUTHERN_OUTSKIRTS_COMMONS_BURNED, True_())
+    SOUTHERN_OUTSKIRTS_COMMONS_WESTERN_PIT_ROOM_MAIN_SOUTHERN_OUTSKIRTS_COMMONS_WESTERN_PIT_ROOM_PIT = ('Southern Outskirts Commons Western Pit Room Main_Southern Outskirts Commons Western Pit Room Pit', Regions.SOUTHERN_OUTSKIRTS_COMMONS_WESTERN_PIT_ROOM_MAIN, Regions.SOUTHERN_OUTSKIRTS_COMMONS_WESTERN_PIT_ROOM_PIT, CanJumpTiles(distance=4, has_wall=True) | CanBurrow())
+    SOUTHERN_OUTSKIRTS_COMMONS_WESTERN_PIT_ROOM_PIT_SOUTHERN_OUTSKIRTS_COMMONS_WESTERN_PIT_ROOM_MAIN = ('Southern Outskirts Commons Western Pit Room Pit_Southern Outskirts Commons Western Pit Room Main', Regions.SOUTHERN_OUTSKIRTS_COMMONS_WESTERN_PIT_ROOM_PIT, Regions.SOUTHERN_OUTSKIRTS_COMMONS_WESTERN_PIT_ROOM_MAIN, CanJumpTiles(distance=4, has_wall=True))
+    SOUTHERN_OUTSKIRTS_FOUR_FLOWERS_SANDFALL_SOUTHERN_OUTSKIRTS_FOUR_FLOWERS_SHORTCUT = ('Southern Outskirts Four Flowers Sandfall_Southern Outskirts Four Flowers Shortcut', Regions.SOUTHERN_OUTSKIRTS_FOUR_FLOWERS_SANDFALL, Regions.SOUTHERN_OUTSKIRTS_FOUR_FLOWERS_SHORTCUT, CanBounce())
+    SOUTHERN_OUTSKIRTS_FOUR_FLOWERS_SHORTCUT_SOUTHERN_OUTSKIRTS_FOUR_FLOWERS_SANDFALL = ('Southern Outskirts Four Flowers Shortcut_Southern Outskirts Four Flowers Sandfall', Regions.SOUTHERN_OUTSKIRTS_FOUR_FLOWERS_SHORTCUT, Regions.SOUTHERN_OUTSKIRTS_FOUR_FLOWERS_SANDFALL, CanBounce())
+    SOUTHERN_OUTSKIRTS_MINING_PASSAGE_ENTRANCE_MAIN_SOUTHERN_OUTSKIRTS_MINING_PASSAGE_ENTRANCE = ('Southern Outskirts Mining Passage Entrance Main_Southern Outskirts Mining Passage Entrance', Regions.SOUTHERN_OUTSKIRTS_MINING_PASSAGE_ENTRANCE_MAIN, Regions.SOUTHERN_OUTSKIRTS_MINING_PASSAGE_ENTRANCE, True_())
+    SOUTHERN_OUTSKIRTS_MINING_PASSAGE_ENTRANCE_MAIN_SOUTHERN_OUTSKIRTS_MINING_PASSAGE_ENTRANCE_EXIT = ('Southern Outskirts Mining Passage Entrance Main_Southern Outskirts Mining Passage Entrance Exit', Regions.SOUTHERN_OUTSKIRTS_MINING_PASSAGE_ENTRANCE_MAIN, Regions.SOUTHERN_OUTSKIRTS_MINING_PASSAGE_ENTRANCE_EXIT, True_())
+    SOUTHERN_OUTSKIRTS_MINING_PASSAGE_ENTRANCE_SOUTHERN_OUTSKIRTS_MINING_PASSAGE_ENTRANCE_MAIN = ('Southern Outskirts Mining Passage Entrance_Southern Outskirts Mining Passage Entrance Main', Regions.SOUTHERN_OUTSKIRTS_MINING_PASSAGE_ENTRANCE, Regions.SOUTHERN_OUTSKIRTS_MINING_PASSAGE_ENTRANCE_MAIN, HasVialsCount(count=2))
+    SOUTHERN_OUTSKIRTS_REBEL_BARRACKS_COMPANION_END_SOUTHERN_OUTSKIRTS_REBEL_BARRACKS_COMPANION_START = ('Southern Outskirts Rebel Barracks Companion End_Southern Outskirts Rebel Barracks Companion Start', Regions.SOUTHERN_OUTSKIRTS_REBEL_BARRACKS_COMPANION_END, Regions.SOUTHERN_OUTSKIRTS_REBEL_BARRACKS_COMPANION_START, CanBurrow())
+    SOUTHERN_OUTSKIRTS_REBEL_BARRACKS_COMPANION_START_SOUTHERN_OUTSKIRTS_REBEL_BARRACKS_COMPANION_END = ('Southern Outskirts Rebel Barracks Companion Start_Southern Outskirts Rebel Barracks Companion End', Regions.SOUTHERN_OUTSKIRTS_REBEL_BARRACKS_COMPANION_START, Regions.SOUTHERN_OUTSKIRTS_REBEL_BARRACKS_COMPANION_END, CanBurrow())
+    SOUTHERN_OUTSKIRTS_REBEL_BARRACKS_PRISON_DROP_SOUTHERN_OUTSKIRTS_REBEL_BARRACKS_PRISON = ('Southern Outskirts Rebel Barracks Prison Drop_Southern Outskirts Rebel Barracks Prison', Regions.SOUTHERN_OUTSKIRTS_REBEL_BARRACKS_PRISON_DROP, Regions.SOUTHERN_OUTSKIRTS_REBEL_BARRACKS_PRISON, True_())
+    SOUTHERN_OUTSKIRTS_REBEL_ROOFTOP_SOUTHERN_OUTSKIRTS_COMMONS_MAIN = ('Southern Outskirts Rebel Rooftop_Southern Outskirts Commons Main', Regions.SOUTHERN_OUTSKIRTS_REBEL_ROOFTOP, Regions.SOUTHERN_OUTSKIRTS_COMMONS_MAIN, True_())
+    SOUTHERN_OUTSKIRTS_RESIDENCE_EXIT_SOUTHERN_OUTSKIRTS_COMMONS_MAIN = ('Southern Outskirts Residence Exit_Southern Outskirts Commons Main', Regions.SOUTHERN_OUTSKIRTS_RESIDENCE_EXIT, Regions.SOUTHERN_OUTSKIRTS_COMMONS_MAIN, True_())
+    SOUTHERN_OUTSKIRTS_RESIDENCE_TOP_SOUTHERN_OUTSKIRTS_RESIDENCE_MAIN = ('Southern Outskirts Residence Top_Southern Outskirts Residence Main', Regions.SOUTHERN_OUTSKIRTS_RESIDENCE_TOP, Regions.SOUTHERN_OUTSKIRTS_RESIDENCE_MAIN, True_())
 
-connections: dict[str, RegionConnection] = {
-    'Ossex Entry Eastern Wall Chest_Southern Outskirts Commons Ossex Entry': RegionConnection('Ossex Entry Eastern Wall Chest', 'Southern Outskirts Commons Ossex Entry', True_()),
-    'Ossex Entry Western Wall Chest Rope': RegionConnection('Ossex Entry Western Wall Chest', 'Southern Outskirts Commons Ossex Entry', CanClimb()),
-    'Ossex Entry Western Wall Left_Ossex Entry Western Wall Right': RegionConnection('Ossex Entry Western Wall Left', 'Ossex Entry Western Wall Right', CanBurrow() & CanBounce()),
-    'Ossex Entry Western Wall Right_Ossex Entry Western Wall Left': RegionConnection('Ossex Entry Western Wall Right', 'Ossex Entry Western Wall Left', CanBurrow() & CanBounce()),
-    'Ossex South Western Wall_Southern Outskirts Commons Western Pit Room Main': RegionConnection('Ossex South Western Wall', 'Southern Outskirts Commons Western Pit Room Main', CanClimb()),
-    'Ossex Western Wall_Western Wilds Overgrown Path': RegionConnection('Ossex Western Wall', 'Western Wilds Overgrown Path', True_()),
-    'Southern Outskirts Cave Deep Arena_Southern Outskirts Cave Deep Exit': RegionConnection('Southern Outskirts Cave Deep Arena', 'Southern Outskirts Cave Deep Exit', CanBurrow() & CanBounce()),
-    'Southern Outskirts Cave Deep Entrance_Southern Outskirts Cave Deep Arena': RegionConnection('Southern Outskirts Cave Deep Entrance', 'Southern Outskirts Cave Deep Arena', CanBurrow() & CanBounce()),
-    'Southern Outskirts Cave Network Deep Exit_Southern Outskirts Cave Network Deep': RegionConnection('Southern Outskirts Cave Network Deep Exit', 'Southern Outskirts Cave Network Deep', HasKear(kear=SingleKears.SOUTHERN_OUTSKIRTS_CAVE_NETWORK_KEAR.value) & CanBounce()),
-    'Southern Outskirts Cave Network Deep_Southern Outskirts Cave Network Main': RegionConnection('Southern Outskirts Cave Network Deep', 'Southern Outskirts Cave Network Main', HasKear(kear=SingleKears.SOUTHERN_OUTSKIRTS_CAVE_NETWORK_KEAR.value) & CanBounce()),
-    'Southern Outskirts Cave Network End_Southern Outskirts Cave Network Main': RegionConnection('Southern Outskirts Cave Network End', 'Southern Outskirts Cave Network Main', True_()),
-    'Southern Outskirts Cave Network Main_Southern Outskirts Cave Network Deep': RegionConnection('Southern Outskirts Cave Network Main', 'Southern Outskirts Cave Network Deep', HasKear(kear=SingleKears.SOUTHERN_OUTSKIRTS_CAVE_NETWORK_KEAR.value) & CanBounce() & CanBurrow()),
-    'Southern Outskirts Cave Network Main_Southern Outskirts Cave Network End': RegionConnection('Southern Outskirts Cave Network Main', 'Southern Outskirts Cave Network End', CanBounce()),
-    'Southern Outskirts Commons Burned_Southern Outskirts Commons Cliff': RegionConnection('Southern Outskirts Commons Burned', 'Southern Outskirts Commons Cliff', CanBurrow() & CanBounce()),
-    'Southern Outskirts Commons Burned_Southern Outskirts Commons Main': RegionConnection('Southern Outskirts Commons Burned', 'Southern Outskirts Commons Main', True_()),
-    'Southern Outskirts Commons Cave Entrance_Southern Outskirts Commons Main': RegionConnection('Southern Outskirts Commons Cave Entrance', 'Southern Outskirts Commons Main', CanBounce()),
-    'Southern Outskirts Commons Cliff_Southern Outskirts Commons Main': RegionConnection('Southern Outskirts Commons Cliff', 'Southern Outskirts Commons Main', CanClimb()),
-    'Southern Outskirts Commons Main_Southern Outskirts Commons Burned': RegionConnection('Southern Outskirts Commons Main', 'Southern Outskirts Commons Burned', CanJumpTiles(distance=4, has_wall=True)),
-    'Southern Outskirts Commons Main_Southern Outskirts Commons Cave Entrance': RegionConnection('Southern Outskirts Commons Main', 'Southern Outskirts Commons Cave Entrance', CanBounce()),
-    'Southern Outskirts Commons Main_Southern Outskirts Rebel Rooftop': RegionConnection('Southern Outskirts Commons Main', 'Southern Outskirts Rebel Rooftop', HasKear(kear=SingleKears.SOUTHERN_OUTSKIRTS_ROOFTOP_KEAR.value)),
-    'Southern Outskirts Commons Rebel Exit_Southern Outskirts Rebel Rooftop': RegionConnection('Southern Outskirts Commons Rebel Exit', 'Southern Outskirts Rebel Rooftop', CanClimb()),
-    'Southern Outskirts Commons Upper_Southern Outskirts Commons Burned': RegionConnection('Southern Outskirts Commons Upper', 'Southern Outskirts Commons Burned', True_()),
-    'Southern Outskirts Commons Western Pit Room Main_Southern Outskirts Commons Western Pit Room Pit': RegionConnection('Southern Outskirts Commons Western Pit Room Main', 'Southern Outskirts Commons Western Pit Room Pit', CanJumpTiles(distance=4, has_wall=True) | CanBurrow()),
-    'Southern Outskirts Commons Western Pit Room Pit_Southern Outskirts Commons Western Pit Room Main': RegionConnection('Southern Outskirts Commons Western Pit Room Pit', 'Southern Outskirts Commons Western Pit Room Main', CanJumpTiles(distance=4, has_wall=True)),
-    'Southern Outskirts Four Flowers Sandfall_Southern Outskirts Four Flowers Shortcut': RegionConnection('Southern Outskirts Four Flowers Sandfall', 'Southern Outskirts Four Flowers Shortcut', CanBounce()),
-    'Southern Outskirts Four Flowers Shortcut_Southern Outskirts Four Flowers Sandfall': RegionConnection('Southern Outskirts Four Flowers Shortcut', 'Southern Outskirts Four Flowers Sandfall', CanBounce()),
-    'Southern Outskirts Mining Passage Entrance Main_Southern Outskirts Mining Passage Entrance': RegionConnection('Southern Outskirts Mining Passage Entrance Main', 'Southern Outskirts Mining Passage Entrance', True_()),
-    'Southern Outskirts Mining Passage Entrance Main_Southern Outskirts Mining Passage Entrance Exit': RegionConnection('Southern Outskirts Mining Passage Entrance Main', 'Southern Outskirts Mining Passage Entrance Exit', True_()),
-    'Southern Outskirts Mining Passage Entrance_Southern Outskirts Mining Passage Entrance Main': RegionConnection('Southern Outskirts Mining Passage Entrance', 'Southern Outskirts Mining Passage Entrance Main', HasVialsCount(count=2)),
-    'Southern Outskirts Rebel Barracks Companion End_Southern Outskirts Rebel Barracks Companion Start': RegionConnection('Southern Outskirts Rebel Barracks Companion End', 'Southern Outskirts Rebel Barracks Companion Start', CanBurrow()),
-    'Southern Outskirts Rebel Barracks Companion Start_Southern Outskirts Rebel Barracks Companion End': RegionConnection('Southern Outskirts Rebel Barracks Companion Start', 'Southern Outskirts Rebel Barracks Companion End', CanBurrow()),
-    'Southern Outskirts Rebel Barracks Prison Drop_Southern Outskirts Rebel Barracks Prison': RegionConnection('Southern Outskirts Rebel Barracks Prison Drop', 'Southern Outskirts Rebel Barracks Prison', True_()),
-    'Southern Outskirts Rebel Rooftop_Southern Outskirts Commons Main': RegionConnection('Southern Outskirts Rebel Rooftop', 'Southern Outskirts Commons Main', True_()),
-    'Southern Outskirts Residence Exit_Southern Outskirts Commons Main': RegionConnection('Southern Outskirts Residence Exit', 'Southern Outskirts Commons Main', True_()),
-    'Southern Outskirts Residence Top_Southern Outskirts Residence Main': RegionConnection('Southern Outskirts Residence Top', 'Southern Outskirts Residence Main', True_()),
-}
+class RegionTransitions(TransitionTypeEnum):
+    OSSEX_ENTRY_EASTERN_WALL_CHEST_EAST_TRANSITION = ('Ossex Entry Eastern Wall Chest East Transition', Regions.OSSEX_ENTRY_EASTERN_WALL_CHEST, Regions.OSSEX_ENTRY_EASTERN_WALL, DirectionType.EAST, TransitionType.SCREENS, True_())
+    OSSEX_ENTRY_EASTERN_WALL_EAST_TRANSITION = ('Ossex Entry Eastern Wall East Transition', Regions.OSSEX_ENTRY_EASTERN_WALL, Regions.OSSEX_SOUTH_EASTERN_WALL, DirectionType.EAST, TransitionType.SCREENS, True_())
+    OSSEX_ENTRY_EASTERN_WALL_WEST_TRANSITION = ('Ossex Entry Eastern Wall West Transition', Regions.OSSEX_ENTRY_EASTERN_WALL, Regions.OSSEX_ENTRY_EASTERN_WALL_CHEST, DirectionType.WEST, TransitionType.SCREENS, True_())
+    OSSEX_ENTRY_WESTERN_WALL_CHEST_EAST_TRANSITION = ('Ossex Entry Western Wall Chest East Transition', Regions.OSSEX_ENTRY_WESTERN_WALL_CHEST, Regions.OSSEX_ENTRY_WESTERN_WALL_RIGHT, DirectionType.WEST, TransitionType.SCREENS, True_())
+    OSSEX_ENTRY_WESTERN_WALL_RIGHT_EAST_TRANSITION = ('Ossex Entry Western Wall Right East Transition', Regions.OSSEX_ENTRY_WESTERN_WALL_RIGHT, Regions.OSSEX_ENTRY_WESTERN_WALL_CHEST, DirectionType.EAST, TransitionType.SCREENS, True_())
+    OSSEX_ENTRY_WESTERN_WALL_WEST_TRANSITION = ('Ossex Entry Western Wall West Transition', Regions.OSSEX_ENTRY_WESTERN_WALL_LEFT, Regions.OSSEX_SOUTH_WESTERN_WALL, DirectionType.WEST, TransitionType.SCREENS, True_())
+    OSSEX_SOUTH_EASTERN_WALL = ('Ossex South Eastern Wall', Regions.OSSEX_SOUTH_EASTERN_WALL, Regions.OSSEX_EASTERN_WALL, DirectionType.NORTH, TransitionType.SCREENS, True_())
+    OSSEX_SOUTH_EASTERN_WALL_WEST_TRANSITION = ('Ossex South Eastern Wall West Transition', Regions.OSSEX_SOUTH_EASTERN_WALL, Regions.OSSEX_ENTRY_EASTERN_WALL, DirectionType.WEST, TransitionType.SCREENS, True_())
+    OSSEX_SOUTH_WESTERN_WALL_EAST_TRANSITION = ('Ossex South Western Wall East Transition', Regions.OSSEX_SOUTH_WESTERN_WALL, Regions.OSSEX_ENTRY_WESTERN_WALL_LEFT, DirectionType.EAST, TransitionType.SCREENS, True_())
+    OSSEX_SOUTH_WESTERN_WALL_NORTH_BURROW = ('Ossex South Western Wall North Burrow', Regions.OSSEX_SOUTH_WESTERN_WALL, Regions.OSSEX_WESTERN_WALL, DirectionType.NORTH, TransitionType.BURROW, CanBurrow())
+    SOUTHERN_OUTSKIRTS_CAVE_DEEP_ENTRANCE_EAST_TRANSITION = ('Southern Outskirts Cave Deep Entrance East Transition', Regions.SOUTHERN_OUTSKIRTS_CAVE_DEEP_ENTRANCE, Regions.SOUTHERN_OUTSKIRTS_CAVE_NETWORK_DEEP, DirectionType.EAST, TransitionType.SCREENS, True_())
+    SOUTHERN_OUTSKIRTS_CAVE_DEEP_EXIT_EAST_TRANSITION = ('Southern Outskirts Cave Deep Exit East Transition', Regions.SOUTHERN_OUTSKIRTS_CAVE_DEEP_EXIT, Regions.SOUTHERN_OUTSKIRTS_CAVE_NETWORK_DEEP_EXIT, DirectionType.EAST, TransitionType.SCREENS, True_())
+    SOUTHERN_OUTSKIRTS_CAVE_NETWORK_DEEP_EXIT_WEST_TRANSITION = ('Southern Outskirts Cave Network Deep Exit West Transition', Regions.SOUTHERN_OUTSKIRTS_CAVE_NETWORK_DEEP_EXIT, Regions.SOUTHERN_OUTSKIRTS_CAVE_DEEP_EXIT, DirectionType.WEST, TransitionType.SCREENS, True_())
+    SOUTHERN_OUTSKIRTS_CAVE_NETWORK_DEEP_WEST_TRANSITION = ('Southern Outskirts Cave Network Deep West Transition', Regions.SOUTHERN_OUTSKIRTS_CAVE_NETWORK_DEEP, Regions.SOUTHERN_OUTSKIRTS_CAVE_DEEP_ENTRANCE, DirectionType.WEST, TransitionType.SCREENS, True_())
+    SOUTHERN_OUTSKIRTS_CAVE_NETWORK_END_STAIRS = ('Southern Outskirts Cave Network End Stairs', Regions.SOUTHERN_OUTSKIRTS_CAVE_NETWORK_END, Regions.SOUTHERN_OUTSKIRTS_COMMONS_UPPER, DirectionType.NORTH, TransitionType.STAIRS, True_())
+    SOUTHERN_OUTSKIRTS_CAVE_NETWORK_MAIN_STAIRS = ('Southern Outskirts Cave Network Main Stairs', Regions.SOUTHERN_OUTSKIRTS_CAVE_NETWORK_MAIN, Regions.SOUTHERN_OUTSKIRTS_COMMONS_CAVE_ENTRANCE, DirectionType.NORTH, TransitionType.STAIRS, True_())
+    SOUTHERN_OUTSKIRTS_CAVE_NETWORK_MINING_PASSAGE_ENTRANCE_ENTRANCE_SOUTHERN_OUTSKIRTS_MINING_PASSAGE_ENTRANCE = ('Southern Outskirts Cave Network Mining Passage Entrance Entrance_Southern Outskirts Mining Passage Entrance', Regions.SOUTHERN_OUTSKIRTS_CAVE_NETWORK_MINING_PASSAGE_ENTRANCE_ENTRANCE, Regions.SOUTHERN_OUTSKIRTS_MINING_PASSAGE_ENTRANCE, DirectionType.SOUTH, TransitionType.SCREENS, True_())
+    SOUTHERN_OUTSKIRTS_CAVE_NETWORK_MINING_PASSAGE_ENTRANCE_NORTH_STAIRS = ('Southern Outskirts Cave Network Mining Passage Entrance North Stairs', Regions.SOUTHERN_OUTSKIRTS_CAVE_NETWORK_MINING_PASSAGE_ENTRANCE_ENTRANCE, Regions.SOUTHERN_OUTSKIRTS_COMMONS_CLIFF, DirectionType.NORTH, TransitionType.STAIRS, True_())
+    SOUTHERN_OUTSKIRTS_COMMONS_CAVE_ENTRANCE_STAIRS = ('Southern Outskirts Commons Cave Entrance Stairs', Regions.SOUTHERN_OUTSKIRTS_COMMONS_CAVE_ENTRANCE, Regions.SOUTHERN_OUTSKIRTS_CAVE_NETWORK_MAIN, DirectionType.NORTH, TransitionType.STAIRS, True_())
+    SOUTHERN_OUTSKIRTS_COMMONS_CLIFF_MINING_STAIRS = ('Southern Outskirts Commons Cliff Mining Stairs', Regions.SOUTHERN_OUTSKIRTS_COMMONS_CLIFF, Regions.SOUTHERN_OUTSKIRTS_MINING_PASSAGE_ENTRANCE, DirectionType.NORTH, TransitionType.STAIRS, True_())
+    SOUTHERN_OUTSKIRTS_COMMONS_CLIFF_SOUTH_BURROW = ('Southern Outskirts Commons Cliff South Burrow', Regions.SOUTHERN_OUTSKIRTS_COMMONS_CLIFF, Regions.SOUTHERN_OUTSKIRTS_POPPIT, DirectionType.SOUTH, TransitionType.BURROW, True_())
+    SOUTHERN_OUTSKIRTS_COMMONS_EAST_OSSEX_EAST_TRANSITION = ('Southern Outskirts Commons East Ossex East Transition', Regions.SOUTHERN_OUTSKIRTS_COMMONS_EAST_OSSEX, Regions.SOUTHERN_OUTSKIRTS_MOONBATH, DirectionType.EAST, TransitionType.SCREENS, True_())
+    SOUTHERN_OUTSKIRTS_COMMONS_EAST_OSSEX_WEST_TRANSITION = ('Southern Outskirts Commons East Ossex West Transition', Regions.SOUTHERN_OUTSKIRTS_COMMONS_EAST_OSSEX, Regions.SOUTHERN_OUTSKIRTS_COMMONS_OSSEX_ENTRY, DirectionType.WEST, TransitionType.SCREENS, True_())
+    SOUTHERN_OUTSKIRTS_COMMONS_MAIN_EAST_TRANSITION = ('Southern Outskirts Commons Main East Transition', Regions.SOUTHERN_OUTSKIRTS_COMMONS_MAIN, Regions.SOUTHERN_OUTSKIRTS_COMMONS_SOUTHERN_PIT_ROOM_MAIN, DirectionType.EAST, TransitionType.SCREENS, True_())
+    SOUTHERN_OUTSKIRTS_COMMONS_MAIN_NORTH_TRANSITION = ('Southern Outskirts Commons Main North Transition', Regions.SOUTHERN_OUTSKIRTS_COMMONS_MAIN, Regions.SOUTHERN_OUTSKIRTS_COMMONS_OSSEX_ENTRY, DirectionType.NORTH, TransitionType.SCREENS, True_())
+    SOUTHERN_OUTSKIRTS_COMMONS_MAIN_RESIDENCE_DOOR = ('Southern Outskirts Commons Main Residence Door', Regions.SOUTHERN_OUTSKIRTS_COMMONS_MAIN, Regions.SOUTHERN_OUTSKIRTS_RESIDENCE_MAIN, DirectionType.NORTH, TransitionType.DOORS, True_())
+    SOUTHERN_OUTSKIRTS_COMMONS_MAIN_SOUTH_TRANSITION = ('Southern Outskirts Commons Main South Transition', Regions.SOUTHERN_OUTSKIRTS_COMMONS_MAIN, Regions.LONERS_LANDING_BOARDWALK_SPIKE_GATE, DirectionType.SOUTH, TransitionType.AREA_SCREENS, True_())
+    SOUTHERN_OUTSKIRTS_COMMONS_OSSEX_ENTRY_EAST_TRANSITIONS = ('Southern Outskirts Commons Ossex Entry East Transitions', Regions.SOUTHERN_OUTSKIRTS_COMMONS_OSSEX_ENTRY, Regions.SOUTHERN_OUTSKIRTS_COMMONS_EAST_OSSEX, DirectionType.EAST, TransitionType.SCREENS, True_())
+    SOUTHERN_OUTSKIRTS_COMMONS_OSSEX_ENTRY_NORTH_GATE = ('Southern Outskirts Commons Ossex Entry North Gate', Regions.SOUTHERN_OUTSKIRTS_COMMONS_OSSEX_ENTRY, Regions.OSSEX_CITY_CENTER_MAIN, DirectionType.SOUTH, TransitionType.AREA_SCREENS, True_())
+    SOUTHERN_OUTSKIRTS_COMMONS_OSSEX_ENTRY_SOUTH_TRANSITION = ('Southern Outskirts Commons Ossex Entry South Transition', Regions.SOUTHERN_OUTSKIRTS_COMMONS_OSSEX_ENTRY, Regions.SOUTHERN_OUTSKIRTS_COMMONS_MAIN, DirectionType.SOUTH, TransitionType.SCREENS, True_())
+    SOUTHERN_OUTSKIRTS_COMMONS_OSSEX_ENTRY_WEST_TRANSITIONS = ('Southern Outskirts Commons Ossex Entry West Transitions', Regions.SOUTHERN_OUTSKIRTS_COMMONS_OSSEX_ENTRY, Regions.SOUTHERN_OUTSKIRTS_COMMONS_WEST_OSSEX, DirectionType.WEST, TransitionType.SCREENS, True_())
+    SOUTHERN_OUTSKIRTS_COMMONS_RESIDENCE_ROOF_SOUTH_SOUTHERN_OUTSKIRTS_RESIDENCE_TOP = ('Southern Outskirts Commons Residence Roof South Southern Outskirts Residence Top', Regions.SOUTHERN_OUTSKIRTS_COMMONS_RESIDENCE_ROOF, Regions.SOUTHERN_OUTSKIRTS_RESIDENCE_TOP, DirectionType.SOUTH, TransitionType.GEYSER_DOWN, True_())
+    SOUTHERN_OUTSKIRTS_COMMONS_SOUTHERN_PIT_ROOM_MAIN_EAST_TRANSITION = ('Southern Outskirts Commons Southern Pit Room Main East Transition', Regions.SOUTHERN_OUTSKIRTS_COMMONS_SOUTHERN_PIT_ROOM_MAIN, Regions.SOUTHERN_OUTSKIRTS_COMMONS_MAIN, DirectionType.EAST, TransitionType.SCREENS, True_())
+    SOUTHERN_OUTSKIRTS_COMMONS_SOUTHERN_PIT_ROOM_MAIN_NORTH_TRANSITION = ('Southern Outskirts Commons Southern Pit Room Main North Transition', Regions.SOUTHERN_OUTSKIRTS_COMMONS_SOUTHERN_PIT_ROOM_MAIN, Regions.SOUTHERN_OUTSKIRTS_COMMONS_WESTERN_PIT_ROOM_MAIN, DirectionType.NORTH, TransitionType.SCREENS, True_())
+    SOUTHERN_OUTSKIRTS_COMMONS_SOUTHERN_PIT_ROOM_ROOF_EAST_TRANSITION = ('Southern Outskirts Commons Southern Pit Room Roof East Transition', Regions.SOUTHERN_OUTSKIRTS_COMMONS_SOUTHERN_PIT_ROOM_ROOF, Regions.SOUTHERN_OUTSKIRTS_COMMONS_RESIDENCE_ROOF, DirectionType.EAST, TransitionType.SCREENS, True_())
+    SOUTHERN_OUTSKIRTS_COMMONS_SOUTHERN_PIT_ROOM_ROOF_NORTH_TRANSITION = ('Southern Outskirts Commons Southern Pit Room Roof North Transition', Regions.SOUTHERN_OUTSKIRTS_COMMONS_SOUTHERN_PIT_ROOM_ROOF, Regions.SOUTHERN_OUTSKIRTS_COMMONS_WESTERN_PIT_ROOM_PIT, DirectionType.NORTH, TransitionType.SCREENS, True_())
+    SOUTHERN_OUTSKIRTS_COMMONS_UPPER_NORTH_TRANSITION = ('Southern Outskirts Commons Upper North Transition', Regions.SOUTHERN_OUTSKIRTS_COMMONS_UPPER, Regions.SOUTHERN_OUTSKIRTS_COMMONS_EAST_OSSEX, DirectionType.OVERWORLD, TransitionType.DO_NOT_RANDOMIZE_ENTRANCE, CanBounce())
+    SOUTHERN_OUTSKIRTS_COMMONS_UPPER_STAIRS = ('Southern Outskirts Commons Upper Stairs', Regions.SOUTHERN_OUTSKIRTS_COMMONS_UPPER, Regions.SOUTHERN_OUTSKIRTS_CAVE_NETWORK_END, DirectionType.NORTH, TransitionType.STAIRS, True_())
+    SOUTHERN_OUTSKIRTS_COMMONS_WEST_OSSEX_EAST_TRANSITION = ('Southern Outskirts Commons West Ossex East Transition', Regions.SOUTHERN_OUTSKIRTS_COMMONS_WEST_OSSEX, Regions.SOUTHERN_OUTSKIRTS_COMMONS_OSSEX_ENTRY, DirectionType.EAST, TransitionType.SCREENS, True_())
+    SOUTHERN_OUTSKIRTS_COMMONS_WEST_OSSEX_WEST_TRANSITION = ('Southern Outskirts Commons West Ossex West Transition', Regions.SOUTHERN_OUTSKIRTS_COMMONS_WEST_OSSEX, Regions.SOUTHERN_OUTSKIRTS_COMMONS_WESTERN_PIT_ROOM_PIT, DirectionType.WEST, TransitionType.SCREENS, True_())
+    SOUTHERN_OUTSKIRTS_COMMONS_WESTERN_PIT_ROOM_MAIN_NORTH_AREA_TRANSITION = ('Southern Outskirts Commons Western Pit Room Main North Area Transition', Regions.SOUTHERN_OUTSKIRTS_COMMONS_WESTERN_PIT_ROOM_MAIN, Regions.WESTERN_WILDS_OVERGROWN_PATH, DirectionType.NORTH, TransitionType.AREA_SCREENS, True_())
+    SOUTHERN_OUTSKIRTS_COMMONS_WESTERN_PIT_ROOM_MAIN_SOUTH_TRANSITION = ('Southern Outskirts Commons Western Pit Room Main South Transition', Regions.SOUTHERN_OUTSKIRTS_COMMONS_WESTERN_PIT_ROOM_MAIN, Regions.SOUTHERN_OUTSKIRTS_COMMONS_SOUTHERN_PIT_ROOM_MAIN, DirectionType.SOUTH, TransitionType.SCREENS, True_())
+    SOUTHERN_OUTSKIRTS_COMMONS_WESTERN_PIT_ROOM_PIT_EAST_TRANSITION = ('Southern Outskirts Commons Western Pit Room Pit East Transition', Regions.SOUTHERN_OUTSKIRTS_COMMONS_WESTERN_PIT_ROOM_PIT, Regions.SOUTHERN_OUTSKIRTS_COMMONS_WEST_OSSEX, DirectionType.EAST, TransitionType.SCREENS, True_())
+    SOUTHERN_OUTSKIRTS_COMMONS_WESTERN_PIT_ROOM_PIT_SOUTH_TRANSITION = ('Southern Outskirts Commons Western Pit Room Pit South Transition', Regions.SOUTHERN_OUTSKIRTS_COMMONS_WESTERN_PIT_ROOM_PIT, Regions.SOUTHERN_OUTSKIRTS_COMMONS_SOUTHERN_PIT_ROOM_ROOF, DirectionType.SOUTH, TransitionType.SCREENS, True_())
+    SOUTHERN_OUTSKIRTS_FOUR_FLOWERS_SANDFALL_EAST_TRANSITION = ('Southern Outskirts Four Flowers Sandfall East Transition', Regions.SOUTHERN_OUTSKIRTS_FOUR_FLOWERS_SANDFALL, Regions.SANDFALLS_MINING_OUTLOOK, DirectionType.EAST, TransitionType.AREA_SCREENS, True_())
+    SOUTHERN_OUTSKIRTS_FOUR_FLOWERS_SHORTCUT_EAST_TRANSTION = ('Southern Outskirts Four Flowers Shortcut East transtion', Regions.SOUTHERN_OUTSKIRTS_FOUR_FLOWERS_SHORTCUT, Regions.SOUTHERN_OUTSKIRTS_COMMONS_UPPER, DirectionType.OVERWORLD, TransitionType.DO_NOT_RANDOMIZE_ENTRANCE, True_())
+    SOUTHERN_OUTSKIRTS_MINING_PASSAGE_EMPTY_NORTH_TRANSITION = ('Southern Outskirts Mining Passage Empty North Transition', Regions.SOUTHERN_OUTSKIRTS_MINING_PASSAGE_EMPTY, Regions.SOUTHERN_OUTSKIRTS_MINING_PASSAGE_EXIT, DirectionType.NORTH, TransitionType.SCREENS, True_())
+    SOUTHERN_OUTSKIRTS_MINING_PASSAGE_EMPTY_WEST_TRANSITION = ('Southern Outskirts Mining Passage Empty West Transition', Regions.SOUTHERN_OUTSKIRTS_MINING_PASSAGE_EMPTY, Regions.SOUTHERN_OUTSKIRTS_MINING_PASSAGE_FENCE, DirectionType.WEST, TransitionType.SCREENS, True_())
+    SOUTHERN_OUTSKIRTS_MINING_PASSAGE_ENTRANCE_EXIT_EAST_TRANSITION = ('Southern Outskirts Mining Passage Entrance Exit East Transition', Regions.SOUTHERN_OUTSKIRTS_MINING_PASSAGE_ENTRANCE_EXIT, Regions.SOUTHERN_OUTSKIRTS_MINING_PASSAGE_FENCE, DirectionType.EAST, TransitionType.SCREENS, True_())
+    SOUTHERN_OUTSKIRTS_MINING_PASSAGE_ENTRANCE_NORTH_TRANSITION = ('Southern Outskirts Mining Passage Entrance North Transition', Regions.SOUTHERN_OUTSKIRTS_MINING_PASSAGE_ENTRANCE, Regions.SOUTHERN_OUTSKIRTS_CAVE_NETWORK_MINING_PASSAGE_ENTRANCE_ENTRANCE, DirectionType.NORTH, TransitionType.SCREENS, True_())
+    SOUTHERN_OUTSKIRTS_MINING_PASSAGE_EXIT_SOUTH_TRANSITION = ('Southern Outskirts Mining Passage Exit South Transition', Regions.SOUTHERN_OUTSKIRTS_MINING_PASSAGE_EXIT, Regions.SOUTHERN_OUTSKIRTS_MINING_PASSAGE_EMPTY, DirectionType.SOUTH, TransitionType.SCREENS, True_())
+    SOUTHERN_OUTSKIRTS_MINING_PASSAGE_EXIT_STAIRS = ('Southern Outskirts Mining Passage Exit Stairs', Regions.SOUTHERN_OUTSKIRTS_MINING_PASSAGE_EXIT, Regions.SANDFALLS_MINING_OUTLOOK, DirectionType.NORTH, TransitionType.STAIRS, True_())
+    SOUTHERN_OUTSKIRTS_MINING_PASSAGE_EXIT_WEST_BURROW = ('Southern Outskirts Mining Passage Exit West Burrow', Regions.SOUTHERN_OUTSKIRTS_MINING_PASSAGE_EXIT, Regions.SOUTHERN_OUTSKIRTS_MINING_PASSAGE_SECRET, DirectionType.WEST, TransitionType.BURROW, CanBurrow())
+    SOUTHERN_OUTSKIRTS_MINING_PASSAGE_FENCE_EAST_TRANSITION = ('Southern Outskirts Mining Passage Fence East Transition', Regions.SOUTHERN_OUTSKIRTS_MINING_PASSAGE_FENCE, Regions.SOUTHERN_OUTSKIRTS_MINING_PASSAGE_EMPTY, DirectionType.EAST, TransitionType.SCREENS, CanBurrow())
+    SOUTHERN_OUTSKIRTS_MINING_PASSAGE_FENCE_WEST_TRANSITION = ('Southern Outskirts Mining Passage Fence West Transition', Regions.SOUTHERN_OUTSKIRTS_MINING_PASSAGE_FENCE, Regions.SOUTHERN_OUTSKIRTS_MINING_PASSAGE_ENTRANCE_EXIT, DirectionType.WEST, TransitionType.SCREENS, True_())
+    SOUTHERN_OUTSKIRTS_MINING_PASSAGE_SECRET_EAST_BURROW = ('Southern Outskirts Mining Passage Secret East Burrow', Regions.SOUTHERN_OUTSKIRTS_MINING_PASSAGE_SECRET, Regions.SOUTHERN_OUTSKIRTS_MINING_PASSAGE_EXIT, DirectionType.EAST, TransitionType.BURROW, CanBurrow())
+    SOUTHERN_OUTSKIRTS_MOONBATH_NORTH_AREA_TRANSITION = ('Southern Outskirts Moonbath North Area Transition', Regions.SOUTHERN_OUTSKIRTS_MOONBATH, Regions.EASTERN_HEATH_BUSH_ROOM, DirectionType.NORTH, TransitionType.AREA_SCREENS, True_())
+    SOUTHERN_OUTSKIRTS_MOONBATH_WEST_TRANSITION = ('Southern Outskirts Moonbath West Transition', Regions.SOUTHERN_OUTSKIRTS_MOONBATH, Regions.SOUTHERN_OUTSKIRTS_COMMONS_EAST_OSSEX, DirectionType.WEST, TransitionType.SCREENS, True_())
+    SOUTHERN_OUTSKIRTS_POPPIT_NORTH_BURROW = ('Southern Outskirts Poppit North Burrow', Regions.SOUTHERN_OUTSKIRTS_POPPIT, Regions.SOUTHERN_OUTSKIRTS_COMMONS_CLIFF, DirectionType.NORTH, TransitionType.BURROW, CanBurrow())
+    SOUTHERN_OUTSKIRTS_REBEL_BARRACKS_COMPANION_END_STAIRS = ('Southern Outskirts Rebel Barracks Companion End Stairs', Regions.SOUTHERN_OUTSKIRTS_REBEL_BARRACKS_COMPANION_END, Regions.SOUTHERN_OUTSKIRTS_REBEL_BARRACKS_FIGHT, DirectionType.NORTH, TransitionType.STAIRS, True_())
+    SOUTHERN_OUTSKIRTS_REBEL_BARRACKS_COMPANION_STAIRS = ('Southern Outskirts Rebel Barracks Companion Stairs', Regions.SOUTHERN_OUTSKIRTS_REBEL_BARRACKS_COMPANION_START, Regions.SOUTHERN_OUTSKIRTS_REBEL_BARRACKS_PRISON, DirectionType.NORTH, TransitionType.STAIRS, True_())
+    SOUTHERN_OUTSKIRTS_REBEL_BARRACKS_EXIT = ('Southern Outskirts Rebel Barracks Exit', Regions.SOUTHERN_OUTSKIRTS_REBEL_BARRACKS, Regions.SOUTHERN_OUTSKIRTS_REBEL_ROOFTOP, DirectionType.SOUTH, TransitionType.DOORS, HasVialsCount(count=1))
+    SOUTHERN_OUTSKIRTS_REBEL_BARRACKS_FIGHT_EXIT_STAIRS = ('Southern Outskirts Rebel Barracks Fight Exit Stairs', Regions.SOUTHERN_OUTSKIRTS_REBEL_BARRACKS_FIGHT, Regions.SOUTHERN_OUTSKIRTS_COMMONS_REBEL_EXIT, DirectionType.NORTH, TransitionType.STAIRS, True_())
+    SOUTHERN_OUTSKIRTS_REBEL_BARRACKS_FIGHT_STAIRS = ('Southern Outskirts Rebel Barracks Fight Stairs', Regions.SOUTHERN_OUTSKIRTS_REBEL_BARRACKS_FIGHT, Regions.SOUTHERN_OUTSKIRTS_REBEL_BARRACKS_COMPANION_END, DirectionType.NORTH, TransitionType.STAIRS, True_())
+    SOUTHERN_OUTSKIRTS_REBEL_BARRACKS_GAUNTLET_SOUTH_SOUTHERN_WEST = ('Southern Outskirts Rebel Barracks Gauntlet South Southern West', Regions.SOUTHERN_OUTSKIRTS_REBEL_BARRACKS_GAUNTLET, Regions.SOUTHERN_OUTSKIRTS_REBEL_BARRACKS_PRISON_DROP, DirectionType.SOUTH, TransitionType.SCREENS, True_())
+    SOUTHERN_OUTSKIRTS_REBEL_BARRACKS_GAUNTLET_SOUTH_TRANSITION_EAST = ('Southern Outskirts Rebel Barracks Gauntlet South Transition East', Regions.SOUTHERN_OUTSKIRTS_REBEL_BARRACKS_GAUNTLET, Regions.SOUTHERN_OUTSKIRTS_REBEL_BARRACKS, DirectionType.SOUTH, TransitionType.SCREENS, True_())
+    SOUTHERN_OUTSKIRTS_REBEL_BARRACKS_NORTH_SOUTHERN_OUTSKIRTS_REBEL_BARRACKS_GAUNTLET = ('Southern Outskirts Rebel Barracks North Southern Outskirts Rebel Barracks Gauntlet', Regions.SOUTHERN_OUTSKIRTS_REBEL_BARRACKS, Regions.SOUTHERN_OUTSKIRTS_REBEL_BARRACKS_GAUNTLET, DirectionType.NORTH, TransitionType.SCREENS, True_())
+    SOUTHERN_OUTSKIRTS_REBEL_BARRACKS_PRISON_EAST_EAST_TRANSITION = ('Southern Outskirts Rebel Barracks Prison East East Transition', Regions.SOUTHERN_OUTSKIRTS_REBEL_BARRACKS_PRISON_EAST, Regions.SOUTHERN_OUTSKIRTS_REBEL_BARRACKS, DirectionType.EAST, TransitionType.SCREENS, True_())
+    SOUTHERN_OUTSKIRTS_REBEL_BARRACKS_PRISON_STAIRS = ('Southern Outskirts Rebel Barracks Prison Stairs', Regions.SOUTHERN_OUTSKIRTS_REBEL_BARRACKS_PRISON, Regions.SOUTHERN_OUTSKIRTS_REBEL_BARRACKS_COMPANION_START, DirectionType.NORTH, TransitionType.STAIRS, True_())
+    SOUTHERN_OUTSKIRTS_REBEL_BARRACKS_WEST_TRANSITION = ('Southern Outskirts Rebel Barracks West Transition', Regions.SOUTHERN_OUTSKIRTS_REBEL_BARRACKS, Regions.SOUTHERN_OUTSKIRTS_REBEL_BARRACKS_PRISON_EAST, DirectionType.WEST, TransitionType.SCREENS, True_())
+    SOUTHERN_OUTSKIRTS_REBEL_ROOFTOP_BARRACKS_DOOR = ('Southern Outskirts Rebel Rooftop Barracks Door', Regions.SOUTHERN_OUTSKIRTS_REBEL_ROOFTOP, Regions.SOUTHERN_OUTSKIRTS_REBEL_BARRACKS, DirectionType.NORTH, TransitionType.DOORS, HasVialsCount(count=1))
+    SOUTHERN_OUTSKIRTS_RESIDENCE_BASEMENT_SOUTH_BURROW = ('Southern Outskirts Residence Basement South Burrow', Regions.SOUTHERN_OUTSKIRTS_RESIDENCE_BASEMENT, Regions.SOUTHERN_OUTSKIRTS_RESIDENCE_EXIT, DirectionType.SOUTH, TransitionType.BURROW, CanBurrow())
+    SOUTHERN_OUTSKIRTS_RESIDENCE_BASEMENT_STAIRS = ('Southern Outskirts Residence Basement Stairs', Regions.SOUTHERN_OUTSKIRTS_RESIDENCE_BASEMENT, Regions.SOUTHERN_OUTSKIRTS_RESIDENCE_TOP, DirectionType.NORTH, TransitionType.STAIRS, True_())
+    SOUTHERN_OUTSKIRTS_RESIDENCE_MAIN_EXIT = ('Southern Outskirts Residence Main Exit', Regions.SOUTHERN_OUTSKIRTS_RESIDENCE_MAIN, Regions.SOUTHERN_OUTSKIRTS_COMMONS_MAIN, DirectionType.SOUTH, TransitionType.DOORS, True_())
+    SOUTHERN_OUTSKIRTS_RESIDENCE_TOP_STAIRS = ('Southern Outskirts Residence Top Stairs', Regions.SOUTHERN_OUTSKIRTS_RESIDENCE_TOP, Regions.SOUTHERN_OUTSKIRTS_RESIDENCE_BASEMENT, DirectionType.NORTH, TransitionType.STAIRS, True_())
 
-transitions: dict[str, Transition] = {
-    'Ossex Entry Eastern Wall Chest East Transition': Transition('Ossex Entry Eastern Wall Chest', 'Ossex Entry Eastern Wall', DirectionType.EAST, TransitionType.SCREENS, True_()),
-    'Ossex Entry Eastern Wall East Transition': Transition('Ossex Entry Eastern Wall', 'Ossex South Eastern Wall', DirectionType.EAST, TransitionType.SCREENS, True_()),
-    'Ossex Entry Eastern Wall West Transition': Transition('Ossex Entry Eastern Wall', 'Ossex Entry Eastern Wall Chest', DirectionType.WEST, TransitionType.SCREENS, True_()),
-    'Ossex Entry Western Wall Chest East Transition': Transition('Ossex Entry Western Wall Chest', 'Ossex Entry Western Wall Right', DirectionType.WEST, TransitionType.SCREENS, True_()),
-    'Ossex Entry Western Wall Right East Transition': Transition('Ossex Entry Western Wall Right', 'Ossex Entry Western Wall Chest', DirectionType.EAST, TransitionType.SCREENS, True_()),
-    'Ossex Entry Western Wall West Transition': Transition('Ossex Entry Western Wall Left', 'Ossex South Western Wall', DirectionType.WEST, TransitionType.SCREENS, True_()),
-    'Ossex South Eastern Wall': Transition('Ossex South Eastern Wall', 'Ossex Eastern Wall', DirectionType.NORTH, TransitionType.SCREENS, True_()),
-    'Ossex South Eastern Wall West Transition': Transition('Ossex South Eastern Wall', 'Ossex Entry Eastern Wall', DirectionType.WEST, TransitionType.SCREENS, True_()),
-    'Ossex South Western Wall East Transition': Transition('Ossex South Western Wall', 'Ossex Entry Western Wall Left', DirectionType.EAST, TransitionType.SCREENS, True_()),
-    'Ossex South Western Wall North Burrow': Transition('Ossex South Western Wall', 'Ossex Western Wall', DirectionType.NORTH, TransitionType.BURROW, CanBurrow()),
-    'Ossex Western Wall North Burrow': Transition('Ossex Western Wall', 'Ossex Bowery Begger Residence Back Corner', DirectionType.NORTH, TransitionType.BURROW, CanBurrow()),
-    'Ossex Western Wall South Burrow': Transition('Ossex Western Wall', 'Ossex South Western Wall', DirectionType.SOUTH, TransitionType.BURROW, CanBurrow()),
-    'Southern Outskirts Cave Deep Entrance East Transition': Transition('Southern Outskirts Cave Deep Entrance', 'Southern Outskirts Cave Network Deep', DirectionType.EAST, TransitionType.SCREENS, True_()),
-    'Southern Outskirts Cave Deep Exit East Transition': Transition('Southern Outskirts Cave Deep Exit', 'Southern Outskirts Cave Network Deep Exit', DirectionType.EAST, TransitionType.SCREENS, True_()),
-    'Southern Outskirts Cave Network Deep Exit West Transition': Transition('Southern Outskirts Cave Network Deep Exit', 'Southern Outskirts Cave Deep Exit', DirectionType.WEST, TransitionType.SCREENS, True_()),
-    'Southern Outskirts Cave Network Deep West Transition': Transition('Southern Outskirts Cave Network Deep', 'Southern Outskirts Cave Deep Entrance', DirectionType.WEST, TransitionType.SCREENS, True_()),
-    'Southern Outskirts Cave Network End Stairs': Transition('Southern Outskirts Cave Network End', 'Southern Outskirts Commons Upper', DirectionType.NORTH, TransitionType.STAIRS, True_()),
-    'Southern Outskirts Cave Network Main Stairs': Transition('Southern Outskirts Cave Network Main', 'Southern Outskirts Commons Cave Entrance', DirectionType.NORTH, TransitionType.STAIRS, True_()),
-    'Southern Outskirts Cave Network Mining Passage Entrance Entrance_Southern Outskirts Mining Passage Entrance': Transition('Southern Outskirts Cave Network Mining Passage Entrance Entrance', 'Southern Outskirts Mining Passage Entrance', DirectionType.SOUTH, TransitionType.SCREENS, True_()),
-    'Southern Outskirts Cave Network Mining Passage Entrance North Stairs': Transition('Southern Outskirts Cave Network Mining Passage Entrance Entrance', 'Southern Outskirts Commons Cliff', DirectionType.NORTH, TransitionType.STAIRS, True_()),
-    'Southern Outskirts Commons Cave Entrance Stairs': Transition('Southern Outskirts Commons Cave Entrance', 'Southern Outskirts Cave Network Main', DirectionType.NORTH, TransitionType.STAIRS, True_()),
-    'Southern Outskirts Commons Cliff Mining Stairs': Transition('Southern Outskirts Commons Cliff', 'Southern Outskirts Mining Passage Entrance', DirectionType.NORTH, TransitionType.STAIRS, True_()),
-    'Southern Outskirts Commons Cliff South Burrow': Transition('Southern Outskirts Commons Cliff', 'Southern Outskirts Poppit', DirectionType.SOUTH, TransitionType.BURROW, True_()),
-    'Southern Outskirts Commons East Ossex East Transition': Transition('Southern Outskirts Commons East Ossex', 'Southern Outskirts Moonbath', DirectionType.EAST, TransitionType.SCREENS, True_()),
-    'Southern Outskirts Commons East Ossex West Transition': Transition('Southern Outskirts Commons East Ossex', 'Southern Outskirts Commons Ossex Entry', DirectionType.WEST, TransitionType.SCREENS, True_()),
-    'Southern Outskirts Commons Main East Transition': Transition('Southern Outskirts Commons Main', 'Southern Outskirts Commons Southern Pit Room Main', DirectionType.EAST, TransitionType.SCREENS, True_()),
-    'Southern Outskirts Commons Main North Transition': Transition('Southern Outskirts Commons Main', 'Southern Outskirts Commons Ossex Entry', DirectionType.NORTH, TransitionType.SCREENS, True_()),
-    'Southern Outskirts Commons Main Residence Door': Transition('Southern Outskirts Commons Main', 'Southern Outskirts Residence Main', DirectionType.NORTH, TransitionType.DOORS, True_()),
-    'Southern Outskirts Commons Main South Transition': Transition('Southern Outskirts Commons Main', "Loner's Landing Boardwalk Spike Gate", DirectionType.SOUTH, TransitionType.AREA_SCREENS, True_()),
-    'Southern Outskirts Commons Ossex Entry East Transitions': Transition('Southern Outskirts Commons Ossex Entry', 'Southern Outskirts Commons East Ossex', DirectionType.EAST, TransitionType.SCREENS, True_()),
-    'Southern Outskirts Commons Ossex Entry North Gate': Transition('Southern Outskirts Commons Ossex Entry', 'Ossex City Center Main', DirectionType.SOUTH, TransitionType.AREA_SCREENS, True_()),
-    'Southern Outskirts Commons Ossex Entry South Transition': Transition('Southern Outskirts Commons Ossex Entry', 'Southern Outskirts Commons Main', DirectionType.SOUTH, TransitionType.SCREENS, True_()),
-    'Southern Outskirts Commons Ossex Entry West Transitions': Transition('Southern Outskirts Commons Ossex Entry', 'Southern Outskirts Commons West Ossex', DirectionType.WEST, TransitionType.SCREENS, True_()),
-    'Southern Outskirts Commons Residence Roof South Southern Outskirts Residence Top': Transition('Southern Outskirts Commons Residence Roof', 'Southern Outskirts Residence Top', DirectionType.SOUTH, TransitionType.GEYSER_DOWN, True_()),
-    'Southern Outskirts Commons Southern Pit Room Main East Transition': Transition('Southern Outskirts Commons Southern Pit Room Main', 'Southern Outskirts Commons Main', DirectionType.EAST, TransitionType.SCREENS, True_()),
-    'Southern Outskirts Commons Southern Pit Room Main North Transition': Transition('Southern Outskirts Commons Southern Pit Room Main', 'Southern Outskirts Commons Western Pit Room Main', DirectionType.NORTH, TransitionType.SCREENS, True_()),
-    'Southern Outskirts Commons Southern Pit Room Roof East Transition': Transition('Southern Outskirts Commons Southern Pit Room Roof', 'Southern Outskirts Commons Residence Roof', DirectionType.EAST, TransitionType.SCREENS, True_()),
-    'Southern Outskirts Commons Southern Pit Room Roof North Transition': Transition('Southern Outskirts Commons Southern Pit Room Roof', 'Southern Outskirts Commons Western Pit Room Pit', DirectionType.NORTH, TransitionType.SCREENS, True_()),
-    'Southern Outskirts Commons Upper North Transition': Transition('Southern Outskirts Commons Upper', 'Southern Outskirts Commons East Ossex', DirectionType.OVERWORLD, TransitionType.DO_NOT_RANDOMIZE_ENTRANCE, CanBounce()),
-    'Southern Outskirts Commons Upper Stairs': Transition('Southern Outskirts Commons Upper', 'Southern Outskirts Cave Network End', DirectionType.NORTH, TransitionType.STAIRS, True_()),
-    'Southern Outskirts Commons West Ossex East Transition': Transition('Southern Outskirts Commons West Ossex', 'Southern Outskirts Commons Ossex Entry', DirectionType.EAST, TransitionType.SCREENS, True_()),
-    'Southern Outskirts Commons West Ossex West Transition': Transition('Southern Outskirts Commons West Ossex', 'Southern Outskirts Commons Western Pit Room Pit', DirectionType.WEST, TransitionType.SCREENS, True_()),
-    'Southern Outskirts Commons Western Pit Room Main North Area Transition': Transition('Southern Outskirts Commons Western Pit Room Main', 'Western Wilds Overgrown Path', DirectionType.NORTH, TransitionType.AREA_SCREENS, True_()),
-    'Southern Outskirts Commons Western Pit Room Main South Transition': Transition('Southern Outskirts Commons Western Pit Room Main', 'Southern Outskirts Commons Southern Pit Room Main', DirectionType.SOUTH, TransitionType.SCREENS, True_()),
-    'Southern Outskirts Commons Western Pit Room Pit East Transition': Transition('Southern Outskirts Commons Western Pit Room Pit', 'Southern Outskirts Commons West Ossex', DirectionType.EAST, TransitionType.SCREENS, True_()),
-    'Southern Outskirts Commons Western Pit Room Pit South Transition': Transition('Southern Outskirts Commons Western Pit Room Pit', 'Southern Outskirts Commons Southern Pit Room Roof', DirectionType.SOUTH, TransitionType.SCREENS, True_()),
-    'Southern Outskirts Four Flowers Sandfall East Transition': Transition('Southern Outskirts Four Flowers Sandfall', 'Sandfalls Mining Outlook', DirectionType.EAST, TransitionType.AREA_SCREENS, True_()),
-    'Southern Outskirts Four Flowers Shortcut East transtion': Transition('Southern Outskirts Four Flowers Shortcut', 'Southern Outskirts Commons Upper', DirectionType.OVERWORLD, TransitionType.DO_NOT_RANDOMIZE_ENTRANCE, True_()),
-    'Southern Outskirts Mining Passage Empty North Transition': Transition('Southern Outskirts Mining Passage Empty', 'Southern Outskirts Mining Passage Exit', DirectionType.NORTH, TransitionType.SCREENS, True_()),
-    'Southern Outskirts Mining Passage Empty West Transition': Transition('Southern Outskirts Mining Passage Empty', 'Southern Outskirts Mining Passage Fence', DirectionType.WEST, TransitionType.SCREENS, True_()),
-    'Southern Outskirts Mining Passage Entrance Exit East Transition': Transition('Southern Outskirts Mining Passage Entrance Exit', 'Southern Outskirts Mining Passage Fence', DirectionType.EAST, TransitionType.SCREENS, True_()),
-    'Southern Outskirts Mining Passage Entrance North Transition': Transition('Southern Outskirts Mining Passage Entrance', 'Southern Outskirts Cave Network Mining Passage Entrance Entrance', DirectionType.NORTH, TransitionType.SCREENS, True_()),
-    'Southern Outskirts Mining Passage Exit South Transition': Transition('Southern Outskirts Mining Passage Exit', 'Southern Outskirts Mining Passage Empty', DirectionType.SOUTH, TransitionType.SCREENS, True_()),
-    'Southern Outskirts Mining Passage Exit Stairs': Transition('Southern Outskirts Mining Passage Exit', 'Sandfalls Mining Outlook', DirectionType.NORTH, TransitionType.STAIRS, True_()),
-    'Southern Outskirts Mining Passage Exit West Burrow': Transition('Southern Outskirts Mining Passage Exit', 'Southern Outskirts Mining Passage Secret', DirectionType.WEST, TransitionType.BURROW, CanBurrow()),
-    'Southern Outskirts Mining Passage Fence East Transition': Transition('Southern Outskirts Mining Passage Fence', 'Southern Outskirts Mining Passage Empty', DirectionType.EAST, TransitionType.SCREENS, CanBurrow()),
-    'Southern Outskirts Mining Passage Fence West Transition': Transition('Southern Outskirts Mining Passage Fence', 'Southern Outskirts Mining Passage Entrance Exit', DirectionType.WEST, TransitionType.SCREENS, True_()),
-    'Southern Outskirts Mining Passage Secret East Burrow': Transition('Southern Outskirts Mining Passage Secret', 'Southern Outskirts Mining Passage Exit', DirectionType.EAST, TransitionType.BURROW, CanBurrow()),
-    'Southern Outskirts Moonbath North Area Transition': Transition('Southern Outskirts Moonbath', 'Eastern Heath Bush Room', DirectionType.NORTH, TransitionType.AREA_SCREENS, True_()),
-    'Southern Outskirts Moonbath West Transition': Transition('Southern Outskirts Moonbath', 'Southern Outskirts Commons East Ossex', DirectionType.WEST, TransitionType.SCREENS, True_()),
-    'Southern Outskirts Poppit North Burrow': Transition('Southern Outskirts Poppit', 'Southern Outskirts Commons Cliff', DirectionType.NORTH, TransitionType.BURROW, CanBurrow()),
-    'Southern Outskirts Rebel Barracks Companion End Stairs': Transition('Southern Outskirts Rebel Barracks Companion End', 'Southern Outskirts Rebel Barracks Fight', DirectionType.NORTH, TransitionType.STAIRS, True_()),
-    'Southern Outskirts Rebel Barracks Companion Stairs': Transition('Southern Outskirts Rebel Barracks Companion Start', 'Southern Outskirts Rebel Barracks Prison', DirectionType.NORTH, TransitionType.STAIRS, True_()),
-    'Southern Outskirts Rebel Barracks Exit': Transition('Southern Outskirts Rebel Barracks', 'Southern Outskirts Rebel Rooftop', DirectionType.SOUTH, TransitionType.DOORS, HasVialsCount(count=1)),
-    'Southern Outskirts Rebel Barracks Fight Exit Stairs': Transition('Southern Outskirts Rebel Barracks Fight', 'Southern Outskirts Commons Rebel Exit', DirectionType.NORTH, TransitionType.STAIRS, True_()),
-    'Southern Outskirts Rebel Barracks Fight Stairs': Transition('Southern Outskirts Rebel Barracks Fight', 'Southern Outskirts Rebel Barracks Companion End', DirectionType.NORTH, TransitionType.STAIRS, True_()),
-    'Southern Outskirts Rebel Barracks Gauntlet South Southern West': Transition('Southern Outskirts Rebel Barracks Gauntlet', 'Southern Outskirts Rebel Barracks Prison Drop', DirectionType.SOUTH, TransitionType.SCREENS, True_()),
-    'Southern Outskirts Rebel Barracks Gauntlet South Transition East': Transition('Southern Outskirts Rebel Barracks Gauntlet', 'Southern Outskirts Rebel Barracks', DirectionType.SOUTH, TransitionType.SCREENS, True_()),
-    'Southern Outskirts Rebel Barracks North Southern Outskirts Rebel Barracks Gauntlet': Transition('Southern Outskirts Rebel Barracks', 'Southern Outskirts Rebel Barracks Gauntlet', DirectionType.NORTH, TransitionType.SCREENS, True_()),
-    'Southern Outskirts Rebel Barracks Prison East East Transition': Transition('Southern Outskirts Rebel Barracks Prison East', 'Southern Outskirts Rebel Barracks', DirectionType.EAST, TransitionType.SCREENS, True_()),
-    'Southern Outskirts Rebel Barracks Prison Stairs': Transition('Southern Outskirts Rebel Barracks Prison', 'Southern Outskirts Rebel Barracks Companion Start', DirectionType.NORTH, TransitionType.STAIRS, True_()),
-    'Southern Outskirts Rebel Barracks West Transition': Transition('Southern Outskirts Rebel Barracks', 'Southern Outskirts Rebel Barracks Prison East', DirectionType.WEST, TransitionType.SCREENS, True_()),
-    'Southern Outskirts Rebel Rooftop Barracks Door': Transition('Southern Outskirts Rebel Rooftop', 'Southern Outskirts Rebel Barracks', DirectionType.NORTH, TransitionType.DOORS, HasVialsCount(count=1)),
-    'Southern Outskirts Residence Basement South Burrow': Transition('Southern Outskirts Residence Basement', 'Southern Outskirts Residence Exit', DirectionType.SOUTH, TransitionType.BURROW, CanBurrow()),
-    'Southern Outskirts Residence Basement Stairs': Transition('Southern Outskirts Residence Basement', 'Southern Outskirts Residence Top', DirectionType.NORTH, TransitionType.STAIRS, True_()),
-    'Southern Outskirts Residence Main Exit': Transition('Southern Outskirts Residence Main', 'Southern Outskirts Commons Main', DirectionType.SOUTH, TransitionType.DOORS, True_()),
-    'Southern Outskirts Residence Top Stairs': Transition('Southern Outskirts Residence Top', 'Southern Outskirts Residence Basement', DirectionType.NORTH, TransitionType.STAIRS, True_()),
-}

@@ -26,8 +26,8 @@ def test_all_collectables_have_sections(base):
     # Check if all collectable keys exist as section names
     missing_collectables = []
     for collectable_key in all_collectables:
-        if collectable_key not in all_section_names:
-            missing_collectables.append(collectable_key)
+        if collectable_key.value not in all_section_names:
+            missing_collectables.append(collectable_key.value)
 
     if missing_collectables:
         print(f"\nCollectable keys without matching section names:")

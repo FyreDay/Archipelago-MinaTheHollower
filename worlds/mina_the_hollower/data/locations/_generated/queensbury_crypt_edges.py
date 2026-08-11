@@ -3,8 +3,9 @@
 #   python -m worlds.mina_the_hollower.tools.generate_edges <edges.csv>
 # The spreadsheet is the source of truth, not this file.
 
+from .regions import Regions
 from rule_builder.rules import Has, True_, CanReachLocation
-from ... import RegionConnection, Transition, DirectionType, TransitionType
+from ... import DirectionType, TransitionType, ConnectionTypeEnum, TransitionTypeEnum
 from ...rules.ability_rules import (
     CanBurrow, CanCarry, CanClimb, CanSwim, CanBounce, PowerLevelThreshold,
     HasVialsCount, HasReachingSideArm, HasFishingRod, CanSpring, HasTrinket 
@@ -32,181 +33,121 @@ from ...items.blockers import (
 )
 
 
-regions: set[str] = {
-    'Queensbury Crypt Ancestral Chamber',
-    'Queensbury Crypt Ancestral Chamber Bridges North',
-    'Queensbury Crypt Ancestral Chamber Bridges South',
-    'Queensbury Crypt Ancestral Chamber Entrance',
-    'Queensbury Crypt Ancestral Chamber Hall',
-    'Queensbury Crypt Ancestral Chamber Roller East',
-    'Queensbury Crypt Ancestral Chamber Roller West',
-    'Queensbury Crypt Ancestral Chamber Ropes East',
-    'Queensbury Crypt Ancestral Chamber Ropes Save',
-    'Queensbury Crypt Ancestral Chamber Ropes West',
-    'Queensbury Crypt Ancestral Chamber Trap',
-    'Queensbury Crypt Ancestral Chamber foyer East',
-    'Queensbury Crypt Ancestral Chamber foyer West',
-    'Queensbury Crypt Bonnet Tomb',
-    'Queensbury Crypt Bonnet Tomb Inner',
-    'Queensbury Crypt Broken Bridge',
-    'Queensbury Crypt Castle Broken Hall Main',
-    'Queensbury Crypt Castle Broken Hall Top',
-    'Queensbury Crypt Castle Entry',
-    'Queensbury Crypt Castle Entryway',
-    'Queensbury Crypt Castle Entryway Hall',
-    'Queensbury Crypt Castle Entryway Traps',
-    'Queensbury Crypt Castle Outside Balcony',
-    'Queensbury Crypt Castle Outside Main',
-    'Queensbury Crypt Castle Spike Roller 1',
-    'Queensbury Crypt Castle Spike Rollers 2',
-    'Queensbury Crypt East Head Corner',
-    'Queensbury Crypt East Head Room',
-    'Queensbury Crypt Final Stairwell',
-    'Queensbury Crypt Hidden Tunnel',
-    'Queensbury Crypt Mirror Room East',
-    'Queensbury Crypt Mirror Room West',
-    'Queensbury Crypt Old Button',
-    'Queensbury Crypt Old Chamber',
-    'Queensbury Crypt Old Entrance',
-    'Queensbury Crypt Old Graveyard Main',
-    'Queensbury Crypt Old Graveyard Sodsby',
-    'Queensbury Crypt Ophidio Stair',
-    'Queensbury Crypt Pipe Room',
-    'Queensbury Crypt Putrid Place',
-    'Queensbury Crypt Rancid Room',
-    'Queensbury Crypt Royal Tomb',
-    'Queensbury Crypt Royal Tomb Seal',
-    'Queensbury Crypt Smelly Secret',
-    'Queensbury Crypt Solemn Generator',
-    'Queensbury Crypt Statue Gate Outside',
-    'Queensbury Crypt Statue Gate Stair',
-    'Queensbury Crypt Statue Head Hall',
-    'Queensbury Crypt Statue Head Hall Entrance',
-    'Queensbury Crypt Statue Head Hall Entrance Putrid',
-    'Queensbury Crypt Statue Head Hall Gate',
-    'Queensbury Crypt Statue Head Hall Putrid',
-    'Queensbury Crypt Statue Shortcut',
-    'Queensbury Crypt Summoners Gate',
-    'Queensbury Crypt West Head Corner',
-    'Queensbury Crypt West Head Room',
-}
+class RegionConnections(ConnectionTypeEnum):
+    QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_BRIDGES_NORTH_QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_BRIDGES_SOUTH = ('Queensbury Crypt Ancestral Chamber Bridges North_Queensbury Crypt Ancestral Chamber Bridges South', Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_BRIDGES_NORTH, Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_BRIDGES_SOUTH, CanBurrow())
+    QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_BRIDGES_SOUTH_QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_BRIDGES_NORTH = ('Queensbury Crypt Ancestral Chamber Bridges South_Queensbury Crypt Ancestral Chamber Bridges North', Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_BRIDGES_SOUTH, Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_BRIDGES_NORTH, CanBurrow())
+    QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_ROLLER_EAST_QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_ROLLER_WEST = ('Queensbury Crypt Ancestral Chamber Roller East_Queensbury Crypt Ancestral Chamber Roller West', Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_ROLLER_EAST, Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_ROLLER_WEST, CanJumpTiles(distance=4, has_wall=True))
+    QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_ROLLER_WEST_QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_ROLLER_EAST = ('Queensbury Crypt Ancestral Chamber Roller West_Queensbury Crypt Ancestral Chamber Roller East', Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_ROLLER_WEST, Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_ROLLER_EAST, CanJumpTiles(distance=4, has_wall=True))
+    QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_ROPES_EAST_QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_ROPES_WEST = ('Queensbury Crypt Ancestral Chamber Ropes East_Queensbury Crypt Ancestral Chamber Ropes West', Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_ROPES_EAST, Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_ROPES_WEST, CanBurrow() & CanClimb())
+    QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_ROPES_SAVE_QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_ROPES_EAST = ('Queensbury Crypt Ancestral Chamber Ropes Save_Queensbury Crypt Ancestral Chamber Ropes East', Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_ROPES_SAVE, Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_ROPES_EAST, True_())
+    QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_FOYER_EAST_QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_FOYER_WEST = ('Queensbury Crypt Ancestral Chamber foyer East_Queensbury Crypt Ancestral Chamber foyer West', Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_FOYER_EAST, Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_FOYER_WEST, CanBurrow())
+    QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_FOYER_WEST_QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_FOYER_EAST = ('Queensbury Crypt Ancestral Chamber foyer West_Queensbury Crypt Ancestral Chamber foyer East', Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_FOYER_WEST, Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_FOYER_EAST, CanBurrow())
+    QUEENSBURY_CRYPT_CASTLE_BROKEN_HALL_MAIN_QUEENSBURY_CRYPT_CASTLE_BROKEN_HALL_TOP = ('Queensbury Crypt Castle Broken Hall Main_Queensbury Crypt Castle Broken Hall Top', Regions.QUEENSBURY_CRYPT_CASTLE_BROKEN_HALL_MAIN, Regions.QUEENSBURY_CRYPT_CASTLE_BROKEN_HALL_TOP, CanBurrow())
+    QUEENSBURY_CRYPT_CASTLE_BROKEN_HALL_TOP_QUEENSBURY_CRYPT_CASTLE_BROKEN_HALL_MAIN = ('Queensbury Crypt Castle Broken Hall Top_Queensbury Crypt Castle Broken Hall Main', Regions.QUEENSBURY_CRYPT_CASTLE_BROKEN_HALL_TOP, Regions.QUEENSBURY_CRYPT_CASTLE_BROKEN_HALL_MAIN, CanBurrow())
+    QUEENSBURY_CRYPT_OLD_GRAVEYARD_MAIN_QUEENSBURY_CRYPT_OLD_GRAVEYARD_SODSBY = ('Queensbury Crypt Old Graveyard Main_Queensbury Crypt Old Graveyard Sodsby', Regions.QUEENSBURY_CRYPT_OLD_GRAVEYARD_MAIN, Regions.QUEENSBURY_CRYPT_OLD_GRAVEYARD_SODSBY, CanBurrow())
+    QUEENSBURY_CRYPT_OLD_GRAVEYARD_SODSBY_QUEENSBURY_CRYPT_OLD_GRAVEYARD_MAIN = ('Queensbury Crypt Old Graveyard Sodsby_Queensbury Crypt Old Graveyard Main', Regions.QUEENSBURY_CRYPT_OLD_GRAVEYARD_SODSBY, Regions.QUEENSBURY_CRYPT_OLD_GRAVEYARD_MAIN, CanBurrow())
+    QUEENSBURY_CRYPT_STATUE_GATE_OUTSIDE_QUEENSBURY_CRYPT_STATUE_GATE_STAIR = ('Queensbury Crypt Statue Gate Outside_Queensbury Crypt Statue Gate Stair', Regions.QUEENSBURY_CRYPT_STATUE_GATE_OUTSIDE, Regions.QUEENSBURY_CRYPT_STATUE_GATE_STAIR, CanCarry())
+    QUEENSBURY_CRYPT_STATUE_HEAD_HALL_QUEENSBURY_CRYPT_STATUE_HEAD_HALL_GATE = ('Queensbury Crypt Statue Head Hall_Queensbury Crypt Statue Head Hall Gate', Regions.QUEENSBURY_CRYPT_STATUE_HEAD_HALL, Regions.QUEENSBURY_CRYPT_STATUE_HEAD_HALL_GATE, CanCarry())
 
-connections: dict[str, RegionConnection] = {
-    'Queensbury Crypt Ancestral Chamber Bridges North_Queensbury Crypt Ancestral Chamber Bridges South': RegionConnection('Queensbury Crypt Ancestral Chamber Bridges North', 'Queensbury Crypt Ancestral Chamber Bridges South', CanBurrow()),
-    'Queensbury Crypt Ancestral Chamber Bridges South_Queensbury Crypt Ancestral Chamber Bridges North': RegionConnection('Queensbury Crypt Ancestral Chamber Bridges South', 'Queensbury Crypt Ancestral Chamber Bridges North', CanBurrow()),
-    'Queensbury Crypt Ancestral Chamber Roller East_Queensbury Crypt Ancestral Chamber Roller West': RegionConnection('Queensbury Crypt Ancestral Chamber Roller East', 'Queensbury Crypt Ancestral Chamber Roller West', CanJumpTiles(distance=4, has_wall=True)),
-    'Queensbury Crypt Ancestral Chamber Roller West_Queensbury Crypt Ancestral Chamber Roller East': RegionConnection('Queensbury Crypt Ancestral Chamber Roller West', 'Queensbury Crypt Ancestral Chamber Roller East', CanJumpTiles(distance=4, has_wall=True)),
-    'Queensbury Crypt Ancestral Chamber Ropes East_Queensbury Crypt Ancestral Chamber Ropes West': RegionConnection('Queensbury Crypt Ancestral Chamber Ropes East', 'Queensbury Crypt Ancestral Chamber Ropes West', CanBurrow() & CanClimb()),
-    'Queensbury Crypt Ancestral Chamber Ropes Save_Queensbury Crypt Ancestral Chamber Ropes East': RegionConnection('Queensbury Crypt Ancestral Chamber Ropes Save', 'Queensbury Crypt Ancestral Chamber Ropes East', True_()),
-    'Queensbury Crypt Ancestral Chamber foyer East_Queensbury Crypt Ancestral Chamber foyer West': RegionConnection('Queensbury Crypt Ancestral Chamber foyer East', 'Queensbury Crypt Ancestral Chamber foyer West', CanBurrow()),
-    'Queensbury Crypt Ancestral Chamber foyer West_Queensbury Crypt Ancestral Chamber foyer East': RegionConnection('Queensbury Crypt Ancestral Chamber foyer West', 'Queensbury Crypt Ancestral Chamber foyer East', CanBurrow()),
-    'Queensbury Crypt Castle Broken Hall Main_Queensbury Crypt Castle Broken Hall Top': RegionConnection('Queensbury Crypt Castle Broken Hall Main', 'Queensbury Crypt Castle Broken Hall Top', CanBurrow()),
-    'Queensbury Crypt Castle Broken Hall Top_Queensbury Crypt Castle Broken Hall Main': RegionConnection('Queensbury Crypt Castle Broken Hall Top', 'Queensbury Crypt Castle Broken Hall Main', CanBurrow()),
-    'Queensbury Crypt Old Graveyard Main_Queensbury Crypt Old Graveyard Sodsby': RegionConnection('Queensbury Crypt Old Graveyard Main', 'Queensbury Crypt Old Graveyard Sodsby', CanBurrow()),
-    'Queensbury Crypt Old Graveyard Sodsby_Queensbury Crypt Old Graveyard Main': RegionConnection('Queensbury Crypt Old Graveyard Sodsby', 'Queensbury Crypt Old Graveyard Main', CanBurrow()),
-    'Queensbury Crypt Statue Gate Outside_Queensbury Crypt Statue Gate Stair': RegionConnection('Queensbury Crypt Statue Gate Outside', 'Queensbury Crypt Statue Gate Stair', CanCarry()),
-    'Queensbury Crypt Statue Head Hall_Queensbury Crypt Statue Head Hall Gate': RegionConnection('Queensbury Crypt Statue Head Hall', 'Queensbury Crypt Statue Head Hall Gate', CanCarry()),
-}
+class RegionTransitions(TransitionTypeEnum):
+    QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_BRIDGES_NORTH_NORTH_TRANSITION = ('Queensbury Crypt Ancestral Chamber Bridges North North Transition', Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_BRIDGES_NORTH, Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_FOYER_EAST, DirectionType.NORTH, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_BRIDGES_SOUTH_SOUTH_TRANSITION = ('Queensbury Crypt Ancestral Chamber Bridges South South Transition', Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_BRIDGES_SOUTH, Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_ENTRANCE, DirectionType.SOUTH, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_ENTRANCE_EAST_TRANSITION = ('Queensbury Crypt Ancestral Chamber Entrance East Transition', Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_ENTRANCE, Regions.QUEENSBURY_CRYPT_RANCID_ROOM, DirectionType.EAST, TransitionType.SCREENS, HasVialsCount(count=2))
+    QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_ENTRANCE_NORTH_TRANSITION = ('Queensbury Crypt Ancestral Chamber Entrance North Transition', Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_ENTRANCE, Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_BRIDGES_SOUTH, DirectionType.NORTH, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_ENTRANCE_STAIRS = ('Queensbury Crypt Ancestral Chamber Entrance Stairs', Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_ENTRANCE, Regions.QUEENSBURY_CRYPT_FINAL_STAIRWELL, DirectionType.NORTH, TransitionType.STAIRS, True_())
+    QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_HALL_NORTH_TRANSITION = ('Queensbury Crypt Ancestral Chamber Hall North Transition', Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_HALL, Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER, DirectionType.NORTH, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_HALL_SOUTH_TRANSITION = ('Queensbury Crypt Ancestral Chamber Hall South Transition', Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_HALL, Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_FOYER_WEST, DirectionType.SOUTH, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_NORTH_TRANSITION = ('Queensbury Crypt Ancestral Chamber North Transition', Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER, Regions.QUEENSBURY_CRYPT_ROYAL_TOMB, DirectionType.NORTH, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_ROLLER_EAST_NORTH_TRANSITION = ('Queensbury Crypt Ancestral Chamber Roller East North Transition', Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_ROLLER_EAST, Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_ROPES_SAVE, DirectionType.NORTH, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_ROLLER_EAST_SOUTH_TRANSITION = ('Queensbury Crypt Ancestral Chamber Roller East South Transition', Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_ROLLER_EAST, Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_TRAP, DirectionType.SOUTH, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_ROLLER_WEST_NORTH_TRANSITION = ('Queensbury Crypt Ancestral Chamber Roller West North Transition', Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_ROLLER_WEST, Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_ROPES_WEST, DirectionType.NORTH, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_ROLLER_WEST_SOUTH_TRANSITION = ('Queensbury Crypt Ancestral Chamber Roller West South Transition', Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_ROLLER_WEST, Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_TRAP, DirectionType.SOUTH, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_ROPES_EAST_EAST_TRANSITION = ('Queensbury Crypt Ancestral Chamber Ropes East East Transition', Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_ROPES_EAST, Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_FOYER_WEST, DirectionType.EAST, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_ROPES_WEST_SOUTH_TRANSITION = ('Queensbury Crypt Ancestral Chamber Ropes West South Transition', Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_ROPES_WEST, Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_ROLLER_WEST, DirectionType.SOUTH, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_SOUTH_TRANSITION = ('Queensbury Crypt Ancestral Chamber South Transition', Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER, Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_HALL, DirectionType.SOUTH, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_TRAP_NORTH_TRANSITION_EAST = ('Queensbury Crypt Ancestral Chamber Trap North Transition East', Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_TRAP, Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_ROLLER_EAST, DirectionType.NORTH, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_TRAP_NORTH_TRANSITION_WEST = ('Queensbury Crypt Ancestral Chamber Trap North Transition West', Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_TRAP, Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_ROLLER_WEST, DirectionType.NORTH, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_FOYER_EAST_SOUTH_TRANSITION = ('Queensbury Crypt Ancestral Chamber foyer East South Transition', Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_FOYER_EAST, Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_BRIDGES_NORTH, DirectionType.SOUTH, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_FOYER_WEST_NORTH_TRANSITION = ('Queensbury Crypt Ancestral Chamber foyer West North Transition', Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_FOYER_WEST, Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_HALL, DirectionType.NORTH, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_FOYER_WEST_WEST_TRANSITION = ('Queensbury Crypt Ancestral Chamber foyer West West Transition', Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_FOYER_WEST, Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_ROPES_EAST, DirectionType.WEST, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_BONNET_TOMB_INNER_SOUTH_BURROW = ('Queensbury Crypt Bonnet Tomb Inner South Burrow', Regions.QUEENSBURY_CRYPT_BONNET_TOMB_INNER, Regions.QUEENSBURY_CRYPT_BONNET_TOMB, DirectionType.SOUTH, TransitionType.BURROW, CanBurrow())
+    QUEENSBURY_CRYPT_BONNET_TOMB_NORTH_BURROW = ('Queensbury Crypt Bonnet Tomb North Burrow', Regions.QUEENSBURY_CRYPT_BONNET_TOMB, Regions.QUEENSBURY_CRYPT_BONNET_TOMB_INNER, DirectionType.NORTH, TransitionType.BURROW, CanBurrow())
+    QUEENSBURY_CRYPT_BONNET_TOMB_SOUTH_TRANSITION = ('Queensbury Crypt Bonnet Tomb South Transition', Regions.QUEENSBURY_CRYPT_BONNET_TOMB, Regions.QUEENSBURY_CRYPT_OLD_GRAVEYARD_MAIN, DirectionType.SOUTH, TransitionType.SCREENS, HasKear(kear=SingleKears.QUEENSBURY_CRYPT_BONNET_TOMB_KEAR.value))
+    QUEENSBURY_CRYPT_BROKEN_BRIDGE_NORTH_TRANSITION = ('Queensbury Crypt Broken Bridge North Transition', Regions.QUEENSBURY_CRYPT_BROKEN_BRIDGE, Regions.QUEENSBURY_CRYPT_CASTLE_OUTSIDE_MAIN, DirectionType.NORTH, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_BROKEN_BRIDGE_SOUTH_TRANSITION = ('Queensbury Crypt Broken Bridge South Transition', Regions.QUEENSBURY_CRYPT_BROKEN_BRIDGE, Regions.QUEENSBURY_CRYPT_OLD_GRAVEYARD_MAIN, DirectionType.SOUTH, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_CASTLE_BROKEN_HALL_MAIN_EAST_HIDDEN_BURROW = ('Queensbury Crypt Castle Broken Hall Main East Hidden Burrow', Regions.QUEENSBURY_CRYPT_CASTLE_BROKEN_HALL_MAIN, Regions.QUEENSBURY_CRYPT_HIDDEN_TUNNEL, DirectionType.EAST, TransitionType.BURROW, True_())
+    QUEENSBURY_CRYPT_CASTLE_BROKEN_HALL_MAIN_SOUTH_TRANSITION = ('Queensbury Crypt Castle Broken Hall Main South Transition', Regions.QUEENSBURY_CRYPT_CASTLE_BROKEN_HALL_MAIN, Regions.QUEENSBURY_CRYPT_CASTLE_SPIKE_ROLLERS_2, DirectionType.SOUTH, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_CASTLE_BROKEN_HALL_TOP_NORTH_TRANSITION = ('Queensbury Crypt Castle Broken Hall Top North Transition', Regions.QUEENSBURY_CRYPT_CASTLE_BROKEN_HALL_TOP, Regions.QUEENSBURY_CRYPT_STATUE_GATE_OUTSIDE, DirectionType.NORTH, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_CASTLE_ENTRY_BALCONY_EXIT = ('Queensbury Crypt Castle Entry Balcony Exit', Regions.QUEENSBURY_CRYPT_CASTLE_ENTRY, Regions.QUEENSBURY_CRYPT_CASTLE_OUTSIDE_BALCONY, DirectionType.SOUTH, TransitionType.DOORS, True_())
+    QUEENSBURY_CRYPT_CASTLE_ENTRY_MAIN_EXIT = ('Queensbury Crypt Castle Entry Main Exit', Regions.QUEENSBURY_CRYPT_CASTLE_ENTRY, Regions.QUEENSBURY_CRYPT_CASTLE_OUTSIDE_MAIN, DirectionType.SOUTH, TransitionType.DOORS, True_())
+    QUEENSBURY_CRYPT_CASTLE_ENTRY_STAIR = ('Queensbury Crypt Castle Entry Stair', Regions.QUEENSBURY_CRYPT_CASTLE_ENTRY, Regions.QUEENSBURY_CRYPT_CASTLE_ENTRYWAY, DirectionType.NORTH, TransitionType.STAIRS, True_())
+    QUEENSBURY_CRYPT_CASTLE_ENTRYWAY_HALL_NORTH_TRANSITION = ('Queensbury Crypt Castle Entryway Hall North Transition', Regions.QUEENSBURY_CRYPT_CASTLE_ENTRYWAY_HALL, Regions.QUEENSBURY_CRYPT_CASTLE_SPIKE_ROLLER_1, DirectionType.NORTH, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_CASTLE_ENTRYWAY_HALL_SOUTH_TRANSITION = ('Queensbury Crypt Castle Entryway Hall South Transition', Regions.QUEENSBURY_CRYPT_CASTLE_ENTRYWAY_HALL, Regions.QUEENSBURY_CRYPT_CASTLE_ENTRYWAY, DirectionType.SOUTH, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_CASTLE_ENTRYWAY_HALL_WEST_TRANSITION = ('Queensbury Crypt Castle Entryway Hall West Transition', Regions.QUEENSBURY_CRYPT_CASTLE_ENTRYWAY_HALL, Regions.QUEENSBURY_CRYPT_CASTLE_ENTRYWAY_TRAPS, DirectionType.WEST, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_CASTLE_ENTRYWAY_NORTH_TRANSITION = ('Queensbury Crypt Castle Entryway North Transition', Regions.QUEENSBURY_CRYPT_CASTLE_ENTRYWAY, Regions.QUEENSBURY_CRYPT_CASTLE_ENTRYWAY_HALL, DirectionType.NORTH, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_CASTLE_ENTRYWAY_STAIR = ('Queensbury Crypt Castle Entryway Stair', Regions.QUEENSBURY_CRYPT_CASTLE_ENTRYWAY, Regions.QUEENSBURY_CRYPT_CASTLE_ENTRY, DirectionType.NORTH, TransitionType.STAIRS, True_())
+    QUEENSBURY_CRYPT_CASTLE_ENTRYWAY_TRAPS_EAST_TRANSITION = ('Queensbury Crypt Castle Entryway Traps East Transition', Regions.QUEENSBURY_CRYPT_CASTLE_ENTRYWAY_TRAPS, Regions.QUEENSBURY_CRYPT_CASTLE_ENTRYWAY_HALL, DirectionType.EAST, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_CASTLE_OUTSIDE_BALCONY_NORTH_DOOR = ('Queensbury Crypt Castle Outside Balcony North Door', Regions.QUEENSBURY_CRYPT_CASTLE_OUTSIDE_BALCONY, Regions.QUEENSBURY_CRYPT_CASTLE_ENTRY, DirectionType.NORTH, TransitionType.DOORS, True_())
+    QUEENSBURY_CRYPT_CASTLE_OUTSIDE_MAIN_EAST_TRANSITION = ('Queensbury Crypt Castle Outside Main East Transition', Regions.QUEENSBURY_CRYPT_CASTLE_OUTSIDE_MAIN, Regions.QUEENSBURY_CRYPT_PIPE_ROOM, DirectionType.EAST, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_CASTLE_OUTSIDE_MAIN_NORTH_DOOR = ('Queensbury Crypt Castle Outside Main North Door', Regions.QUEENSBURY_CRYPT_CASTLE_OUTSIDE_MAIN, Regions.QUEENSBURY_CRYPT_CASTLE_ENTRY, DirectionType.NORTH, TransitionType.DOORS, True_())
+    QUEENSBURY_CRYPT_CASTLE_OUTSIDE_MAIN_SOUTH_TRANSITION = ('Queensbury Crypt Castle Outside Main South Transition', Regions.QUEENSBURY_CRYPT_CASTLE_OUTSIDE_MAIN, Regions.QUEENSBURY_CRYPT_BROKEN_BRIDGE, DirectionType.SOUTH, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_CASTLE_SPIKE_ROLLER_1_EAST_TRANSITION = ('Queensbury Crypt Castle Spike Roller 1 East Transition', Regions.QUEENSBURY_CRYPT_CASTLE_SPIKE_ROLLER_1, Regions.QUEENSBURY_CRYPT_CASTLE_SPIKE_ROLLERS_2, DirectionType.EAST, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_CASTLE_SPIKE_ROLLER_1_SOUTH_TRANSITION = ('Queensbury Crypt Castle Spike Roller 1 South Transition', Regions.QUEENSBURY_CRYPT_CASTLE_SPIKE_ROLLER_1, Regions.QUEENSBURY_CRYPT_CASTLE_ENTRYWAY_HALL, DirectionType.SOUTH, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_CASTLE_SPIKE_ROLLERS_2_EAST_TRANSITION = ('Queensbury Crypt Castle Spike Rollers 2 East Transition', Regions.QUEENSBURY_CRYPT_CASTLE_SPIKE_ROLLERS_2, Regions.QUEENSBURY_CRYPT_SMELLY_SECRET, DirectionType.EAST, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_CASTLE_SPIKE_ROLLERS_2_NORTH_TRANSITION = ('Queensbury Crypt Castle Spike Rollers 2 North Transition', Regions.QUEENSBURY_CRYPT_CASTLE_SPIKE_ROLLERS_2, Regions.QUEENSBURY_CRYPT_CASTLE_BROKEN_HALL_MAIN, DirectionType.NORTH, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_CASTLE_SPIKE_ROLLERS_2_WEST_TRANSITION = ('Queensbury Crypt Castle Spike Rollers 2 West Transition', Regions.QUEENSBURY_CRYPT_CASTLE_SPIKE_ROLLERS_2, Regions.QUEENSBURY_CRYPT_CASTLE_SPIKE_ROLLER_1, DirectionType.WEST, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_EAST_HEAD_CORNER_NORTH_TRANSITION = ('Queensbury Crypt East Head Corner North Transition', Regions.QUEENSBURY_CRYPT_EAST_HEAD_CORNER, Regions.QUEENSBURY_CRYPT_EAST_HEAD_ROOM, DirectionType.NORTH, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_EAST_HEAD_CORNER_WEST_PUTRID_TRANSITION = ('Queensbury Crypt East Head Corner West Putrid Transition', Regions.QUEENSBURY_CRYPT_EAST_HEAD_CORNER, Regions.QUEENSBURY_CRYPT_STATUE_HEAD_HALL_PUTRID, DirectionType.WEST, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_EAST_HEAD_CORNER_WEST_TRANSITION = ('Queensbury Crypt East Head Corner West Transition', Regions.QUEENSBURY_CRYPT_EAST_HEAD_CORNER, Regions.QUEENSBURY_CRYPT_STATUE_HEAD_HALL, DirectionType.WEST, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_EAST_HEAD_ROOM_SOUTH_TRANSITION = ('Queensbury Crypt East Head Room South Transition', Regions.QUEENSBURY_CRYPT_EAST_HEAD_ROOM, Regions.QUEENSBURY_CRYPT_EAST_HEAD_CORNER, DirectionType.SOUTH, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_FINAL_STAIRWELL_LEFT_STAIRS = ('Queensbury Crypt Final Stairwell Left Stairs', Regions.QUEENSBURY_CRYPT_FINAL_STAIRWELL, Regions.QUEENSBURY_CRYPT_SUMMONERS_GATE, DirectionType.NORTH, TransitionType.STAIRS, True_())
+    QUEENSBURY_CRYPT_FINAL_STAIRWELL_RIGHT_STAIRS = ('Queensbury Crypt Final Stairwell Right Stairs', Regions.QUEENSBURY_CRYPT_FINAL_STAIRWELL, Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_ENTRANCE, DirectionType.NORTH, TransitionType.STAIRS, True_())
+    QUEENSBURY_CRYPT_HIDDEN_TUNNEL_WEST_BURROW = ('Queensbury Crypt Hidden Tunnel West Burrow', Regions.QUEENSBURY_CRYPT_HIDDEN_TUNNEL, Regions.QUEENSBURY_CRYPT_CASTLE_BROKEN_HALL_MAIN, DirectionType.WEST, TransitionType.BURROW, True_())
+    QUEENSBURY_CRYPT_MIRROR_ROOM_EAST_MIRROR = ('Queensbury Crypt Mirror Room East Mirror', Regions.QUEENSBURY_CRYPT_MIRROR_ROOM_EAST, Regions.ASTRAL_ORRERY_QUEENSBURY_MIRROR, DirectionType.OVERWORLD, TransitionType.MIRRORS, True_())
+    QUEENSBURY_CRYPT_MIRROR_ROOM_EAST_SOUTH_BURROW = ('Queensbury Crypt Mirror Room East South Burrow', Regions.QUEENSBURY_CRYPT_MIRROR_ROOM_EAST, Regions.QUEENSBURY_CRYPT_STATUE_HEAD_HALL, DirectionType.SOUTH, TransitionType.BURROW, True_())
+    QUEENSBURY_CRYPT_MIRROR_ROOM_WEST_SOUTH_BURROW = ('Queensbury Crypt Mirror Room West South Burrow', Regions.QUEENSBURY_CRYPT_MIRROR_ROOM_WEST, Regions.QUEENSBURY_CRYPT_STATUE_HEAD_HALL, DirectionType.SOUTH, TransitionType.BURROW, True_())
+    QUEENSBURY_CRYPT_OLD_BUTTON_NORTH_TRANSITION = ('Queensbury Crypt Old Button North Transition', Regions.QUEENSBURY_CRYPT_OLD_BUTTON, Regions.QUEENSBURY_CRYPT_OLD_GRAVEYARD_MAIN, DirectionType.NORTH, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_OLD_BUTTON_WEST_TRANSITION = ('Queensbury Crypt Old Button West Transition', Regions.QUEENSBURY_CRYPT_OLD_BUTTON, Regions.QUEENSBURY_CRYPT_OLD_ENTRANCE, DirectionType.WEST, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_OLD_CHAMBER_WEST_TRANSITION = ('Queensbury Crypt Old Chamber West Transition', Regions.QUEENSBURY_CRYPT_OLD_CHAMBER, Regions.QUEENSBURY_CRYPT_OLD_GRAVEYARD_MAIN, DirectionType.WEST, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_OLD_ENTRANCE_EAST_TRANSITION = ('Queensbury Crypt Old Entrance East Transition', Regions.QUEENSBURY_CRYPT_OLD_ENTRANCE, Regions.QUEENSBURY_CRYPT_OLD_BUTTON, DirectionType.EAST, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_OLD_ENTRANCE_WEST_AREA_TRANSITIONS = ('Queensbury Crypt Old Entrance West Area Transitions', Regions.QUEENSBURY_CRYPT_OLD_ENTRANCE, Regions.MOURNERS_MILE_STAIRS, DirectionType.WEST, TransitionType.AREA_SCREENS, True_())
+    QUEENSBURY_CRYPT_OLD_GRAVEYARD_MAIN_EAST_TRANSITION = ('Queensbury Crypt Old Graveyard Main East Transition', Regions.QUEENSBURY_CRYPT_OLD_GRAVEYARD_MAIN, Regions.QUEENSBURY_CRYPT_OLD_CHAMBER, DirectionType.EAST, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_OLD_GRAVEYARD_MAIN_HIDDEN_NORTH_TRANSITION = ('Queensbury Crypt Old Graveyard Main Hidden North Transition', Regions.QUEENSBURY_CRYPT_OLD_GRAVEYARD_MAIN, Regions.QUEENSBURY_CRYPT_BONNET_TOMB, DirectionType.NORTH, TransitionType.SCREENS, HasKear(kear=SingleKears.QUEENSBURY_CRYPT_BONNET_TOMB_KEAR.value))
+    QUEENSBURY_CRYPT_OLD_GRAVEYARD_MAIN_NORTH_TRANSITION = ('Queensbury Crypt Old Graveyard Main North Transition', Regions.QUEENSBURY_CRYPT_OLD_GRAVEYARD_MAIN, Regions.QUEENSBURY_CRYPT_BROKEN_BRIDGE, DirectionType.NORTH, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_OLD_GRAVEYARD_MAIN_SOUTH_TRANSITION = ('Queensbury Crypt Old Graveyard Main South Transition', Regions.QUEENSBURY_CRYPT_OLD_GRAVEYARD_MAIN, Regions.QUEENSBURY_CRYPT_OLD_BUTTON, DirectionType.SOUTH, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_OPHIDIO_STAIR_LEFT_STAIRS = ('Queensbury Crypt Ophidio Stair Left Stairs', Regions.QUEENSBURY_CRYPT_OPHIDIO_STAIR, Regions.QUEENSBURY_CRYPT_STATUE_GATE_STAIR, DirectionType.NORTH, TransitionType.STAIRS, True_())
+    QUEENSBURY_CRYPT_OPHIDIO_STAIR_RIGHT_STAIRS = ('Queensbury Crypt Ophidio Stair Right Stairs', Regions.QUEENSBURY_CRYPT_OPHIDIO_STAIR, Regions.QUEENSBURY_CRYPT_STATUE_HEAD_HALL_ENTRANCE, DirectionType.NORTH, TransitionType.STAIRS, True_())
+    QUEENSBURY_CRYPT_PIPE_ROOM_EASTERN_HEATH_PIPE = ('Queensbury Crypt Pipe Room Eastern Heath Pipe', Regions.QUEENSBURY_CRYPT_PIPE_ROOM, Regions.EASTERN_HEATH_GRASSLAND_WATERFALL_PIPE, DirectionType.OVERWORLD, TransitionType.DO_NOT_RANDOMIZE_ENTRANCE, CanBurrow())
+    QUEENSBURY_CRYPT_PIPE_ROOM_WEST_TRANSITION = ('Queensbury Crypt Pipe Room West Transition', Regions.QUEENSBURY_CRYPT_PIPE_ROOM, Regions.QUEENSBURY_CRYPT_CASTLE_OUTSIDE_MAIN, DirectionType.WEST, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_PUTRID_PLACE_WEST_TRANSITION = ('Queensbury Crypt Putrid Place West Transition', Regions.QUEENSBURY_CRYPT_PUTRID_PLACE, Regions.QUEENSBURY_CRYPT_STATUE_HEAD_HALL_ENTRANCE_PUTRID, DirectionType.WEST, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_RANCID_ROOM_WEST_TRANSITION = ('Queensbury Crypt Rancid Room West Transition', Regions.QUEENSBURY_CRYPT_RANCID_ROOM, Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER_ENTRANCE, DirectionType.WEST, TransitionType.SCREENS, HasVialsCount(count=2))
+    QUEENSBURY_CRYPT_ROYAL_TOMB_NORTH_DUKE_TRANSITION = ('Queensbury Crypt Royal Tomb North Duke Transition', Regions.QUEENSBURY_CRYPT_ROYAL_TOMB, Regions.QUEENSBURY_CRYPT_ROYAL_TOMB_SEAL, DirectionType.NORTH, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_ROYAL_TOMB_NORTH_TRANSITION = ('Queensbury Crypt Royal Tomb North Transition', Regions.QUEENSBURY_CRYPT_ROYAL_TOMB, Regions.QUEENSBURY_CRYPT_SOLEMN_GENERATOR, DirectionType.NORTH, TransitionType.STAIRS, True_())
+    QUEENSBURY_CRYPT_ROYAL_TOMB_SEAL_SOUTH_TRANSITION = ('Queensbury Crypt Royal Tomb Seal South Transition', Regions.QUEENSBURY_CRYPT_ROYAL_TOMB_SEAL, Regions.QUEENSBURY_CRYPT_ROYAL_TOMB, DirectionType.SOUTH, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_ROYAL_TOMB_SOUTH_TRANSITION = ('Queensbury Crypt Royal Tomb South Transition', Regions.QUEENSBURY_CRYPT_ROYAL_TOMB, Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER, DirectionType.SOUTH, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_SMELLY_SECRET_WEST_TRANSITION = ('Queensbury Crypt Smelly Secret West Transition', Regions.QUEENSBURY_CRYPT_SMELLY_SECRET, Regions.QUEENSBURY_CRYPT_CASTLE_SPIKE_ROLLERS_2, DirectionType.WEST, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_SOLEMN_GENERATOR_CRYPT_STAIR = ('Queensbury Crypt Solemn Generator Crypt Stair', Regions.QUEENSBURY_CRYPT_SOLEMN_GENERATOR, Regions.QUEENSBURY_CRYPT_ROYAL_TOMB, DirectionType.NORTH, TransitionType.STAIRS, True_())
+    QUEENSBURY_CRYPT_SOLEMN_GENERATOR_TOWER_TUNNEL_DOOR = ('Queensbury Crypt Solemn Generator Tower Tunnel Door', Regions.QUEENSBURY_CRYPT_SOLEMN_GENERATOR, Regions.MOURNERS_MILE_TOWER_TUNNEL_MAIN, DirectionType.SOUTH, TransitionType.DOORS, True_())
+    QUEENSBURY_CRYPT_STATUE_GATE_OUTSIDE_SOUTH_TRANSITION = ('Queensbury Crypt Statue Gate Outside South Transition', Regions.QUEENSBURY_CRYPT_STATUE_GATE_OUTSIDE, Regions.QUEENSBURY_CRYPT_CASTLE_BROKEN_HALL_MAIN, DirectionType.SOUTH, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_STATUE_GATE_STAIR_STAIRS = ('Queensbury Crypt Statue Gate Stair Stairs', Regions.QUEENSBURY_CRYPT_STATUE_GATE_STAIR, Regions.QUEENSBURY_CRYPT_OPHIDIO_STAIR, DirectionType.NORTH, TransitionType.STAIRS, True_())
+    QUEENSBURY_CRYPT_STATUE_HEAD_HALL_EAST_TRANSITION = ('Queensbury Crypt Statue Head Hall East Transition', Regions.QUEENSBURY_CRYPT_STATUE_HEAD_HALL, Regions.QUEENSBURY_CRYPT_EAST_HEAD_CORNER, DirectionType.EAST, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_STATUE_HEAD_HALL_ENTRANCE_NORTH_TRANSITION = ('Queensbury Crypt Statue Head Hall Entrance North Transition', Regions.QUEENSBURY_CRYPT_STATUE_HEAD_HALL_ENTRANCE, Regions.QUEENSBURY_CRYPT_STATUE_HEAD_HALL, DirectionType.NORTH, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_STATUE_HEAD_HALL_ENTRANCE_PUTRID_EAST_TRANSITION = ('Queensbury Crypt Statue Head Hall Entrance Putrid East Transition', Regions.QUEENSBURY_CRYPT_STATUE_HEAD_HALL_ENTRANCE_PUTRID, Regions.QUEENSBURY_CRYPT_PUTRID_PLACE, DirectionType.EAST, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_STATUE_HEAD_HALL_ENTRANCE_PUTRID_NORTH_TRANSITION = ('Queensbury Crypt Statue Head Hall Entrance Putrid North Transition', Regions.QUEENSBURY_CRYPT_STATUE_HEAD_HALL_ENTRANCE_PUTRID, Regions.QUEENSBURY_CRYPT_STATUE_HEAD_HALL_PUTRID, DirectionType.NORTH, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_STATUE_HEAD_HALL_ENTRANCE_STAIRS = ('Queensbury Crypt Statue Head Hall Entrance Stairs', Regions.QUEENSBURY_CRYPT_STATUE_HEAD_HALL_ENTRANCE, Regions.QUEENSBURY_CRYPT_OPHIDIO_STAIR, DirectionType.NORTH, TransitionType.STAIRS, True_())
+    QUEENSBURY_CRYPT_STATUE_HEAD_HALL_GATE_NORTH_TRANSITION = ('Queensbury Crypt Statue Head Hall Gate North Transition', Regions.QUEENSBURY_CRYPT_STATUE_HEAD_HALL_GATE, Regions.QUEENSBURY_CRYPT_SUMMONERS_GATE, DirectionType.NORTH, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_STATUE_HEAD_HALL_NORTH_BURROW_EAST = ('Queensbury Crypt Statue Head Hall North Burrow East', Regions.QUEENSBURY_CRYPT_STATUE_HEAD_HALL, Regions.QUEENSBURY_CRYPT_MIRROR_ROOM_EAST, DirectionType.NORTH, TransitionType.BURROW, True_())
+    QUEENSBURY_CRYPT_STATUE_HEAD_HALL_NORTH_BURROW_WEST = ('Queensbury Crypt Statue Head Hall North Burrow West', Regions.QUEENSBURY_CRYPT_STATUE_HEAD_HALL, Regions.QUEENSBURY_CRYPT_MIRROR_ROOM_WEST, DirectionType.NORTH, TransitionType.BURROW, True_())
+    QUEENSBURY_CRYPT_STATUE_HEAD_HALL_PUTRID_EAST_TRANSITION = ('Queensbury Crypt Statue Head Hall Putrid East Transition', Regions.QUEENSBURY_CRYPT_STATUE_HEAD_HALL_PUTRID, Regions.QUEENSBURY_CRYPT_EAST_HEAD_CORNER, DirectionType.EAST, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_STATUE_HEAD_HALL_PUTRID_SOUTH_TRANSITION = ('Queensbury Crypt Statue Head Hall Putrid South Transition', Regions.QUEENSBURY_CRYPT_STATUE_HEAD_HALL_PUTRID, Regions.QUEENSBURY_CRYPT_STATUE_HEAD_HALL_ENTRANCE_PUTRID, DirectionType.SOUTH, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_STATUE_HEAD_HALL_SOUTH_BURROW_EAST = ('Queensbury Crypt Statue Head Hall South Burrow East', Regions.QUEENSBURY_CRYPT_STATUE_HEAD_HALL, Regions.QUEENSBURY_CRYPT_STATUE_SHORTCUT, DirectionType.SOUTH, TransitionType.BURROW, True_())
+    QUEENSBURY_CRYPT_STATUE_HEAD_HALL_SOUTH_BURROW_WEST = ('Queensbury Crypt Statue Head Hall South Burrow West', Regions.QUEENSBURY_CRYPT_STATUE_HEAD_HALL, Regions.QUEENSBURY_CRYPT_STATUE_SHORTCUT, DirectionType.SOUTH, TransitionType.BURROW, True_())
+    QUEENSBURY_CRYPT_STATUE_HEAD_HALL_WEST_TRANSITION = ('Queensbury Crypt Statue Head Hall West Transition', Regions.QUEENSBURY_CRYPT_STATUE_HEAD_HALL, Regions.QUEENSBURY_CRYPT_WEST_HEAD_CORNER, DirectionType.WEST, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_STATUE_SHORTCUT_NORTH_BURROW_EAST = ('Queensbury Crypt Statue Shortcut North Burrow East', Regions.QUEENSBURY_CRYPT_STATUE_SHORTCUT, Regions.QUEENSBURY_CRYPT_STATUE_HEAD_HALL, DirectionType.NORTH, TransitionType.BURROW, True_())
+    QUEENSBURY_CRYPT_STATUE_SHORTCUT_NORTH_BURROW_WEST = ('Queensbury Crypt Statue Shortcut North Burrow West', Regions.QUEENSBURY_CRYPT_STATUE_SHORTCUT, Regions.QUEENSBURY_CRYPT_STATUE_HEAD_HALL, DirectionType.NORTH, TransitionType.BURROW, True_())
+    QUEENSBURY_CRYPT_SUMMONERS_GATE_SOUTH_TRANSITION = ('Queensbury Crypt Summoners Gate South Transition', Regions.QUEENSBURY_CRYPT_SUMMONERS_GATE, Regions.QUEENSBURY_CRYPT_STATUE_HEAD_HALL_GATE, DirectionType.SOUTH, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_SUMMONERS_GATE_STAIRS = ('Queensbury Crypt Summoners Gate Stairs', Regions.QUEENSBURY_CRYPT_SUMMONERS_GATE, Regions.QUEENSBURY_CRYPT_FINAL_STAIRWELL, DirectionType.NORTH, TransitionType.STAIRS, True_())
+    QUEENSBURY_CRYPT_WEST_HEAD_CORNER_EAST_TRANSITION = ('Queensbury Crypt West Head Corner East Transition', Regions.QUEENSBURY_CRYPT_WEST_HEAD_CORNER, Regions.QUEENSBURY_CRYPT_STATUE_HEAD_HALL, DirectionType.EAST, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_WEST_HEAD_CORNER_NORTH_TRANSITION = ('Queensbury Crypt West Head Corner North Transition', Regions.QUEENSBURY_CRYPT_WEST_HEAD_CORNER, Regions.QUEENSBURY_CRYPT_WEST_HEAD_ROOM, DirectionType.NORTH, TransitionType.SCREENS, True_())
+    QUEENSBURY_CRYPT_WEST_HEAD_ROOM_SOUTH_TRANSITION = ('Queensbury Crypt West Head Room South Transition', Regions.QUEENSBURY_CRYPT_WEST_HEAD_ROOM, Regions.QUEENSBURY_CRYPT_WEST_HEAD_CORNER, DirectionType.SOUTH, TransitionType.SCREENS, True_())
 
-transitions: dict[str, Transition] = {
-    'Queensbury Crypt Ancestral Chamber Bridges North North Transition': Transition('Queensbury Crypt Ancestral Chamber Bridges North', 'Queensbury Crypt Ancestral Chamber foyer East', DirectionType.NORTH, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Ancestral Chamber Bridges South South Transition': Transition('Queensbury Crypt Ancestral Chamber Bridges South', 'Queensbury Crypt Ancestral Chamber Entrance', DirectionType.SOUTH, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Ancestral Chamber Entrance East Transition': Transition('Queensbury Crypt Ancestral Chamber Entrance', 'Queensbury Crypt Rancid Room', DirectionType.EAST, TransitionType.SCREENS, HasVialsCount(count=2)),
-    'Queensbury Crypt Ancestral Chamber Entrance North Transition': Transition('Queensbury Crypt Ancestral Chamber Entrance', 'Queensbury Crypt Ancestral Chamber Bridges South', DirectionType.NORTH, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Ancestral Chamber Entrance Stairs': Transition('Queensbury Crypt Ancestral Chamber Entrance', 'Queensbury Crypt Final Stairwell', DirectionType.NORTH, TransitionType.STAIRS, True_()),
-    'Queensbury Crypt Ancestral Chamber Hall North Transition': Transition('Queensbury Crypt Ancestral Chamber Hall', 'Queensbury Crypt Ancestral Chamber', DirectionType.NORTH, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Ancestral Chamber Hall South Transition': Transition('Queensbury Crypt Ancestral Chamber Hall', 'Queensbury Crypt Ancestral Chamber foyer West', DirectionType.SOUTH, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Ancestral Chamber North Transition': Transition('Queensbury Crypt Ancestral Chamber', 'Queensbury Crypt Royal Tomb', DirectionType.NORTH, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Ancestral Chamber Roller East North Transition': Transition('Queensbury Crypt Ancestral Chamber Roller East', 'Queensbury Crypt Ancestral Chamber Ropes Save', DirectionType.NORTH, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Ancestral Chamber Roller East South Transition': Transition('Queensbury Crypt Ancestral Chamber Roller East', 'Queensbury Crypt Ancestral Chamber Trap', DirectionType.SOUTH, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Ancestral Chamber Roller West North Transition': Transition('Queensbury Crypt Ancestral Chamber Roller West', 'Queensbury Crypt Ancestral Chamber Ropes West', DirectionType.NORTH, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Ancestral Chamber Roller West South Transition': Transition('Queensbury Crypt Ancestral Chamber Roller West', 'Queensbury Crypt Ancestral Chamber Trap', DirectionType.SOUTH, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Ancestral Chamber Ropes East East Transition': Transition('Queensbury Crypt Ancestral Chamber Ropes East', 'Queensbury Crypt Ancestral Chamber foyer West', DirectionType.EAST, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Ancestral Chamber Ropes West South Transition': Transition('Queensbury Crypt Ancestral Chamber Ropes West', 'Queensbury Crypt Ancestral Chamber Roller West', DirectionType.SOUTH, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Ancestral Chamber South Transition': Transition('Queensbury Crypt Ancestral Chamber', 'Queensbury Crypt Ancestral Chamber Hall', DirectionType.SOUTH, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Ancestral Chamber Trap North Transition East': Transition('Queensbury Crypt Ancestral Chamber Trap', 'Queensbury Crypt Ancestral Chamber Roller East', DirectionType.NORTH, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Ancestral Chamber Trap North Transition West': Transition('Queensbury Crypt Ancestral Chamber Trap', 'Queensbury Crypt Ancestral Chamber Roller West', DirectionType.NORTH, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Ancestral Chamber foyer East South Transition': Transition('Queensbury Crypt Ancestral Chamber foyer East', 'Queensbury Crypt Ancestral Chamber Bridges North', DirectionType.SOUTH, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Ancestral Chamber foyer West North Transition': Transition('Queensbury Crypt Ancestral Chamber foyer West', 'Queensbury Crypt Ancestral Chamber Hall', DirectionType.NORTH, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Ancestral Chamber foyer West West Transition': Transition('Queensbury Crypt Ancestral Chamber foyer West', 'Queensbury Crypt Ancestral Chamber Ropes East', DirectionType.WEST, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Bonnet Tomb Inner South Burrow': Transition('Queensbury Crypt Bonnet Tomb Inner', 'Queensbury Crypt Bonnet Tomb', DirectionType.SOUTH, TransitionType.BURROW, CanBurrow()),
-    'Queensbury Crypt Bonnet Tomb North Burrow': Transition('Queensbury Crypt Bonnet Tomb', 'Queensbury Crypt Bonnet Tomb Inner', DirectionType.NORTH, TransitionType.BURROW, CanBurrow()),
-    'Queensbury Crypt Bonnet Tomb South Transition': Transition('Queensbury Crypt Bonnet Tomb', 'Queensbury Crypt Old Graveyard Main', DirectionType.SOUTH, TransitionType.SCREENS, HasKear(kear=SingleKears.QUEENSBURY_CRYPT_BONNET_TOMB_KEAR.value)),
-    'Queensbury Crypt Broken Bridge North Transition': Transition('Queensbury Crypt Broken Bridge', 'Queensbury Crypt Castle Outside Main', DirectionType.NORTH, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Broken Bridge South Transition': Transition('Queensbury Crypt Broken Bridge', 'Queensbury Crypt Old Graveyard Main', DirectionType.SOUTH, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Castle Broken Hall Main East Hidden Burrow': Transition('Queensbury Crypt Castle Broken Hall Main', 'Queensbury Crypt Hidden Tunnel', DirectionType.EAST, TransitionType.BURROW, True_()),
-    'Queensbury Crypt Castle Broken Hall Main South Transition': Transition('Queensbury Crypt Castle Broken Hall Main', 'Queensbury Crypt Castle Spike Rollers 2', DirectionType.SOUTH, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Castle Broken Hall Top North Transition': Transition('Queensbury Crypt Castle Broken Hall Top', 'Queensbury Crypt Statue Gate Outside', DirectionType.NORTH, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Castle Entry Balcony Exit': Transition('Queensbury Crypt Castle Entry', 'Queensbury Crypt Castle Outside Balcony', DirectionType.SOUTH, TransitionType.DOORS, True_()),
-    'Queensbury Crypt Castle Entry Main Exit': Transition('Queensbury Crypt Castle Entry', 'Queensbury Crypt Castle Outside Main', DirectionType.SOUTH, TransitionType.DOORS, True_()),
-    'Queensbury Crypt Castle Entry Stair': Transition('Queensbury Crypt Castle Entry', 'Queensbury Crypt Castle Entryway', DirectionType.NORTH, TransitionType.STAIRS, True_()),
-    'Queensbury Crypt Castle Entryway Hall North Transition': Transition('Queensbury Crypt Castle Entryway Hall', 'Queensbury Crypt Castle Spike Roller 1', DirectionType.NORTH, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Castle Entryway Hall South Transition': Transition('Queensbury Crypt Castle Entryway Hall', 'Queensbury Crypt Castle Entryway', DirectionType.SOUTH, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Castle Entryway Hall West Transition': Transition('Queensbury Crypt Castle Entryway Hall', 'Queensbury Crypt Castle Entryway Traps', DirectionType.WEST, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Castle Entryway North Transition': Transition('Queensbury Crypt Castle Entryway', 'Queensbury Crypt Castle Entryway Hall', DirectionType.NORTH, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Castle Entryway Stair': Transition('Queensbury Crypt Castle Entryway', 'Queensbury Crypt Castle Entry', DirectionType.NORTH, TransitionType.STAIRS, True_()),
-    'Queensbury Crypt Castle Entryway Traps East Transition': Transition('Queensbury Crypt Castle Entryway Traps', 'Queensbury Crypt Castle Entryway Hall', DirectionType.EAST, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Castle Outside Balcony North Door': Transition('Queensbury Crypt Castle Outside Balcony', 'Queensbury Crypt Castle Entry', DirectionType.NORTH, TransitionType.DOORS, True_()),
-    'Queensbury Crypt Castle Outside Main East Transition': Transition('Queensbury Crypt Castle Outside Main', 'Queensbury Crypt Pipe Room', DirectionType.EAST, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Castle Outside Main North Door': Transition('Queensbury Crypt Castle Outside Main', 'Queensbury Crypt Castle Entry', DirectionType.NORTH, TransitionType.DOORS, True_()),
-    'Queensbury Crypt Castle Outside Main South Transition': Transition('Queensbury Crypt Castle Outside Main', 'Queensbury Crypt Broken Bridge', DirectionType.SOUTH, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Castle Spike Roller 1 East Transition': Transition('Queensbury Crypt Castle Spike Roller 1', 'Queensbury Crypt Castle Spike Rollers 2', DirectionType.EAST, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Castle Spike Roller 1 South Transition': Transition('Queensbury Crypt Castle Spike Roller 1', 'Queensbury Crypt Castle Entryway Hall', DirectionType.SOUTH, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Castle Spike Rollers 2 East Transition': Transition('Queensbury Crypt Castle Spike Rollers 2', 'Queensbury Crypt Smelly Secret', DirectionType.EAST, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Castle Spike Rollers 2 North Transition': Transition('Queensbury Crypt Castle Spike Rollers 2', 'Queensbury Crypt Castle Broken Hall Main', DirectionType.NORTH, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Castle Spike Rollers 2 West Transition': Transition('Queensbury Crypt Castle Spike Rollers 2', 'Queensbury Crypt Castle Spike Roller 1', DirectionType.WEST, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt East Head Corner North Transition': Transition('Queensbury Crypt East Head Corner', 'Queensbury Crypt East Head Room', DirectionType.NORTH, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt East Head Corner West Putrid Transition': Transition('Queensbury Crypt East Head Corner', 'Queensbury Crypt Statue Head Hall Putrid', DirectionType.WEST, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt East Head Corner West Transition': Transition('Queensbury Crypt East Head Corner', 'Queensbury Crypt Statue Head Hall', DirectionType.WEST, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt East Head Room South Transition': Transition('Queensbury Crypt East Head Room', 'Queensbury Crypt East Head Corner', DirectionType.SOUTH, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Final Stairwell Left Stairs': Transition('Queensbury Crypt Final Stairwell', 'Queensbury Crypt Summoners Gate', DirectionType.NORTH, TransitionType.STAIRS, True_()),
-    'Queensbury Crypt Final Stairwell Right Stairs': Transition('Queensbury Crypt Final Stairwell', 'Queensbury Crypt Ancestral Chamber Entrance', DirectionType.NORTH, TransitionType.STAIRS, True_()),
-    'Queensbury Crypt Hidden Tunnel West Burrow': Transition('Queensbury Crypt Hidden Tunnel', 'Queensbury Crypt Castle Broken Hall Main', DirectionType.WEST, TransitionType.BURROW, True_()),
-    'Queensbury Crypt Mirror Room East Mirror': Transition('Queensbury Crypt Mirror Room East', 'Astral Orrery Queensbury Mirror', DirectionType.OVERWORLD, TransitionType.MIRRORS, True_()),
-    'Queensbury Crypt Mirror Room East South Burrow': Transition('Queensbury Crypt Mirror Room East', 'Queensbury Crypt Statue Head Hall', DirectionType.SOUTH, TransitionType.BURROW, True_()),
-    'Queensbury Crypt Mirror Room West South Burrow': Transition('Queensbury Crypt Mirror Room West', 'Queensbury Crypt Statue Head Hall', DirectionType.SOUTH, TransitionType.BURROW, True_()),
-    'Queensbury Crypt Old Button North Transition': Transition('Queensbury Crypt Old Button', 'Queensbury Crypt Old Graveyard Main', DirectionType.NORTH, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Old Button West Transition': Transition('Queensbury Crypt Old Button', 'Queensbury Crypt Old Entrance', DirectionType.WEST, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Old Chamber West Transition': Transition('Queensbury Crypt Old Chamber', 'Queensbury Crypt Old Graveyard Main', DirectionType.WEST, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Old Entrance East Transition': Transition('Queensbury Crypt Old Entrance', 'Queensbury Crypt Old Button', DirectionType.EAST, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Old Entrance West Area Transitions': Transition('Queensbury Crypt Old Entrance', "Mourner's Mile Stairs", DirectionType.WEST, TransitionType.AREA_SCREENS, True_()),
-    'Queensbury Crypt Old Graveyard Main East Transition': Transition('Queensbury Crypt Old Graveyard Main', 'Queensbury Crypt Old Chamber', DirectionType.EAST, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Old Graveyard Main Hidden North Transition': Transition('Queensbury Crypt Old Graveyard Main', 'Queensbury Crypt Bonnet Tomb', DirectionType.NORTH, TransitionType.SCREENS, HasKear(kear=SingleKears.QUEENSBURY_CRYPT_BONNET_TOMB_KEAR.value)),
-    'Queensbury Crypt Old Graveyard Main North Transition': Transition('Queensbury Crypt Old Graveyard Main', 'Queensbury Crypt Broken Bridge', DirectionType.NORTH, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Old Graveyard Main South Transition': Transition('Queensbury Crypt Old Graveyard Main', 'Queensbury Crypt Old Button', DirectionType.SOUTH, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Ophidio Stair Left Stairs': Transition('Queensbury Crypt Ophidio Stair', 'Queensbury Crypt Statue Gate Stair', DirectionType.NORTH, TransitionType.STAIRS, True_()),
-    'Queensbury Crypt Ophidio Stair Right Stairs': Transition('Queensbury Crypt Ophidio Stair', 'Queensbury Crypt Statue Head Hall Entrance', DirectionType.NORTH, TransitionType.STAIRS, True_()),
-    'Queensbury Crypt Pipe Room Eastern Heath Pipe': Transition('Queensbury Crypt Pipe Room', 'Eastern Heath Grassland Waterfall Pipe', DirectionType.OVERWORLD, TransitionType.DO_NOT_RANDOMIZE_ENTRANCE, CanBurrow()),
-    'Queensbury Crypt Pipe Room West Transition': Transition('Queensbury Crypt Pipe Room', 'Queensbury Crypt Castle Outside Main', DirectionType.WEST, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Putrid Place West Transition': Transition('Queensbury Crypt Putrid Place', 'Queensbury Crypt Statue Head Hall Entrance Putrid', DirectionType.WEST, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Rancid Room West Transition': Transition('Queensbury Crypt Rancid Room', 'Queensbury Crypt Ancestral Chamber Entrance', DirectionType.WEST, TransitionType.SCREENS, HasVialsCount(count=2)),
-    'Queensbury Crypt Royal Tomb North Duke Transition': Transition('Queensbury Crypt Royal Tomb', 'Queensbury Crypt Royal Tomb Seal', DirectionType.NORTH, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Royal Tomb North Transition': Transition('Queensbury Crypt Royal Tomb', 'Queensbury Crypt Solemn Generator', DirectionType.NORTH, TransitionType.STAIRS, True_()),
-    'Queensbury Crypt Royal Tomb Seal South Transition': Transition('Queensbury Crypt Royal Tomb Seal', 'Queensbury Crypt Royal Tomb', DirectionType.SOUTH, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Royal Tomb South Transition': Transition('Queensbury Crypt Royal Tomb', 'Queensbury Crypt Ancestral Chamber', DirectionType.SOUTH, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Smelly Secret West Transition': Transition('Queensbury Crypt Smelly Secret', 'Queensbury Crypt Castle Spike Rollers 2', DirectionType.WEST, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Solemn Generator Crypt Stair': Transition('Queensbury Crypt Solemn Generator', 'Queensbury Crypt Royal Tomb', DirectionType.NORTH, TransitionType.STAIRS, True_()),
-    'Queensbury Crypt Solemn Generator Tower Tunnel Door': Transition('Queensbury Crypt Solemn Generator', "Mourner's Mile Tower Tunnel Main", DirectionType.SOUTH, TransitionType.DOORS, True_()),
-    'Queensbury Crypt Statue Gate Outside South Transition': Transition('Queensbury Crypt Statue Gate Outside', 'Queensbury Crypt Castle Broken Hall Main', DirectionType.SOUTH, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Statue Gate Stair Stairs': Transition('Queensbury Crypt Statue Gate Stair', 'Queensbury Crypt Ophidio Stair', DirectionType.NORTH, TransitionType.STAIRS, True_()),
-    'Queensbury Crypt Statue Head Hall East Transition': Transition('Queensbury Crypt Statue Head Hall', 'Queensbury Crypt East Head Corner', DirectionType.EAST, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Statue Head Hall Entrance North Transition': Transition('Queensbury Crypt Statue Head Hall Entrance', 'Queensbury Crypt Statue Head Hall', DirectionType.NORTH, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Statue Head Hall Entrance Putrid East Transition': Transition('Queensbury Crypt Statue Head Hall Entrance Putrid', 'Queensbury Crypt Putrid Place', DirectionType.EAST, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Statue Head Hall Entrance Putrid North Transition': Transition('Queensbury Crypt Statue Head Hall Entrance Putrid', 'Queensbury Crypt Statue Head Hall Putrid', DirectionType.NORTH, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Statue Head Hall Entrance Stairs': Transition('Queensbury Crypt Statue Head Hall Entrance', 'Queensbury Crypt Ophidio Stair', DirectionType.NORTH, TransitionType.STAIRS, True_()),
-    'Queensbury Crypt Statue Head Hall Gate North Transition': Transition('Queensbury Crypt Statue Head Hall Gate', 'Queensbury Crypt Summoners Gate', DirectionType.NORTH, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Statue Head Hall North Burrow East': Transition('Queensbury Crypt Statue Head Hall', 'Queensbury Crypt Mirror Room East', DirectionType.NORTH, TransitionType.BURROW, True_()),
-    'Queensbury Crypt Statue Head Hall North Burrow West': Transition('Queensbury Crypt Statue Head Hall', 'Queensbury Crypt Mirror Room West', DirectionType.NORTH, TransitionType.BURROW, True_()),
-    'Queensbury Crypt Statue Head Hall Putrid East Transition': Transition('Queensbury Crypt Statue Head Hall Putrid', 'Queensbury Crypt East Head Corner', DirectionType.EAST, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Statue Head Hall Putrid South Transition': Transition('Queensbury Crypt Statue Head Hall Putrid', 'Queensbury Crypt Statue Head Hall Entrance Putrid', DirectionType.SOUTH, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Statue Head Hall South Burrow East': Transition('Queensbury Crypt Statue Head Hall', 'Queensbury Crypt Statue Shortcut', DirectionType.SOUTH, TransitionType.BURROW, True_()),
-    'Queensbury Crypt Statue Head Hall South Burrow West': Transition('Queensbury Crypt Statue Head Hall', 'Queensbury Crypt Statue Shortcut', DirectionType.SOUTH, TransitionType.BURROW, True_()),
-    'Queensbury Crypt Statue Head Hall West Transition': Transition('Queensbury Crypt Statue Head Hall', 'Queensbury Crypt West Head Corner', DirectionType.WEST, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Statue Shortcut North Burrow East': Transition('Queensbury Crypt Statue Shortcut', 'Queensbury Crypt Statue Head Hall', DirectionType.NORTH, TransitionType.BURROW, True_()),
-    'Queensbury Crypt Statue Shortcut North Burrow West': Transition('Queensbury Crypt Statue Shortcut', 'Queensbury Crypt Statue Head Hall', DirectionType.NORTH, TransitionType.BURROW, True_()),
-    'Queensbury Crypt Summoners Gate South Transition': Transition('Queensbury Crypt Summoners Gate', 'Queensbury Crypt Statue Head Hall Gate', DirectionType.SOUTH, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt Summoners Gate Stairs': Transition('Queensbury Crypt Summoners Gate', 'Queensbury Crypt Final Stairwell', DirectionType.NORTH, TransitionType.STAIRS, True_()),
-    'Queensbury Crypt West Head Corner East Transition': Transition('Queensbury Crypt West Head Corner', 'Queensbury Crypt Statue Head Hall', DirectionType.EAST, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt West Head Corner North Transition': Transition('Queensbury Crypt West Head Corner', 'Queensbury Crypt West Head Room', DirectionType.NORTH, TransitionType.SCREENS, True_()),
-    'Queensbury Crypt West Head Room South Transition': Transition('Queensbury Crypt West Head Room', 'Queensbury Crypt West Head Corner', DirectionType.SOUTH, TransitionType.SCREENS, True_()),
-}

@@ -1,118 +1,128 @@
-from BaseClasses import Region, Location, ItemClassification, LocationProgressType
-from rule_builder.rules import Has
+from collections import defaultdict
+
+from BaseClasses import Region, Location, ItemClassification, LocationProgressType, CollectionRule
+from rule_builder.rules import Has, Rule, True_
 from .data.events import RADIANT_MANOR_DATA
 from .data.items import BoneFiller, Abilities, PermanentUpgrades
 from .data.locations import all_regions, all_region_transitions, all_internal_region_connections, \
-    all_permanent_locations, dungeon_locations
-from .data import LocationData, RegionConnection, Transition, matching_transition_types
+    all_permanent_locations, dungeon_locations, Regions
+from .data import LocationTypeEnum, RegionTypeEnum
 from typing import TYPE_CHECKING
+
+from .data.locations.areas import loners_landing
 from .items import MinaTheHollowerItem
 
 if TYPE_CHECKING:
     from . import MinaTheHollowerWorld
 
+class DefaultRegions(RegionTypeEnum):
+    MENU = "Menu"
 
-def create_location(world, name: str, data: LocationData, bonestone: bool = False):
-    region = world.get_region(data.region)
-    location = Location(world.player, name, data.location_id, region)
-    location.progress_type = LocationProgressType.EXCLUDED if bonestone else data.progress_type
-    location.item_rule = data.item_rule
-    if bonestone:
-        item = MinaTheHollowerItem(BoneFiller.TREASURE_SMALLEST.value, ItemClassification.filler, BoneFiller.TREASURE_SMALLEST.item_id, world.player)
-        location.place_locked_item(item)
+
+def create_location(world, data: LocationTypeEnum):
+    region = world.get_region(data.region.value)
+    location = Location(world.player, data.value, data.location_id, region)
+    location.progress_type = data.progress_type
+    # location.item_rule = data.item_rule
+
     region.locations.append(location)
     world.set_rule(location, data.rule)
 
-def create_region(world: "MinaTheHollowerWorld", name: str, hint: str = ""):
-    region = Region(name, world.player, world.multiworld)
-    valid_locations: dict[str, (Location, LocationData)] = {}
-    # TODO: dont loop through all locations for each region
-    for loc_name, data in all_permanent_locations.items():
-        if loc_name == "LL Captain's Gift" and world.options.ossex_start:
-            continue
-        if data.region != name:
-            continue
-        location = Location(world.player, loc_name, data.location_id, region)
-        location.progress_type = data.progress_type
-        location.item_rule = data.item_rule
-        valid_locations[loc_name] = (location, data)
-        region.locations.append(location)
-
+def create_region(world: "MinaTheHollowerWorld", region_type: RegionTypeEnum, locations_by_region: dict[RegionTypeEnum, list[LocationTypeEnum]] | None = None):
+    region = Region(region_type.value, world.player, world.multiworld)
     world.multiworld.regions.append(region)
 
-    for loc_name, (location, data) in valid_locations.items():
+    if locations_by_region is None:
+        return region
+
+    for data in locations_by_region[region_type]:
+        if data == loners_landing.OptionalLocations.LL_CAPTAINS_GIFT and world.options.ossex_start:
+            continue
+
+        location = Location(world.player, data.value, data.location_id, region)
+        location.progress_type = data.progress_type
+        # location.item_rule = data.item_rule
+        region.locations.append(location)
         world.set_rule(location, data.rule)
 
     return region
 
-def create_regions(world: "MinaTheHollowerWorld", regions: set[str]):
-    # TODO: check if regions being a set introduces nondeterminism
-    menu = create_region(world, "Menu")
-    for region in regions:
-        create_region(world, region)
-    for index, loc_map in dungeon_locations.items():
-        for name, data in loc_map.items():
-            override = index == RADIANT_MANOR_DATA.index and world.options.goal.value == world.options.goal.option_fixGenerators
-            create_location(world, name, data, bonestone=(index in world.lit_generators) or override)
+def is_dungeon_location_excluded(world: "MinaTheHollowerWorld", dungeon_index: int,) -> bool:
+    if dungeon_index in world.lit_generators:
+        return True
+    return dungeon_index == RADIANT_MANOR_DATA.index and world.options.goal.value == world.options.goal.option_fixGenerators
 
-    is_ut = getattr(world.multiworld, "generation_is_fake", False)
+def fill_dungeon_regions(world: "MinaTheHollowerWorld") -> list[int]:
+    excluded_locations: list[int] = []
+    for dungeon_index, locations in dungeon_locations.items():
+        if is_dungeon_location_excluded(world, dungeon_index):
+            excluded_locations.extend(
+                data.location_id
+                for data in locations
+            )
+            continue
 
-    if is_ut:
-        world.create_entrance(menu, create_region(world, "Burrow Region"), name="Menu To Burrow", rule=Has(Abilities.BURROW.value))
-        world.create_entrance(menu, create_region(world, "Swim Region"), name="Menu To Swim", rule=Has(Abilities.SWIM.value))
-        world.create_entrance(menu, create_region(world, "Carry Region"), name="Menu To Carry", rule=Has(Abilities.CARRY.value))
-        world.create_entrance(menu, create_region(world, "Climb Region"), name="Menu To Climb", rule=Has(Abilities.CLIMB.value))
-        world.create_entrance(menu, create_region(world, "Bounce Region"), name="Menu To Bounce", rule=Has(Abilities.BOUNCE.value))
-        world.create_entrance(menu, create_region(world, "Spring Region"), name="Menu To Spring", rule=Has(Abilities.SPRING.value))
+        for data in locations:
+            create_location(world, data)
+    return excluded_locations
 
-        create_location(world, "Burrow", LocationData(None, "Burrow Region", lambda _: False))
-        create_location(world, "Swim", LocationData(None, "Swim Region", lambda _: False))
-        create_location(world, "Carry", LocationData(None, "Carry Region", lambda _: False))
-        create_location(world, "Climb", LocationData(None, "Climb Region", lambda _: False))
-        create_location(world, "Bounce", LocationData(None, "Bounce Region", lambda _: False))
-        create_location(world, "Spring", LocationData(None, "Spring Region", lambda _: False))
+def create_event_location(world, menu: Region,
+  name: str, location_rule: CollectionRule | Rule["MinaTheHollowerWorld"],
+  region_name: str, region_rule: CollectionRule | Rule["MinaTheHollowerWorld"]):
+    region = Region(region_name, world.player, world.multiworld)
 
-        world.create_entrance(menu, create_region(world, "Train Pass Region"), name="Menu To Train Pass",
-                              rule=Has(PermanentUpgrades.TRAIN_PASS.value))
-        world.create_entrance(menu, create_region(world, "Bayou Ticket Region"), name="Menu To Bayou Ticket",
-                              rule=Has(PermanentUpgrades.BAYOU_TICKET.value))
-        world.create_entrance(menu, create_region(world, "Septemburg Ticket Region"), name="Menu To Septemburg Ticket",
-                              rule=Has(PermanentUpgrades.SEPTEMBURG_TICKET.value))
-        world.create_entrance(menu, create_region(world, "Bone Beach Ticket Region"), name="Menu To Bone Beach Ticket",
-                              rule=Has(PermanentUpgrades.BONE_BEACH_TICKET.value))
-        world.create_entrance(menu, create_region(world, "Coltrane Peak Ticket Region"), name="Menu To Coltrane Peak Ticket",
-                              rule=Has(PermanentUpgrades.COLTRANE_PEAK_TICKET.value))
+    world.multiworld.regions.append(region)
 
-        create_location(world, "Train Pass", LocationData(None, "Train Pass Region", lambda _: False))
-        create_location(world, "Bayou Ticket", LocationData(None, "Bayou Ticket Region", lambda _: False))
-        create_location(world, "Septemburg Ticket", LocationData(None, "Septemburg Ticket Region", lambda _: False))
-        create_location(world, "Bone Beach Ticket", LocationData(None, "Bone Beach Ticket Region", lambda _: False))
-        create_location(world, "Coltrane Peak Ticket", LocationData(None, "Coltrane Peak Ticket Region", lambda _: False))
+    world.create_entrance(menu, region, name=f"Menu To {name}",rule=region_rule)
+    location = Location(world.player, name, None, region)
+    region.locations.append(location)
+    world.set_rule(location, location_rule)
 
 
+def create_regions(world: "MinaTheHollowerWorld") -> list[int]:
+    menu = create_region(world, DefaultRegions.MENU)
+
+    locations_by_region: dict[RegionTypeEnum, list[LocationTypeEnum]] = defaultdict(list)
+    for _location in all_permanent_locations:
+        locations_by_region[_location.region].append(_location)
+
+    for region in Regions:
+        create_region(world, region, locations_by_region)
+
+    excluded_locations: list[int] = fill_dungeon_regions(world)
+
+    if world.is_ut:
+        create_event_location(world, menu, "Burrow", lambda _: False, "Burrow Region", Has(Abilities.BURROW.value))
+        create_event_location(world, menu, "Swim", lambda _: False, "Swim Region", Has(Abilities.SWIM.value))
+        create_event_location(world, menu, "Carry", lambda _: False, "Carry Region", Has(Abilities.CARRY.value))
+        create_event_location(world, menu, "Climb", lambda _: False, "Climb Region", Has(Abilities.CLIMB.value))
+        create_event_location(world, menu, "Bounce", lambda _: False, "Bounce Region", Has(Abilities.BOUNCE.value))
+        create_event_location(world, menu, "Spring", lambda _: False, "Spring Region", Has(Abilities.SPRING.value))
+
+        create_event_location(world, menu, "Train Pass", lambda _: False, "Train Pass Region", Has(PermanentUpgrades.TRAIN_PASS.value))
+        create_event_location(world, menu, "Bayou Ticket", lambda _: False, "Bayou Ticket Region", Has(PermanentUpgrades.BAYOU_TICKET.value))
+        create_event_location(world, menu, "Septemburg Ticket", lambda _: False, "Septemburg Ticket Region", Has(PermanentUpgrades.SEPTEMBURG_TICKET.value))
+        create_event_location(world, menu, "Bone Beach Ticket", lambda _: False, "Bone Beach Ticket Region", Has(PermanentUpgrades.BONE_BEACH_TICKET.value))
+        create_event_location(world, menu, "Coltrane Peak", lambda _: False, "Coltrane Peak Region", Has(PermanentUpgrades.COLTRANE_PEAK_TICKET.value))
+
+    return excluded_locations
 
 
+def create_entrances(world: "MinaTheHollowerWorld"):
 
-
-def get_regions(world: "MinaTheHollowerWorld") -> set[str]:
-    # TODO: logic to handle which regions are being created based on yaml
-    return all_regions
-
-
-def create_entrances(world: "MinaTheHollowerWorld", regions):
     menu = world.get_region("Menu")
     if world.options.ossex_start.value:
-        world.create_entrance(menu, world.get_region("Ossex City Center Main"), name="Menu To Ossex")
-    world.create_entrance(menu, world.get_region("Loner's Landing Shipwreck"), name="Menu To Shipwreck")
-    for name, data in all_region_transitions.items():
-        exiting_region = world.get_region(data.exiting_screen)
-        entering_region = world.get_region(data.entering_screen)
-        entrance = world.create_entrance(exiting_region, entering_region, rule=data.rule, name=name, force_creation=True)
-        if data.entrance_group != 0 and world.entrance_rando:
-            entrance.randomization_group = data.entrance_group
+        world.create_entrance(menu, world.get_region(Regions.OSSEX_CITY_CENTER_MAIN.value), name="Menu To Ossex")
+    world.create_entrance(menu, world.get_region(Regions.LONERS_LANDING_SHIPWRECK.value), name="Menu To Shipwreck")
+
+    for transition_data in all_region_transitions:
+        exiting_region = world.get_region(transition_data.exiting_screen.value)
+        entering_region = world.get_region(transition_data.entering_screen.value)
+        entrance = world.create_entrance(exiting_region, entering_region, rule=transition_data.rule, name=transition_data.value, force_creation=True)
+        if transition_data.entrance_group != 0 and world.entrance_rando:
+            entrance.randomization_group = transition_data.entrance_group
             world.disconnect_entrance_for_randomization(entrance)
-    for name, data in all_internal_region_connections.items():
-        exiting_region = world.get_region(data.exiting_region)
-        entering_region = world.get_region(data.entering_region)
-        entrance = world.create_entrance(exiting_region, entering_region, rule=data.rule, name=name,
-                                         force_creation=True)
+    for connections_data in all_internal_region_connections:
+        exiting_region = world.get_region(connections_data.exiting_region.value)
+        entering_region = world.get_region(connections_data.entering_region.value)
+        entrance = world.create_entrance(exiting_region, entering_region, rule=connections_data.rule, name=connections_data.value, force_creation=True)

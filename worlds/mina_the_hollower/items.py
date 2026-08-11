@@ -6,12 +6,14 @@ from worlds.mina_the_hollower.data.events.events import MirrorsEndSwitches
 from . import repair_generator_data
 from .data.events import all_generator_data
 from .data.items.kears import kear_area_lookup
+from .data.locations import Regions
+from .data.locations.areas import backwaters
 from .world_base import MinaTheHollowerBase
 from .constants import MINA_THE_HOLLOWER
 from .data import ItemData, ItemTypeEnum, ItemFiller
 from .data.items import Kear, SingleKears, AreaKears, base_items, Abilities, BoneUps, GenericBoneUp, all_filler_items, \
     PermanentUpgrades, PlayerUpgrades, upgrade_items, Trinkets, BASE_ITEM_TOTAL, \
-    valid_power_types, FilledJug, FillerUpgrades, Wallets, all_starting_upgrades
+    valid_power_types, FilledJug, FillerUpgrades, all_starting_upgrades
 
 from .data.rules.state_rules import sidearm_rules
 from .options import BoneUpCap, KearRandomization, Goal
@@ -24,7 +26,7 @@ class MinaTheHollowerItem(Item):
     game: str = MINA_THE_HOLLOWER
 
 
-def create_item(world, item: ItemData):
+def create_item(world: "MinaTheHollowerWorld", item: ItemData):
     for i in range(item.amount):
         world.itempool.append(world.create_item(item.type.value))
 
@@ -34,9 +36,7 @@ def create_single_item(world: "MinaTheHollowerWorld", item_type: ItemTypeEnum):
 
 
 def create_items(world: "MinaTheHollowerWorld"):
-    is_ut = getattr(world.multiworld, "generation_is_fake", False)
-    #crashed. will do later
-    # is_ut = world.using_ut
+
     all_items: list[ItemData] = []
     trinket_types = set(Trinkets)
     bone_cap_types = {*BoneUps, GenericBoneUp.ALL_BONE_UP_CAP}
@@ -65,14 +65,14 @@ def create_items(world: "MinaTheHollowerWorld"):
         for _ in range(9):
             all_items.append(ItemData(GenericBoneUp.ALL_BONE_UP_CAP, 1))
 
-    starting_items: list[Item] = [] if not is_ut else world.starting_items
+    starting_items: list[Item] = [] if not world.is_ut else world.starting_items
 
     # starting items
     if world.options.random_starting_items:
         for item in base_items:
             for _ in range(item.amount):
                 all_items.append(ItemData(item.type, 1))
-        if is_ut:
+        if world.is_ut:
             for item in starting_items:
                 item_data = next(
                     (x for x in all_items if x.type.item_id == item.code),
@@ -158,7 +158,15 @@ def create_items(world: "MinaTheHollowerWorld"):
         create_item(world, item)
 
     if world.options.kear_rando == KearRandomization.option_vanilla:
-        create_item(world, ItemData(Kear.UNIVERSAL_KEAR, 50))
+        create_item(world, ItemData(Kear.UNIVERSAL_KEAR, 42))
+    if world.options.kear_rando == KearRandomization.option_vanilla:
+        for i in range(8):
+            world.itempool.append(MinaTheHollowerItem(
+            Kear.UNIVERSAL_KEAR.value,
+            ItemClassification.useful,
+            Kear.UNIVERSAL_KEAR.item_id,
+            world.player,
+        ))
     elif world.options.kear_rando == KearRandomization.option_apItems:
         excluded_kears = [data.kear_item_type for data in all_generator_data if data.index in world.lit_generators]
         for item_type in SingleKears:
@@ -223,13 +231,11 @@ def create_event(world: "MinaTheHollowerWorld", region_name: str, item_name: str
 
 def create_events(world: "MinaTheHollowerWorld"):
 
-    plasma_jug_loc = world.get_location("BW Buffo The Frog Fight Plasma Jug")
+    plasma_jug_loc = world.get_location(backwaters.BossLocations.BW_DEFEAT_BUFFO_THE_FROG.value)
     plasma_jug_loc.place_locked_item(MinaTheHollowerItem(FilledJug.PLASMA_JUG.value, ItemClassification.useful, FilledJug.PLASMA_JUG.item_id, world.player))
 
-    starting_region = "Ossex City Center Main" # if world.options.ossex_start else "Loner's Landing Shipwreck"
-
     for itemShortcut in sidearm_rules:
-        create_event(world, starting_region, itemShortcut.type.value, rule=itemShortcut.access_rule)
+        create_event(world, Regions.OSSEX_CITY_CENTER_MAIN.value, itemShortcut.type.value, rule=itemShortcut.access_rule)
         # starting_items.append(Item(item_type.value, item_type.classification, item_type.item_id, world.player))
 
     for data in repair_generator_data:

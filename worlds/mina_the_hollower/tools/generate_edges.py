@@ -8,6 +8,7 @@ from __future__ import annotations
 import argparse
 import pathlib
 import sys
+import re
 
 try:  # standalone-first so the tooling never needs to boot the Archipelago stack
     import edge_schema as es
@@ -22,8 +23,9 @@ BANNER = (
 )
 
 IMPORTS = (
+    "from .regions import Regions\n"
     "from rule_builder.rules import Has, True_, CanReachLocation\n"
-    "from ... import RegionConnection, Transition, DirectionType, TransitionType\n"
+    "from ... import DirectionType, TransitionType, ConnectionTypeEnum, TransitionTypeEnum\n"
     "from ...rules.ability_rules import (\n"
     "    CanBurrow, CanCarry, CanClimb, CanSwim, CanBounce, PowerLevelThreshold,\n"
     "    HasVialsCount, HasReachingSideArm, HasFishingRod, CanSpring, HasTrinket \n"
@@ -66,10 +68,24 @@ def _comment(notes: str) -> str:
     notes = notes.strip().replace("\n", " ")
     return f"  # {notes}" if notes else ""
 
+def make_enum_name(value: str) -> str:
+    name = value.replace("'", "")
+    name = re.sub(r"[^a-zA-Z0-9]+", "_", name)
+    name = re.sub(r"_+", "_", name)
+    return name.strip("_").upper()
+
+def render_region_enum(edges: "list[es.Edge]"):
+    regions = sorted({e.from_region for e in edges})
+    out: list[str] = [BANNER, "from ... import RegionTypeEnum\n", ""]
+    out.append("class Regions(RegionTypeEnum):")
+    for r in regions:
+        enum_name = make_enum_name(r)
+        out.append(f"    {enum_name} = {r!r}")
+    out.append("")
+    return "\n".join(out) + "\n"
 
 def render_area_module(area: str, edges: "list[es.Edge]") -> str:
     area_edges = [e for e in edges if e.area == area]
-    regions = sorted(es.derived_regions(edges, area))
     connections = sorted((e for e in area_edges if e.is_internal),
                          key=lambda e: e.resolved_name)
     transitions = sorted((e for e in area_edges if not e.is_internal),
@@ -77,29 +93,33 @@ def render_area_module(area: str, edges: "list[es.Edge]") -> str:
 
     out: list[str] = [BANNER, IMPORTS, ""]
 
-    out.append("regions: set[str] = {")
-    for r in regions:
-        out.append(f"    {r!r},")
-    out.append("}\n")
-
-    out.append("connections: dict[str, RegionConnection] = {")
+    if connections:
+        out.append("class RegionConnections(ConnectionTypeEnum):")
     for e in connections:
         out.append(
-            f"    {e.resolved_name!r}: RegionConnection("
-            f"{e.from_region!r}, {e.to_region!r}{_rule_suffix(e.rule)}),"
+            f"    {make_enum_name(e.resolved_name)} = ("
+            f"{e.resolved_name!r}, "
+            f"Regions.{make_enum_name(e.from_region)}, "
+            f"Regions.{make_enum_name(e.to_region)}"
+            f"{_rule_suffix(e.rule)}"
+            f")"
             f"{_comment(e.notes)}"
         )
-    out.append("}\n")
-
-    out.append("transitions: dict[str, Transition] = {")
+    out.append("")
+    if transitions:
+        out.append("class RegionTransitions(TransitionTypeEnum):")
     for e in transitions:
         out.append(
-            f"    {e.resolved_name!r}: Transition("
-            f"{e.from_region!r}, {e.to_region!r}, "
+            f"    {make_enum_name(e.resolved_name)} = ("
+            f"{e.resolved_name!r}, "
+            f"Regions.{make_enum_name(e.from_region)}, "
+            f"Regions.{make_enum_name(e.to_region)}, "
             f"DirectionType.{e.direction}, TransitionType.{e.transition_type}"
-            f"{_rule_suffix(e.rule)}),{_comment(e.notes)}"
+            f"{_rule_suffix(e.rule)}"
+            f")"
+            f"{_comment(e.notes)}"
         )
-    out.append("}")
+    out.append("")
 
     return "\n".join(out) + "\n"
 
@@ -111,6 +131,9 @@ def write_modules(edges: "list[es.Edge]", out_dir: pathlib.Path) -> "list[pathli
     init_path = out_dir / "__init__.py"
     init_path.write_text(GENERATED_INIT, encoding="utf-8")
     written.append(init_path)
+    regions_path = out_dir / f"regions.py"
+    regions_path.write_text(render_region_enum(edges), encoding="utf-8")
+    written.append(regions_path)
 
     for area in sorted({e.area for e in edges}):
         path = out_dir / f"{area}_edges.py"
