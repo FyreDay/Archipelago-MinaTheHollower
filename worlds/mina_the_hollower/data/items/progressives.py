@@ -10,6 +10,8 @@ class Weapons(ItemTypeEnum):
     BATTERY_BUSTER = ("Battery Buster", ITEMS_OFFSET_PROGRESSIVES+3, ItemClassification.progression) #11, 12 and 13 are internal game ids
     GUARDIAN_CASKET = ("Guardian Casket", ITEMS_OFFSET_PROGRESSIVES + 4, ItemClassification.progression)  #14, 15 and 16 are internal game ids
 
+
+
 class BoneUps(ItemTypeEnum):
     ATTACK_BONE_UP_CAP = ("Progressive Attack Cap", ITEMS_OFFSET_PROGRESSIVES+5, ItemClassification.progression)
     DEFENSE_BONE_UP_CAP = ("Progressive Defense Cap", ITEMS_OFFSET_PROGRESSIVES+6, ItemClassification.progression)

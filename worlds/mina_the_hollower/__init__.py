@@ -214,7 +214,8 @@ class MinaTheHollowerWorld(MinaTheHollowerBase):
                 item.name
                 for item in self.starting_items
             ],
-            "removed_locations": self.removed_locations
+            "removed_locations": self.removed_locations,
+            "starting_weapon": ITEMS_OFFSET_PROGRESSIVES + self.options.starting_weapon.value
         }
 
     @override

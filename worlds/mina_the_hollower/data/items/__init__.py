@@ -79,11 +79,6 @@ upgrade_items: list[ItemData] = [
     ItemData(PlayerUpgrades.JOULE_BOX, 8),
     ItemData(PlayerUpgrades.HEALING_VIAL, 7),
     ItemData(PlayerUpgrades.SPARK_CONTAINER, 3),
-    ItemData(Weapons.NIGHTSTAR, 3),
-    ItemData(Weapons.BATTERY_BUSTER, 3),
-    ItemData(Weapons.GUARDIAN_CASKET, 3),
-    ItemData(Weapons.BLASTSTRIKE_MAUL, 3),
-    ItemData(Weapons.WHISPER_AND_VESPER, 3),
     ItemData(FishingUpgrades.FISHING_ROD, 3),
     # ItemData(MapUpgrades.PROGRESSIVE_MAP, 2)
 ]

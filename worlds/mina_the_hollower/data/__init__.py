@@ -94,6 +94,10 @@ class ItemTypeEnum(Enum):
         self.item_id = item_id
         self.classification = classification
 
+    @classmethod
+    def from_item_id(cls, item_id: int):
+        return next(item for item in cls if item.item_id == item_id)
+
 
 @dataclass
 class ItemData:

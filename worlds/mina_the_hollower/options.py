@@ -121,6 +121,17 @@ class ShuffledSidearms(Toggle):
     """
     display_name = "Shuffled Sidearms"
 
+class StartingWeapon(Choice):
+    """
+    Select your starting weapon.
+    """
+    display_name = "Starting Weapon"
+    option_NightStar = 0
+    option_BlastStrike_Maul = 1
+    option_Whisper_And_Vesper = 2
+    option_Battery_Buster = 3
+    option_Guardian_Casket = 4
+    default = 'random'
 
 
 mina_the_hollower_option_groups= [
@@ -128,6 +139,7 @@ mina_the_hollower_option_groups= [
         Goal,
         BoneUpCap,
         NumberOfGenerators,
+        StartingWeapon,
         # NumberOfBosses,
         MaximumStatLevel,
         OssexStart,
@@ -145,6 +157,7 @@ class MinaTheHollowerOptions(PerGameCommonOptions):
     goal_generators: NumberOfGenerators
     # goal_bosses: NumberOfBosses
     ossex_start: OssexStart
+    starting_weapon: StartingWeapon
     kear_rando: KearRandomization
     # excluded_areas : ExcludedAreas
     bone_up_cap: BoneUpCap

@@ -28,7 +28,7 @@ class HasKear(Rule[MinaTheHollowerBase], game=MINA_THE_HOLLOWER):
         if world.options.kear_rando.value == world.options.kear_rando.option_vanilla:
             if self.kear == SingleKears.LONERS_LANDING_BOARDWALK_KEAR.value and not world.options.ossex_start.value:
                 return Has(Kear.UNIVERSAL_KEAR.value, 1).resolve(world)
-            return Has(Kear.UNIVERSAL_KEAR.value, 42).resolve(world)
+            return Has(Kear.UNIVERSAL_KEAR.value, 40).resolve(world)
         elif world.options.kear_rando.value == world.options.kear_rando.option_apItems:
             return Has(self.kear).resolve(world)
         else:
@@ -87,11 +87,13 @@ class HasAllKears(Rule[MinaTheHollowerBase], game=MINA_THE_HOLLOWER):
         @override
         def _evaluate(self, state: CollectionState) -> bool:
             if self.kear_rando == 0:
-                return state.has(Kear.UNIVERSAL_KEAR.value, self.player,42)
+                return state.has(Kear.UNIVERSAL_KEAR.value, self.player,40)
             elif self.kear_rando == 1:
+                count = 0
                 for item in SingleKears:
-                    if not state.has(item.value, self.player):
-                        return False
+                    if state.has(item.value, self.player):
+                        count+=1
+                return count >= 30
             else:
                 for item in AreaKears:
                     if not state.has(item.value, self.player):
