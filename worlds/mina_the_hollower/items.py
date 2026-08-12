@@ -154,6 +154,11 @@ def create_items(world: "MinaTheHollowerWorld"):
         else:
             starting_items.append(world.create_item(item_type.value))
 
+    starting_weapon = Weapons.from_item_id(ITEMS_OFFSET_PROGRESSIVES + world.options.starting_weapon.value)
+    starting_items.append(world.create_item(starting_weapon.value))
+    for weapon in Weapons:
+        create_item(world, ItemData(weapon, 2 if starting_weapon == weapon else 3))
+
     for item in all_items:
         create_item(world, item)
 
@@ -182,9 +187,7 @@ def create_items(world: "MinaTheHollowerWorld"):
                 continue
             create_single_item(world, item_type)
 
-    starting_weapon = Weapons.from_item_id(ITEMS_OFFSET_PROGRESSIVES + world.options.starting_weapon.value)
-    for weapon in Weapons:
-        create_item(world, ItemData(weapon, 2 if starting_weapon == weapon else 3))
+
 
     total_location_count = len(world.multiworld.get_unfilled_locations(world.player))
 

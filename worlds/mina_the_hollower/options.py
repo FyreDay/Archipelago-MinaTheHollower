@@ -112,7 +112,7 @@ class KearRandomization(Choice):
     display_name = "Kear Rando"
     option_vanilla = 0
     option_apItems = 1
-    # option_areaApItems = 2
+    option_areaApItems = 2
     default = 1
 
 class ShuffledSidearms(Toggle):
