@@ -282,7 +282,7 @@ class Locations(LocationTypeEnum):
     )
 
     OS_MUSIC_HALL_WONDER_WILLIS_TRINKET = (
-        "OS Music Hall Wonder Willis Trinket",148,Regions.OSSEX_MUSIC_HALL,CanCarry() & CanBurrow() & CanSwim() & CanClimb(),PowerLevelThreshold(power=30),
+        "OS Music Hall Wonder Willis Trinket",148,Regions.OSSEX_MUSIC_HALL,CanCarry() & CanBurrow() & CanSwim() & CanClimb() & PowerLevelThreshold(power=30),
     )
 
     OS_STATION_UNDERSIDE_FRAYD_TRINKET = (
@@ -339,4 +339,4 @@ class Locations(LocationTypeEnum):
 class BossLocations(LocationTypeEnum):
     OS_DEFEAT_ARMOND = ("OS Defeat Armond", 1021, Regions.OSSEX_LEGOVICHS_ARMS_BASEMENT,CanBurrow() & PowerLevelThreshold(power=20))
     OS_DEFEAT_EVRA = ("OS Defeat Evra", 1022, Regions.OSSEX_GODDREDS_GRAVE_ARENA,PowerLevelThreshold(power=60))
-    OS_DEFEAT_WILLY = ("OS Defeat Willy", 1020, Regions.OSSEX_MUSIC_HALL, CanCarry() & CanBurrow() & CanSwim() & CanClimb(),PowerLevelThreshold(power=30))
+    OS_DEFEAT_WILLY = ("OS Defeat Willy", 1020, Regions.OSSEX_MUSIC_HALL, CanCarry() & CanBurrow() & CanSwim() & CanClimb() & PowerLevelThreshold(power=30))
