@@ -5,7 +5,7 @@ from .._generated.regions import Regions
 from ... import LocationTypeEnum
 from ...items import SingleKears
 from ...rules.ability_rules import CanBurrow, CanBounce, CanSwim, CanCarry, CanClimb, \
-    HasFishingRod
+    HasFishingRod, PowerLevelThreshold
 from ...rules.state_rules import HasKear
 from ...rules.movement_rules import CanJumpTiles
 
@@ -76,7 +76,7 @@ class Locations(LocationTypeEnum):
 
 
 class BossLocations(LocationTypeEnum):
-    NB_DEFEAT_MOCK_MOON = ("NB Defeat Mock Moon", 1017, Regions.NOXS_BAYOU_MOONLIT_ARENA)
-    NB_DEFEAT_NOXS_BEAST = ("NB Defeat Nox's Beast", 1002, Regions.NOXS_BAYOU_TAINTED_LAIR_ARENA)
+    NB_DEFEAT_MOCK_MOON = ("NB Defeat Mock Moon", 1017, Regions.NOXS_BAYOU_MOONLIT_ARENA, PowerLevelThreshold(power=25))
+    NB_DEFEAT_NOXS_BEAST = ("NB Defeat Nox's Beast", 1002, Regions.NOXS_BAYOU_TAINTED_LAIR_ARENA, PowerLevelThreshold(power=25))
     # NB_SWAMPY_GENERATOR = ("NB Swampy Generator Repaired", 6000, Regions.ASTRAL_ORRERY_STARRY_GENERATOR)
 

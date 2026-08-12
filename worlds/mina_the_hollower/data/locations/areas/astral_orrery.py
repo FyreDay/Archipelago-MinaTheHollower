@@ -3,7 +3,7 @@ from rule_builder.rules import Has, CanReachLocation
 from .._generated.regions import Regions
 from ... import LocationTypeEnum
 from ...items import AstralPlatforms, SingleKears
-from ...rules.ability_rules import CanBurrow, CanBounce, CanClimb, CanCarry, HasFishingRod
+from ...rules.ability_rules import CanBurrow, CanBounce, CanClimb, CanCarry, HasFishingRod, PowerLevelThreshold
 from ...rules.state_rules import HasKear
 from ...rules.movement_rules import CanJumpTiles
 
@@ -61,8 +61,8 @@ class Locations(LocationTypeEnum):
     )
 
 class BossLocations(LocationTypeEnum):
-    AO_DEFEAT_LUMENARKS = ("AO Defeat Lumenarks", 1014, Regions.ASTRAL_ORRERY_HALL_OF_SCHOLARS)
-    AO_DEFEAT_THE_CONGEALED = ("AO Defeat The Congealed", 1006, Regions.ASTRAL_ORRERY_SEALED_ARCHIVE_CONGEALED_CHAMBER)
+    AO_DEFEAT_LUMENARKS = ("AO Defeat Lumenarks", 1014, Regions.ASTRAL_ORRERY_HALL_OF_SCHOLARS, PowerLevelThreshold(power=40))
+    AO_DEFEAT_THE_CONGEALED = ("AO Defeat The Congealed", 1006, Regions.ASTRAL_ORRERY_SEALED_ARCHIVE_CONGEALED_CHAMBER, PowerLevelThreshold(power=45))
     # AO_STARRY_GENERATOR = ("AO Starry Generator Repaired", 6005, Regions.ASTRAL_ORRERY_STARRY_GENERATOR)
 
 

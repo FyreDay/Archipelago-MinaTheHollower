@@ -5,7 +5,7 @@ from ... import LocationTypeEnum
 from ...events import QUEENSBURY_CRYPT_DATA
 from ...items import SingleKears
 from ...rules.ability_rules import CanBurrow, CanBounce, CanClimb, CanCarry, \
-    HasFishingRod, HasVialsCount
+    HasFishingRod, HasVialsCount, PowerLevelThreshold
 from ...rules.movement_rules import CanJumpTiles
 from ...rules.state_rules import RepairedGenerator, HasKear
 
@@ -85,12 +85,12 @@ class Locations(LocationTypeEnum):
         & CanClimb(),
     )
 
-    MM_KNIGHT_S_REST_POST_GENERATOR_BONESTONE = (
+    MM_KNIGHTS_REST_POST_GENERATOR_BONESTONE = (
         "MM Knight's Rest Post Generator Bonestone",303,Regions.MOURNERS_MILE_KNIGHTS_GUARD_HILL,CanCarry(),
     )
 
 class BossLocations(LocationTypeEnum):
-    QB_DEFEAT_MIDDEN = ("QB Defeat Midden", 1028, Regions.QUEENSBURY_CRYPT_RANCID_ROOM)
-    QB_DEFEAT_THE_DUCHESS = ("QB Defeat The Duchess", 1001, Regions.QUEENSBURY_CRYPT_SOLEMN_GENERATOR)
+    QB_DEFEAT_MIDDEN = ("QB Defeat Midden", 1028, Regions.QUEENSBURY_CRYPT_RANCID_ROOM, PowerLevelThreshold(power=25))
+    QB_DEFEAT_THE_DUCHESS = ("QB Defeat The Duchess", 1001, Regions.QUEENSBURY_CRYPT_SOLEMN_GENERATOR, PowerLevelThreshold(power=25))
     # QB_SOLEMN_GENERATOR = ("QB Solemn Generator Repaired", 6001, Regions.QUEENSBURY_CRYPT_SOLEMN_GENERATOR)
 

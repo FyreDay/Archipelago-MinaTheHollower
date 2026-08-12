@@ -5,7 +5,7 @@ from .._generated.regions import Regions
 from ... import TransitionType, DirectionType, LocationTypeEnum
 from ...items import Trinkets, SingleKears, PermanentUpgrades, Wallets, PlayerUpgrades, Sidearms
 from ...rules.ability_rules import CanBurrow, CanBounce, HasReachingSideArm, CanClimb, \
-    CanSwim, HasFishingRod
+    CanSwim, HasFishingRod, PowerLevelThreshold
 from ...rules.state_rules import HasKear, RepairedGeneratorCount
 from ...rules.movement_rules import CanJumpTiles
 
@@ -92,4 +92,4 @@ class Locations(LocationTypeEnum):
     )
 
 class BossLocations(LocationTypeEnum):
-    EH_DEFEAT_MAXI = ("NB Defeat Maxi", 1018, Regions.EASTERN_HEATH_GRASSLAND, RepairedGeneratorCount(count=1))
+    EH_DEFEAT_MAXI = ("NB Defeat Maxi", 1018, Regions.EASTERN_HEATH_GRASSLAND, RepairedGeneratorCount(count=1) & PowerLevelThreshold(power=25))

@@ -4,7 +4,8 @@ from .._generated.regions import Regions
 from ... import LocationTypeEnum
 from ...events import SEPTEMBURG_DATA
 from ...items import SingleKears
-from ...rules.ability_rules import CanBurrow, CanBounce, CanClimb, CanCarry, HasFishingRod, CanSpring
+from ...rules.ability_rules import CanBurrow, CanBounce, CanClimb, CanCarry, HasFishingRod, CanSpring, \
+    PowerLevelThreshold
 from ...rules.state_rules import HasKear, HasSparks, RepairedGenerator
 from ...rules.movement_rules import CanJumpTiles
 
@@ -90,6 +91,6 @@ class Locations(LocationTypeEnum):
     )
 
 class BossLocations(LocationTypeEnum):
-    SB_DEFEAT_THE_CARVING_MAN = ("SB Defeat The Carving Man", 1003, Regions.SEPTEMBURG_CARVING_SHACK_ARENA)
-    SB_DEFEAT_DARK_DELUXY = ("SB Defeat Dark Deluxy", 1024, Regions.SEPTEMBURG_WINDY_GENERATOR)
+    SB_DEFEAT_THE_CARVING_MAN = ("SB Defeat The Carving Man", 1003, Regions.SEPTEMBURG_CARVING_SHACK_ARENA, PowerLevelThreshold(power=25))
+    SB_DEFEAT_DARK_DELUXY = ("SB Defeat Dark Deluxy", 1024, Regions.SEPTEMBURG_WINDY_GENERATOR, PowerLevelThreshold(power=40))
     # SB_WINDY_GENERATOR = ("SB Windy Generator Repaired", 6002, Regions.SEPTEMBURG_WINDY_GENERATOR)

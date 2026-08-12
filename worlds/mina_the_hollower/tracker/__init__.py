@@ -375,7 +375,7 @@ RoomLookup: dict[GameState, RoomGroup] = {
         39:22,
         24:22,
         34:20,
-        17:int(MapName.RADIANT_MANOR_BACKLIT_ROOFTOP),
+        17:int(MapName.OSSEX_HIGH_STREET_INTERIORS),
         25:20,
         18:20,
         40:20,
@@ -485,7 +485,7 @@ RoomLookup: dict[GameState, RoomGroup] = {
         0:41
     }),
     GameState.CRYPT_OVERWORLD: RoomGroup("MM", {
-        2:38,
+        2:int(MapName.MOURNERS_MILE_DEPRIVED_PATH),
         3:38,
         16:38,
         1:39,
@@ -498,6 +498,7 @@ RoomLookup: dict[GameState, RoomGroup] = {
         8:40,
         0:42,
         12:43,
+
     }),
     GameState.CRYPT_OVERWORLD_HELL: RoomGroup("DP", {
         0:42,
@@ -761,11 +762,12 @@ RoomLookup: dict[GameState, RoomGroup] = {
         16:96,
     }),
     GameState.ASTRAL_ORRERY_MIRROR_HUB: RoomGroup("AOMH", {
-        3:97,
-        4:97,
-        1:97,
+        3:int(MapName.MIRRORS_END),
+        4:int(MapName.MIRRORS_END),
+        1:int(MapName.MIRRORS_END),
+        2:int(MapName.MIRRORS_END),
         0:98,
-        22:97 #interior
+        22:int(MapName.MIRRORS_END)
     }),
     GameState.ASTRALORRERY: RoomGroup("AO", {
         3:int(MapName.ASTRAL_ORRERY_GRAVITY_ZONE),

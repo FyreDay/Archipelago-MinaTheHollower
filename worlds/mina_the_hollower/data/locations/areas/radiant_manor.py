@@ -3,7 +3,7 @@ from rule_builder.rules import Has, CanReachLocation, True_
 from .._generated.regions import Regions
 from ... import LocationTypeEnum
 from ...items import SingleKears
-from ...rules.ability_rules import CanBurrow, CanBounce, CanClimb, CanCarry, CanSwim
+from ...rules.ability_rules import CanBurrow, CanBounce, CanClimb, CanCarry, CanSwim, PowerLevelThreshold
 from ...rules.state_rules import HasKear
 from ...rules.movement_rules import CanJumpTiles
 
@@ -45,7 +45,7 @@ class PermanentLocations(LocationTypeEnum):
     )
 
 class BossLocations(LocationTypeEnum):
-    RM_DEFEAT_FURGUS = ("RM Defeat Furgus", 1019, Regions.RADIANT_MANOR_SERVANTS_ARENA)
-    RM_DEFEAT_LIONEL = ("RM Defeat Lionel", 1007, Regions.RADIANT_MANOR_STUDY, True_(), LocationProgressType.EXCLUDED)
-    RM_DEFEAT_GIGA_LIONEL = ("RM Defeat Giga Lionel", 1008, Regions.RADIANT_MANOR_PRIME_GENERATOR, True_(), LocationProgressType.EXCLUDED)
+    RM_DEFEAT_FURGUS = ("RM Defeat Furgus", 1019, Regions.RADIANT_MANOR_SERVANTS_ARENA,PowerLevelThreshold(power=50))
+    RM_DEFEAT_LIONEL = ("RM Defeat Lionel", 1007, Regions.RADIANT_MANOR_STUDY, PowerLevelThreshold(power=60), LocationProgressType.EXCLUDED)
+    RM_DEFEAT_GIGA_LIONEL = ("RM Defeat Giga Lionel", 1008, Regions.RADIANT_MANOR_PRIME_GENERATOR, PowerLevelThreshold(power=60), LocationProgressType.EXCLUDED)
 
