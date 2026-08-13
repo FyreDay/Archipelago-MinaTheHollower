@@ -4,7 +4,7 @@ from .._generated.regions import Regions
 from ... import LocationTypeEnum
 from ...items import Trinkets, SingleKears
 from ...rules.ability_rules import CanBurrow, CanBounce, CanClimb, CanCarry, \
-    HasReachingSideArm, HasFishingRod, HasTrinket
+    HasReachingSideArm, HasFishingRod, HasTrinket, PowerLevelThreshold
 from ...rules.state_rules import HasKear, ShopPrice
 from ...rules.movement_rules import CanJumpTiles
 
@@ -74,5 +74,5 @@ class Locations(LocationTypeEnum):
         & HasKear(kear=SingleKears.KINDLEWOOD_TRAIN_TUNNEL_KEAR.value),
     )
 class BossLocations(LocationTypeEnum):
-    KW_DEFEAT_MADD_HOUSE = ("KW Defeat Madd House", 1012, Regions.KINDLEWOOD_OVERGROWTH_MADD_HOUSE)
+    KW_DEFEAT_MADD_HOUSE = ("KW Defeat Madd House", 1012, Regions.KINDLEWOOD_OVERGROWTH_MADD_HOUSE, PowerLevelThreshold(power=20))
 

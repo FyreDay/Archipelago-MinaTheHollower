@@ -5,7 +5,7 @@ from ... import LocationTypeEnum
 from ...events import BONE_BEACH_DATA
 from ...items import SingleKears, PermanentUpgrades
 from ...rules.ability_rules import CanBurrow, CanBounce, CanClimb, CanCarry, \
-    HasFishingRod, CanSwim
+    HasFishingRod, CanSwim, PowerLevelThreshold
 from ...rules.state_rules import HasKear, RepairedGenerator
 from ...rules.movement_rules import CanJumpTiles
 
@@ -58,5 +58,5 @@ class Locations(LocationTypeEnum):
         "BB Sandwater Junction Angler's Raft",325,Regions.SANDFALLS_SANDWATER_JUNCTION,CanJumpTiles(distance=2) | CanSwim(),
     )
 class BossLocations(LocationTypeEnum):
-    SF_DEFEAT_MAJOR_MINER = ("SF Defeat Major Miner", 1013, Regions.SANDFALLS_MINERS_DEN)
+    SF_DEFEAT_MAJOR_MINER = ("SF Defeat Major Miner", 1013, Regions.SANDFALLS_MINERS_DEN, PowerLevelThreshold(power=20))
 

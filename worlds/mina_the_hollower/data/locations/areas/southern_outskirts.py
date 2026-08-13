@@ -65,4 +65,4 @@ class Locations(LocationTypeEnum):
         "SO Four Flowers Chest",271,Regions.SOUTHERN_OUTSKIRTS_FOUR_FLOWERS_SHORTCUT,CanBounce(),
     )
 class BossLocations(LocationTypeEnum):
-    SO_DEFEAT_DUGIN_2 = ("SO Defeat Dugin 2", 1016, Regions.SOUTHERN_OUTSKIRTS_MOONBATH)
+    SO_DEFEAT_DUGIN_2 = ("SO Defeat Dugin 2", 1016, Regions.SOUTHERN_OUTSKIRTS_MOONBATH,RepairedGeneratorCount(count=2))

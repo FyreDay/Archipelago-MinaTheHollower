@@ -3,7 +3,7 @@ from rule_builder.rules import Has, CanReachLocation
 from .._generated.regions import Regions
 from ... import LocationTypeEnum
 from ...items import SingleKears, PermanentUpgrades
-from ...rules.ability_rules import CanBurrow, CanBounce, CanClimb, CanCarry, HasFishingRod
+from ...rules.ability_rules import CanBurrow, CanBounce, CanClimb, CanCarry, HasFishingRod, PowerLevelThreshold
 from ...rules.movement_rules import CanJumpTiles
 from ...rules.state_rules import HasKear
 
@@ -78,9 +78,9 @@ class Locations(LocationTypeEnum):
     )
 
 class BossLocations(LocationTypeEnum):
-    CTP_DEFEAT_THORNE_2 = ("CTP Defeat Thorne 2", 1009, Regions.COLTRANE_PEAK_THORNE_ARENA)
-    CTP_DEFEAT_MIRREN = ("CTP Defeat Mirren", 1025, Regions.COLTRANE_PEAK_MIRREN_ROOM)
-    CTP_DEFEAT_FROZEN_HORROR = ("CTP Defeat Frozen Horror", 1015, Regions.COLTRANE_PEAK_FROZEN_HORROR_ARENA)
-    CTP_DEFEAT_LOCOMOTRESS_AGNESS = ("CTP Defeat Locomotress", 1005, Regions.COLTRANE_PEAK_AGNES_EXPRESS_ARENA)
+    CTP_DEFEAT_THORNE_2 = ("CTP Defeat Thorne 2", 1009, Regions.COLTRANE_PEAK_THORNE_ARENA, PowerLevelThreshold(power=40))
+    CTP_DEFEAT_MIRREN = ("CTP Defeat Mirren", 1025, Regions.COLTRANE_PEAK_MIRREN_ROOM, PowerLevelThreshold(power=40))
+    CTP_DEFEAT_FROZEN_HORROR = ("CTP Defeat Frozen Horror", 1015, Regions.COLTRANE_PEAK_FROZEN_HORROR_ARENA, PowerLevelThreshold(power=40))
+    CTP_DEFEAT_LOCOMOTRESS_AGNESS = ("CTP Defeat Locomotress", 1005, Regions.COLTRANE_PEAK_AGNES_EXPRESS_ARENA, PowerLevelThreshold(power=40))
     # CTP_FROZEN_GENERATOR = ("CTP Frozen Generator Repaired", 6004, Regions.COLTRANE_PEAK_FROZEN_GENERATOR)
 

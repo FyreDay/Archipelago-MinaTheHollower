@@ -4,7 +4,7 @@ from .._generated.regions import Regions
 from ... import LocationTypeEnum
 from ...events import BONE_BEACH_DATA
 from ...rules.ability_rules import CanBurrow, CanBounce, CanClimb, CanCarry, CanSwim, \
-    HasFishingRod
+    HasFishingRod, PowerLevelThreshold
 from ...rules.movement_rules import CanJumpTiles
 from ...rules.state_rules import RepairedGenerator
 
@@ -94,5 +94,5 @@ class Locations(LocationTypeEnum):
     )
 
 class BossLocations(LocationTypeEnum):
-    BB_DEFEAT_MINED_MIND = ("BB Defeat Mined Mind", 1004, Regions.BONE_BEACH_BRAIN_ALCOVE)
+    BB_DEFEAT_MINED_MIND = ("BB Defeat Mined Mind", 1004, Regions.BONE_BEACH_BRAIN_ALCOVE, PowerLevelThreshold(power=40))
     # BB_SHORELINE_GENERATOR = ("BB Shoreline Generator Repaired", 6003, Regions.BONE_BEACH_SHORELINE_GENERATOR)

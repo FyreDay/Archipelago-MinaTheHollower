@@ -9,11 +9,11 @@ from .data.items.kears import kear_area_lookup
 from .data.locations import Regions
 from .data.locations.areas import backwaters
 from .world_base import MinaTheHollowerBase
-from .constants import MINA_THE_HOLLOWER
+from .constants import MINA_THE_HOLLOWER, ITEMS_OFFSET_PROGRESSIVES
 from .data import ItemData, ItemTypeEnum, ItemFiller
 from .data.items import Kear, SingleKears, AreaKears, base_items, Abilities, BoneUps, GenericBoneUp, all_filler_items, \
     PermanentUpgrades, PlayerUpgrades, upgrade_items, Trinkets, BASE_ITEM_TOTAL, \
-    valid_power_types, FilledJug, FillerUpgrades, all_starting_upgrades
+    valid_power_types, FilledJug, FillerUpgrades, all_starting_upgrades, Weapons
 
 from .data.rules.state_rules import sidearm_rules
 from .options import BoneUpCap, KearRandomization, Goal
@@ -154,6 +154,11 @@ def create_items(world: "MinaTheHollowerWorld"):
         else:
             starting_items.append(world.create_item(item_type.value))
 
+    starting_weapon = Weapons.from_item_id(ITEMS_OFFSET_PROGRESSIVES + world.options.starting_weapon.value)
+    starting_items.append(world.create_item(starting_weapon.value))
+    for weapon in Weapons:
+        create_item(world, ItemData(weapon, 2 if starting_weapon == weapon else 3))
+
     for item in all_items:
         create_item(world, item)
 
@@ -174,13 +179,15 @@ def create_items(world: "MinaTheHollowerWorld"):
                 starting_items.append(world.create_item(item_type.value))
                 continue
             create_single_item(world, item_type)
-    elif world.options.kear_rando.value == 2:  # todo: change to KearRandomization.option_areaApItems
+    elif world.options.kear_rando.value == 2:# world.options.kear_rando.option_areaApItems:
         for item_type in AreaKears:
             excluded_kears = [data.kear_item_type for data in all_generator_data if data.index in world.lit_generators]
             if item_type in excluded_kears:
                 starting_items.append(world.create_item(item_type.value))
                 continue
             create_single_item(world, item_type)
+
+
 
     total_location_count = len(world.multiworld.get_unfilled_locations(world.player))
 
