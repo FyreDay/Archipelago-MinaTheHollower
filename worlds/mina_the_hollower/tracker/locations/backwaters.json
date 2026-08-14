@@ -55,8 +55,8 @@
     {
         "name": "Pinky Shop",
         "sections": [
-            {"name": "BW Pinky's Parlor Trinket"},
-            {"name": "BW Pinky's Parlor Kear"}
+            {"name": "BW Pinky's Parlor Shop Trinket"},
+            {"name": "BW Pinky's Parlor Shop Kear"}
         ],
         "map_locations": [
             {
