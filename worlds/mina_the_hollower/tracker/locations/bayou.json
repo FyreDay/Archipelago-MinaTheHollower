@@ -198,7 +198,7 @@
     {
         "name": "Defeat Nox's Beast",
         "sections": [
-            {"name": "NB Defeat Nox's Beast"}
+            {"name": "NB Defeat Nox's Beast"},
             {"name": "NB Nox's Beast Fight Reward"}
         ],
         "map_locations": [
