@@ -17,7 +17,7 @@ class Locations(LocationTypeEnum):
     )
 
     RM_SERVANT_S_QUARTERS_TRINKET = (
-        "RM Servant's Quarters Trinket",145,Regions.RADIANT_MANOR_SERVANTS_QUARTERS,CanBurrow(),
+        "RM Servant's Quarters Shop Trinket",145,Regions.RADIANT_MANOR_SERVANTS_QUARTERS,CanBurrow(),
     )
 
     RM_BALLROOM_CHEST = (
