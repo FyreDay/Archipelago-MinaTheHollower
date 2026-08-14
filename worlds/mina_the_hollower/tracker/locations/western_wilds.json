@@ -134,8 +134,8 @@
     {
         "name": "Poppit Shop",
         "sections": [
-            {"name": "WW Molten Foundry Poppit Trinket"},
-            {"name": "WW Molten Foundry Poppit Kear"}
+            {"name": "WW Molten Foundry Poppit Shop Trinket"},
+            {"name": "WW Molten Foundry Poppit Shop Kear"}
         ],
         "map_locations": [
             {
@@ -216,8 +216,8 @@
     {
         "name": "Molten Foundry",
         "sections": [
-            {"name": "WW Molten Foundry Poppit Trinket"},
-            {"name": "WW Molten Foundry Poppit Kear"},
+            {"name": "WW Molten Foundry Poppit Shop Trinket"},
+            {"name": "WW Molten Foundry Poppit Shop Kear"},
             {"name": "WW Molten Foundry Dark Chest"},
             {"name": "WW Molten Foundry Trinket"}
         ],
@@ -232,8 +232,8 @@
     {
         "name": "Molten Foundry",
         "sections": [
-            {"name": "WW Molten Foundry Poppit Trinket"},
-            {"name": "WW Molten Foundry Poppit Kear"},
+            {"name": "WW Molten Foundry Poppit Shop Trinket"},
+            {"name": "WW Molten Foundry Poppit Shop Kear"},
             {"name": "WW Molten Foundry Dark Chest"},
             {"name": "WW Molten Foundry Trinket"}
         ],
