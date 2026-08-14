@@ -212,8 +212,8 @@
     {
         "name": "Shack Shop",
         "sections": [
-            {"name": "NB Swamp Shack Pit Preserver"},
-            {"name": "NB Swamp Shack Kear"},
+            {"name": "NB Swamp Shack Shop Trinket"},
+            {"name": "NB Swamp Shack Shop Kear"},
             {"name": "NB Swamp Shack Weapon Chest"}
         ],
         "map_locations": [
