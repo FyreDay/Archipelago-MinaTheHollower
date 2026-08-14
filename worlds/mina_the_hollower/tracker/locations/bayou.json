@@ -74,7 +74,7 @@
             {
                 "map": "Bayou Interiors",
                 "x": 886,
-                "y": 400
+                "y": 396
             }
         ]
     },
@@ -198,13 +198,14 @@
     {
         "name": "Defeat Nox's Beast",
         "sections": [
+            {"name": "NB Defeat Nox's Beast"}
             {"name": "NB Nox's Beast Fight Reward"}
         ],
         "map_locations": [
             {
                 "map": "Bayou Lair",
-                "x": 1631,
-                "y": 1048
+                "x": 1632,
+                "y": 1054
             }
         ]
     },
@@ -218,8 +219,8 @@
         "map_locations": [
             {
                 "map": "Bayou Big Lagoon",
-                "x": 845,
-                "y": 115
+                "x": 848,
+                "y": 113
             }
         ]
     },
@@ -227,6 +228,7 @@
         "name": "Moonlit Path",
         "sections": [
             {"name": "NB Moonlit Path Chest"},
+            {"name": "NB Defeat Mock Moon"}
             {"name": "NB Moonlit Hideaway Trinket"}
         ],
         "map_locations": [
@@ -286,6 +288,19 @@
                 "map": "Bayou Thicket",
                 "x": 1789,
                 "y": 975
+            }
+        ]
+    },
+    {
+        "name": "Mock Moon",
+        "sections": [
+            {"name": "NB Defeat Mock Moon"}
+        ],
+        "map_locations": [
+            {
+                "map": "Bayou Moonlit Path",
+                "x": 258,
+                "y": 400
             }
         ]
     }
