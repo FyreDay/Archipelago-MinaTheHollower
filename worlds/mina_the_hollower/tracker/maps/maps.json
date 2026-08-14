@@ -1,6 +1,6 @@
 [
   {"name": "World Map", "img": "area_images/overview/WorldMap.png", "location_size": 14, "location_border_thickness": 2},
-  {"name": "ShipWreck", "img": "area_images/loners_landing/0-11-17-18.png", "location_size": 32, "location_border_thickness": 2},
+  {"name": "Shipwreck", "img": "area_images/loners_landing/0-11-17-18.png", "location_size": 32, "location_border_thickness": 2},
   {"name": "Blighted Docks Landing", "img": "area_images/loners_landing/19.png", "location_size": 32, "location_border_thickness": 2},
   {"name": "Blighted Docks Fences", "img": "area_images/loners_landing/2-3-8-16.png", "location_size": 32, "location_border_thickness": 2},
   {"name": "Blighted Docks Bridge", "img": "area_images/loners_landing/4-6-9-13.png", "location_size": 32, "location_border_thickness": 2},
@@ -119,7 +119,7 @@
   {"name": "Astral Orrery Cog Chamber End", "img": "area_images/astral_orrery/cog_2.png", "location_size": 32, "location_border_thickness": 2},
   {"name": "Astral Orrery Gravity Zone", "img": "area_images/astral_orrery/gravity.png", "location_size": 32, "location_border_thickness": 2},
   {"name": "Astral Orrery Mutant Lab", "img": "area_images/astral_orrery/mutant.png", "location_size": 32, "location_border_thickness": 2},
-  {"name": "Astral Orrery Hall Of Schalars", "img": "area_images/astral_orrery/scholar.png", "location_size": 32, "location_border_thickness": 2},
+  {"name": "Astral Orrery Hall Of Scholars", "img": "area_images/astral_orrery/scholar.png", "location_size": 32, "location_border_thickness": 2},
   {"name": "Astral Orrery Sealed Archive", "img": "area_images/astral_orrery/archive.png", "location_size": 32, "location_border_thickness": 2},
 
   {"name": "Radiant Manor Foyer", "img": "area_images/radiant_manor/foyer.png", "location_size": 32, "location_border_thickness": 2},
