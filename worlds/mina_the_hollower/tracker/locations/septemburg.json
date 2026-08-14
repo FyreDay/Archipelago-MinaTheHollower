@@ -59,7 +59,7 @@
         "map_locations": [
             {
                 "map": "Septemburg Farm Tractors",
-                "x": 107,
+                "x": 110,
                 "y": 333
             }
         ]
@@ -73,7 +73,7 @@
             {
                 "map": "Septemburg Barn",
                 "x": 720,
-                "y": 173
+                "y": 176
             }
         ]
     },
@@ -125,8 +125,8 @@
         "map_locations": [
             {
                 "map": "Septemburg Forest",
-                "x": 48,
-                "y": 300
+                "x": 52,
+                "y": 302
             }
         ]
     },
@@ -138,8 +138,8 @@
         "map_locations": [
             {
                 "map": "Septemburg Forest",
-                "x": 48,
-                "y": 977
+                "x": 52,
+                "y": 974
             }
         ]
     },
@@ -157,9 +157,10 @@
         ]
     },
     {
-        "name": "Rose",
+        "name": "Carving Man",
         "sections": [
-            {"name": "SB Carving Man Fight Reward"}
+            {"name": "SB Defeat The Carving Man"},
+            {"name": "SB The Carving Man Fight Reward"}
         ],
         "map_locations": [
             {
@@ -203,21 +204,22 @@
         "map_locations": [
             {
                 "map": "Kindlewood Interiors",
-                "x": 707,
+                "x": 711,
                 "y": 351
             }
         ]
     },
     {
-        "name": "Item",
+        "name": "Dark Deluxy",
         "sections": [
+            {"name": "SB Defeat Dark Deluxy"},
             {"name": "SB Dark Deluxy Fight Reward"}
         ],
         "map_locations": [
             {
                 "map": "Septemburg Wastewater Canal",
-                "x": 1458,
-                "y": 819
+                "x": 1456,
+                "y": 818
             }
         ]
     },
@@ -255,14 +257,15 @@
         "map_locations": [
             {
                 "map": "Septemburg Wastewater Canal",
-                "x": 55,
-                "y": 335
+                "x": 52,
+                "y": 337
             }
         ]
     },
     {
-        "name": "Item",
+        "name": "Dark Deluxy",
         "sections": [
+            {"name": "SB Defeat Dark Deluxy"},
             {"name": "SB Dark Deluxy Fight Reward"}
         ],
         "map_locations": [
