@@ -10,13 +10,18 @@
 Download and install [Archipelago](<https://github.com/ArchipelagoMW/Archipelago/releases/latest>). **The installer 
    file is located in the assets section at the bottom of the version information.**
 ### Install the AP world
-1. download the [Latest AP World release here](https://github.com/FyreDay/Archipelago-MinaTheHollower/releases/latest)
-2. double click the ap world to install it to your archipelago. 
+1. Download the [Latest AP World release here](https://github.com/FyreDay/Archipelago-MinaTheHollower/releases/latest)
+2. Double click the ap world to install it to your archipelago. 
 3. Restart the archipelago program for Mina the Hollower to show up.
 4. Use the options creator to create a yaml, or modify the supplied one on github releases
-5. put the yaml in the **Players** folder in your AP files
-6. run generate
-7. go to archipelago.gg and host the game. select the generated zip in **/output/**
+
+## If Playing
+Send your yaml to whoever is hosting your AP world. You will also have to send them the .apworld or a link to download the .apworld
+
+## If Hosting
+6. Put the yaml in the **Players** folder in your AP files and all other yamls for players you with to play with
+7. Run generate
+8. Go to archipelago.gg and host the game. select the generated zip in **/output/**
 
 If this is confusing go the official archipelago discord for help
 
