@@ -28,10 +28,10 @@
     {
         "name": "Shop",
         "sections": [
-            {"name": "KW Madd House Draining Beastium"},
-            {"name": "KW Madd House Oozing Organ"},
-            {"name": "KW Madd House Voltaic Guard"},
-            {"name": "KW Madd House Kear"}
+            {"name": "KW Madd House Shop Draining Beastium"},
+            {"name": "KW Madd House Shop Oozing Organ"},
+            {"name": "KW Madd House Shop Voltaic Guard"},
+            {"name": "KW Madd House Shop Kear"}
         ],
         "map_locations": [
             {
@@ -76,7 +76,7 @@
             {
                 "map": "Kindlewood Farm Crossing",
                 "x": 998,
-                "y": 334
+                "y": 336
             }
         ]
     },
@@ -140,8 +140,8 @@
         "map_locations": [
             {
                 "map": "Kindlewood Interiors",
-                "x": 1650,
-                "y": 541
+                "x": 1616,
+                "y": 543
             }
         ]
     },
@@ -154,7 +154,7 @@
             {
                 "map": "Kindlewood Farm Crossing",
                 "x": 1071,
-                "y": 77
+                "y": 80
             }
         ]
     },
@@ -167,7 +167,7 @@
             {
                 "map": "Kindlewood Farm Crossing",
                 "x": 622,
-                "y": 290
+                "y": 288
             }
         ]
     },
@@ -213,17 +213,18 @@
         ]
     },
     {
-        "name": "Shop",
+        "name": "Madd House",
         "sections": [
-            {"name": "KW Madd House Draining Beastium"},
-            {"name": "KW Madd House Oozing Organ"},
-            {"name": "KW Madd House Voltaic Guard"},
-            {"name": "KW Madd House Kear"}
+            {"name": "Defeat Madd House"}
+            {"name": "KW Madd House Shop Draining Beastium"},
+            {"name": "KW Madd House Shop Oozing Organ"},
+            {"name": "KW Madd House Shop Voltaic Guard"},
+            {"name": "KW Madd House Shop Kear"}
         ],
         "map_locations": [
             {
                 "map": "Kindlewood Overgrowth",
-                "x": 257,
+                "x": 255,
                 "y": 653
             }
         ]
@@ -236,7 +237,7 @@
         "map_locations": [
             {
                 "map": "Kindlewood Overgrowth",
-                "x": 975,
+                "x": 973,
                 "y": 1327
             }
         ]
@@ -288,8 +289,8 @@
         "map_locations": [
             {
                 "map": "Kindlewood Farm Crossing",
-                "x": 1234,
-                "y": 613
+                "x": 1225,
+                "y": 625
             }
         ]
     }
