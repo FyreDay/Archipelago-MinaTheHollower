@@ -33,8 +33,8 @@
         "map_locations": [
             {
                 "map": "Western Wilds",
-                "x": 534,
-                "y": 172
+                "x": 528,
+                "y": 178
             }
         ]
     },
@@ -207,7 +207,7 @@
         "map_locations": [
             {
                 "map": "Western Wilds",
-                "x": 1374,
+                "x": 1378,
                 "y": 57
             }
         ]
@@ -223,8 +223,8 @@
         "map_locations": [
             {
                 "map": "Western Wilds",
-                "x": 1262,
-                "y": 50
+                "x": 1265,
+                "y": 48
             }
         ]
     },
@@ -239,8 +239,8 @@
         "map_locations": [
             {
                 "map": "Western Wilds",
-                "x": 1487,
-                "y": 50
+                "x": 1489,
+                "y": 48
             }
         ]
     }
