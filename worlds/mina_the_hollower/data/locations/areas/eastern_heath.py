@@ -80,11 +80,11 @@ class Locations(LocationTypeEnum):
     )
 
     EH_POPPIT_CAVE_WILLOW = (
-        "EH Poppit Cave Willow", 239, Regions.EASTERN_HEATH_POPPIT,
+        "EH Poppit Cave Shop Trinket", 239, Regions.EASTERN_HEATH_POPPIT,
     )
 
     EH_POPPIT_CAVE_KEAR = (
-        "EH Poppit Cave Kear", 240, Regions.EASTERN_HEATH_POPPIT,
+        "EH Poppit Cave Shop Kear", 240, Regions.EASTERN_HEATH_POPPIT,
     )
 
     EH_FROZEN_PASS_TRINKET = (
