@@ -63,7 +63,7 @@ class Locations(LocationTypeEnum):
     )
 
     SB_CARVING_MAN_FIGHT_REWARD = (
-        "SB Carving Man Fight Reward",95,Regions.SEPTEMBURG_CARVING_SHACK_ARENA,
+        "SB The Carving Man Fight Reward",95,Regions.SEPTEMBURG_CARVING_SHACK_ARENA,
     )
 
     SB_DARK_DELUXY_FIGHT_REWARD = (
