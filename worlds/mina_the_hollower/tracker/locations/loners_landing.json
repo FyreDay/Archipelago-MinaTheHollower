@@ -6,7 +6,7 @@
         ],
         "map_locations": [
             {
-                "map": "ShipWreck",
+                "map": "Shipwreck",
                 "x": 80,
                 "y": 627
             }
@@ -19,7 +19,7 @@
         ],
         "map_locations": [
             {
-                "map": "ShipWreck",
+                "map": "Shipwreck",
                 "x": 142,
                 "y": 627
             }
@@ -32,7 +32,7 @@
         ],
         "map_locations": [
             {
-                "map": "ShipWreck",
+                "map": "Shipwreck",
                 "x": 206,
                 "y": 252
             }
@@ -45,7 +45,7 @@
         ],
         "map_locations": [
             {
-                "map": "ShipWreck",
+                "map": "Shipwreck",
                 "x": 1035,
                 "y": 430
             }
@@ -58,7 +58,7 @@
         ],
         "map_locations": [
             {
-                "map": "ShipWreck",
+                "map": "Shipwreck",
                 "x": 616,
                 "y": 320
             }
@@ -177,7 +177,7 @@
         ],
         "map_locations": [
             {
-                "map": "ShipWreck",
+                "map": "Shipwreck",
                 "x": 1238,
                 "y": 627
             }
