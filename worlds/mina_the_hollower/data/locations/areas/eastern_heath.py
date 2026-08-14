@@ -92,4 +92,4 @@ class Locations(LocationTypeEnum):
     )
 
 class BossLocations(LocationTypeEnum):
-    EH_DEFEAT_MAXI = ("NB Defeat Maxi", 1018, Regions.EASTERN_HEATH_GRASSLAND, RepairedGeneratorCount(count=1) & PowerLevelThreshold(power=25))
+    EH_DEFEAT_MAXI = ("EH Defeat Maxi", 1018, Regions.EASTERN_HEATH_GRASSLAND, RepairedGeneratorCount(count=1) & PowerLevelThreshold(power=25))
