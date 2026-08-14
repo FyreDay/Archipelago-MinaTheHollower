@@ -18,19 +18,19 @@ class Locations(LocationTypeEnum):
     )
 
     KW_MADD_HOUSE_DRAINING_BEASTIUM = (
-        "KW Madd House Draining Beastium", 348, Regions.KINDLEWOOD_OVERGROWTH_MADD_HOUSE,
+        "KW Madd House Shop Draining Beastium", 348, Regions.KINDLEWOOD_OVERGROWTH_MADD_HOUSE,
     )
 
     KW_MADD_HOUSE_OOZING_ORGAN = (
-        "KW Madd House Oozing Organ", 347, Regions.KINDLEWOOD_OVERGROWTH_MADD_HOUSE,
+        "KW Madd House Shop Oozing Organ", 347, Regions.KINDLEWOOD_OVERGROWTH_MADD_HOUSE,
     )
 
     KW_MADD_HOUSE_VOLTAIC_GUARD = (
-        "KW Madd House Voltaic Guard", 349, Regions.KINDLEWOOD_OVERGROWTH_MADD_HOUSE,
+        "KW Madd House Shop Voltaic Guard", 349, Regions.KINDLEWOOD_OVERGROWTH_MADD_HOUSE,
     )
 
     KW_MADD_HOUSE_KEAR = (
-        "KW Madd House Kear", 350, Regions.KINDLEWOOD_OVERGROWTH_MADD_HOUSE,
+        "KW Madd House Shop Kear", 350, Regions.KINDLEWOOD_OVERGROWTH_MADD_HOUSE,
     )
 
     KW_TORCH_ESCORT_BONESTONE = (
