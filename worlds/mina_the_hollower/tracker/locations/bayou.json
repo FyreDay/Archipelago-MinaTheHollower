@@ -228,7 +228,7 @@
         "name": "Moonlit Path",
         "sections": [
             {"name": "NB Moonlit Path Chest"},
-            {"name": "NB Defeat Mock Moon"}
+            {"name": "NB Defeat Mock Moon"},
             {"name": "NB Moonlit Hideaway Trinket"}
         ],
         "map_locations": [
