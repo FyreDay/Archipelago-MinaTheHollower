@@ -19,9 +19,9 @@ Download and install [Archipelago](<https://github.com/ArchipelagoMW/Archipelago
 Send your yaml to whoever is hosting your AP world. You will also have to send them the .apworld or a link to download the .apworld
 
 #### If Hosting
-6. Put the yaml in the **Players** folder in your AP files and all other yamls for players you with to play with
-7. Run generate
-8. Go to archipelago.gg and host the game. select the generated zip in **/output/**
+1. Put the yaml in the **Players** folder in your AP files and all other yamls for players you with to play with
+2. Run generate
+3. Go to archipelago.gg and host the game. select the generated zip in **/output/**
 
 If this is confusing go the official archipelago discord for help
 
