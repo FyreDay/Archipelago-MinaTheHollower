@@ -119,7 +119,7 @@
   {"name": "Astral Orrery Cog Chamber End", "img": "area_images/astral_orrery/cog_2.png", "location_size": 32, "location_border_thickness": 2},
   {"name": "Astral Orrery Gravity Zone", "img": "area_images/astral_orrery/gravity.png", "location_size": 32, "location_border_thickness": 2},
   {"name": "Astral Orrery Mutant Lab", "img": "area_images/astral_orrery/mutant.png", "location_size": 32, "location_border_thickness": 2},
-  {"name": "Astral Orrery Hall Of Scholars", "img": "area_images/astral_orrery/scholar.png", "location_size": 32, "location_border_thickness": 2},
+  {"name": "Astral Orrery Hall Of Scholars", "img": "area_images/astral_orrery/scholar.png", "location_size": 16, "location_border_thickness": 2},
   {"name": "Astral Orrery Sealed Archive", "img": "area_images/astral_orrery/archive.png", "location_size": 32, "location_border_thickness": 2},
 
   {"name": "Radiant Manor Foyer", "img": "area_images/radiant_manor/foyer.png", "location_size": 32, "location_border_thickness": 2},

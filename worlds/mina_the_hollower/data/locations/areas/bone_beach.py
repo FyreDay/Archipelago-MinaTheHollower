@@ -22,11 +22,11 @@ class Locations(LocationTypeEnum):
     )
 
     BB_CONVEYER_JUMP_BONESTONE = (
-        "BB Conveyer Jump Bonestone", 70, Regions.BONE_BEACH_BONE_RUSH_CONVEYOR_TOP, CanBounce(),
+        "BB Wide Conveyor Bounce Bonestone", 70, Regions.BONE_BEACH_BONE_RUSH_CONVEYOR_TOP, CanBounce(),
     )
 
     BB_BOUNCE_CONVEYER_CHALLENGE_CHEST = (
-        "BB Bounce Conveyer Challenge Chest", 78, Regions.BONE_BEACH_WORMS_BACK_SPLIT, CanJumpTiles(distance=2),
+        "BB Above Tent Chest", 78, Regions.BONE_BEACH_WORMS_BACK_SPLIT, CanJumpTiles(distance=2),
     )
 
     BB_MESSAGE_IN_A_BOTTLE_CHEST = (

@@ -41,7 +41,7 @@
     {
         "name": "Bonestone",
         "sections": [
-            {"name": "BB Conveyer Jump Bonestone"}
+            {"name": "BB Above Tent Chest"}
         ],
         "map_locations": [
             {
@@ -54,7 +54,7 @@
     {
         "name": "Chest",
         "sections": [
-            {"name": "BB Bounce Conveyer Challenge Chest"}
+            {"name": "BB Wide Conveyor Bounce Bonestone"}
         ],
         "map_locations": [
             {
