@@ -177,8 +177,8 @@
     {
         "name": "Pinky's Shop",
         "sections": [
-            {"name": "BW Pinky's Parlor Trinket"},
-            {"name": "BW Pinky's Parlor Kear"},
+            {"name": "BW Pinky's Parlor Shop Trinket"},
+            {"name": "BW Pinky's Parlor Shop Kear"},
             {"name": "BW Pinky's Parlor Joule Box"}
         ],
         "map_locations": [
