@@ -20,7 +20,7 @@
         "map_locations": [
             {
                 "map": "Mourner's Mile Entrance",
-                "x": 463,
+                "x": 464,
                 "y": 301
             }
         ]
@@ -60,7 +60,7 @@
             {
                 "map": "Mourner's Mile Shallow Tomb",
                 "x": 665,
-                "y": 687
+                "y": 685
             }
         ]
     },
@@ -111,7 +111,7 @@
         "map_locations": [
             {
                 "map": "Mourner's Mile Knights Rest",
-                "x": 114,
+                "x": 123,
                 "y": 352
             }
         ]
@@ -231,8 +231,8 @@
         "map_locations": [
             {
                 "map": "Mourner's Mile Knights Rest",
-                "x": 80,
-                "y": 493
+                "x": 81,
+                "y": 490
             }
         ]
     },
@@ -244,7 +244,7 @@
         "map_locations": [
             {
                 "map": "Mourner's Mile Stairs",
-                "x": 490,
+                "x": 498,
                 "y": 638
             }
         ]

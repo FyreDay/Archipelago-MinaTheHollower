@@ -34,11 +34,11 @@ class Locations(LocationTypeEnum):
     )
 
     SO_POPPIT_KERI = (
-        "SO Poppit Keri",272,Regions.SOUTHERN_OUTSKIRTS_POPPIT,
+        "SO Poppit Shop Trinket",272,Regions.SOUTHERN_OUTSKIRTS_POPPIT,
     )
 
     SO_POPPIT_KEAR = (
-        "SO Poppit Kear",273,Regions.SOUTHERN_OUTSKIRTS_POPPIT,
+        "SO Poppit Shop Kear",273,Regions.SOUTHERN_OUTSKIRTS_POPPIT,
     )
 
     SO_PIT_ROOM_BONESTONE = (
@@ -65,4 +65,4 @@ class Locations(LocationTypeEnum):
         "SO Four Flowers Chest",271,Regions.SOUTHERN_OUTSKIRTS_FOUR_FLOWERS_SHORTCUT,CanBounce(),
     )
 class BossLocations(LocationTypeEnum):
-    SO_DEFEAT_DUGIN_2 = ("SO Defeat Dugin 2", 1016, Regions.SOUTHERN_OUTSKIRTS_MOONBATH,RepairedGeneratorCount(count=2))
+    SO_DEFEAT_DUGIN_2 = ("Defeat Dugin 2", 1016, Regions.SOUTHERN_OUTSKIRTS_MOONBATH,RepairedGeneratorCount(count=2))

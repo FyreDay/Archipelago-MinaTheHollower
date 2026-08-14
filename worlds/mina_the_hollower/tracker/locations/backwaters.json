@@ -8,8 +8,8 @@
         "map_locations": [
             {
                 "map": "Backwaters",
-                "x": 558,
-                "y": 203
+                "x": 562,
+                "y": 207
             }
         ]
     },
@@ -34,7 +34,7 @@
         "map_locations": [
             {
                 "map": "Backwaters Interiors",
-                "x": 237,
+                "x": 238,
                 "y": 110
             }
         ]
@@ -47,7 +47,7 @@
         "map_locations": [
             {
                 "map": "Backwaters Interiors",
-                "x": 204,
+                "x": 208,
                 "y": 591
             }
         ]
@@ -55,8 +55,8 @@
     {
         "name": "Pinky Shop",
         "sections": [
-            {"name": "BW Pinky's Parlor Trinket"},
-            {"name": "BW Pinky's Parlor Kear"}
+            {"name": "BW Pinky's Parlor Shop Trinket"},
+            {"name": "BW Pinky's Parlor Shop Kear"}
         ],
         "map_locations": [
             {
@@ -126,8 +126,8 @@
         "map_locations": [
             {
                 "map": "Backwaters",
-                "x": 926,
-                "y": 611
+                "x": 943,
+                "y": 622
             }
         ]
     },
@@ -177,8 +177,8 @@
     {
         "name": "Pinky's Shop",
         "sections": [
-            {"name": "BW Pinky's Parlor Trinket"},
-            {"name": "BW Pinky's Parlor Kear"},
+            {"name": "BW Pinky's Parlor Shop Trinket"},
+            {"name": "BW Pinky's Parlor Shop Kear"},
             {"name": "BW Pinky's Parlor Joule Box"}
         ],
         "map_locations": [
@@ -197,7 +197,7 @@
         "map_locations": [
             {
                 "map": "Backwaters",
-                "x": 825,
+                "x": 830,
                 "y": 923
             }
         ]
@@ -211,8 +211,8 @@
         "map_locations": [
             {
                 "map": "Backwaters",
-                "x": 1115,
-                "y": 51
+                "x": 1117,
+                "y": 45
             }
         ]
     },

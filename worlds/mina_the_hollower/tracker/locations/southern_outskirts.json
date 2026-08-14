@@ -72,7 +72,7 @@
         "map_locations": [
             {
                 "map": "Cave Network",
-                "x": 526,
+                "x": 528,
                 "y": 333
             }
         ]
@@ -93,8 +93,8 @@
     {
         "name": "Poppit",
         "sections": [
-            {"name": "SO Poppit Keri"},
-            {"name": "SO Poppit Kear"}
+            {"name": "SO Poppit Shop Trinket"},
+            {"name": "SO Poppit Shop Kear"}
         ],
         "map_locations": [
             {
@@ -159,6 +159,7 @@
     {
         "name": "Trinket",
         "sections": [
+            {"name": "Defeat Dugin 2"},
             {"name": "Dugin Fight 2 Trinket"}
         ],
         "map_locations": [
@@ -178,8 +179,8 @@
         "map_locations": [
             {
                 "map": "Southern Outskirts",
-                "x": 2222,
-                "y": 308
+                "x": 2226,
+                "y": 306
             }
         ]
     },
@@ -192,8 +193,8 @@
         "map_locations": [
             {
                 "map": "Southern Outskirts",
-                "x": 2385,
-                "y": 402
+                "x": 2386,
+                "y": 400
             }
         ]
     },
@@ -205,8 +206,8 @@
         "map_locations": [
             {
                 "map": "Southern Outskirts",
-                "x": 2432,
-                "y": 756
+                "x": 2434,
+                "y": 751
             }
         ]
     },
@@ -226,8 +227,8 @@
     {
         "name": "Poppit Cave",
         "sections": [
-            {"name": "SO Poppit Keri"},
-            {"name": "SO Poppit Kear"}
+            {"name": "SO Poppit Shop Trinket"},
+            {"name": "SO Poppit Shop Kear"}
         ],
         "map_locations": [
             {

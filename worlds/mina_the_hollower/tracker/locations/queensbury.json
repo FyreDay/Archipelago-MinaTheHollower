@@ -20,7 +20,7 @@
         "map_locations": [
             {
                 "map": "Queensbury Old Graveyard",
-                "x": 175,
+                "x": 177,
                 "y": 397
             }
         ]
@@ -98,8 +98,8 @@
         "map_locations": [
             {
                 "map": "Queensbury Entryway End",
-                "x": 1452,
-                "y": 400
+                "x": 1456,
+                "y": 398
             }
         ]
     },
@@ -111,8 +111,8 @@
         "map_locations": [
             {
                 "map": "Queensbury Head Hall",
-                "x": 569,
-                "y": 1157
+                "x": 560,
+                "y": 1168
             }
         ]
     },
@@ -132,27 +132,14 @@
     {
         "name": "Shop",
         "sections": [
-            {"name": "QC Mirror Room Belvedere Trinket"},
-            {"name": "QC Mirror Room Belvedere Kear"}
+            {"name": "QC Mirror Room Belvedere Shop Trinket"},
+            {"name": "QC Mirror Room Belvedere Shop Kear"}
         ],
         "map_locations": [
             {
                 "map": "Queensbury Head Hall",
                 "x": 593,
                 "y": 593
-            }
-        ]
-    },
-    {
-        "name": "Chest",
-        "sections": [
-            {"name": "QC Midden 2 Bonestone"}
-        ],
-        "map_locations": [
-            {
-                "map": "Queensbury Head Hall",
-                "x": 1456,
-                "y": 1035
             }
         ]
     },
@@ -185,19 +172,21 @@
     {
         "name": "Midden Fight",
         "sections": [
+            {"name": "QC Defeat Midden"},
             {"name": "QC Midden Fight Reward"}
         ],
         "map_locations": [
             {
                 "map": "Queensbury Ancestral Chamber",
-                "x": 764,
+                "x": 775,
                 "y": 1289
             }
         ]
     },
     {
-        "name": "Rose",
+        "name": "Duchess",
         "sections": [
+            {"name": "QC Defeat The Duchess"},
             {"name": "QC The Duchess Fight Reward"}
         ],
         "map_locations": [
@@ -216,8 +205,8 @@
         "map_locations": [
             {
                 "map": "Queensbury Ancestral Chamber End",
-                "x": 206,
-                "y": 145
+                "x": 256,
+                "y": 174
             }
         ]
     },
@@ -255,7 +244,7 @@
         "map_locations": [
             {
                 "map": "Queensbury Foyer",
-                "x": 75,
+                "x": 73,
                 "y": 525
             }
         ]

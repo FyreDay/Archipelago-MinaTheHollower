@@ -41,7 +41,7 @@
     {
         "name": "Bonestone",
         "sections": [
-            {"name": "BB Bounce Conveyer Challenge Chest"}
+            {"name": "BB Conveyer Jump Bonestone"}
         ],
         "map_locations": [
             {
@@ -54,14 +54,14 @@
     {
         "name": "Chest",
         "sections": [
-            {"name": "BB Conveyer Jump Bonestone"}
+            {"name": "BB Bounce Conveyer Challenge Chest"}
         ],
         "map_locations": [
             {
                 "map": "Bone Beach",
 
                 "x": 880,
-                "y": 113
+                "y": 125
             }
         ]
     },
@@ -81,8 +81,8 @@
     {
         "name": "Shop",
         "sections": [
-            {"name": "BB Brac's Tent Trinket"},
-            {"name": "BB Brac's Tent Kear"}
+            {"name": "BB Brac's Tent Shop Trinket"},
+            {"name": "BB Brac's Tent Shop Kear"}
         ],
         "map_locations": [
             {
@@ -140,8 +140,8 @@
         "map_locations": [
             {
                 "map": "Bone Beach Stomach Mine",
-                "x": 456,
-                "y": 1006
+                "x": 450,
+                "y": 1008
             }
         ]
     },
@@ -206,7 +206,7 @@
             {
                 "map": "Bone Beach Gut Depths",
                 "x": 1450,
-                "y": 260
+                "y": 231
             }
         ]
     },
@@ -224,14 +224,15 @@
         ]
     },
     {
-        "name": "Rose",
+        "name": "Mined Mind",
         "sections": [
+            {"name": "BB Defeat Mined Mind"},
             {"name": "BB Mined Mind Fight Reward"}
         ],
         "map_locations": [
             {
                 "map": "Bone Beach Pulsing Tract",
-                "x": 655,
+                "x": 657,
                 "y": 922
             }
         ]
@@ -270,8 +271,8 @@
         "map_locations": [
             {
                 "map": "Bone Beach Cliffs",
-                "x": 111,
-                "y": 691
+                "x": 113,
+                "y": 688
             }
         ]
     },
@@ -283,8 +284,8 @@
         "map_locations": [
             {
                 "map": "Bone Beach Cliffs",
-                "x": 239,
-                "y": 598
+                "x": 241,
+                "y": 595
             }
         ]
     },
@@ -304,8 +305,8 @@
     {
         "name": "Chest",
         "sections": [
-            {"name": "BB Brac's Tent Trinket"},
-            {"name": "BB Brac's Tent Kear"}
+            {"name": "BB Brac's Tent Shop Trinket"},
+            {"name": "BB Brac's Tent Shop Kear"}
         ],
         "map_locations": [
             {

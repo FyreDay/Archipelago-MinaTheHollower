@@ -33,11 +33,11 @@ class Locations(LocationTypeEnum):
     )
 
     NB_SWAMP_SHACK_PIT_PRESERVER = (
-        "NB Swamp Shack Pit Preserver", 48, Regions.NOXS_BAYOU_SWAMP_SHACK,
+        "NB Swamp Shack Shop Trinket", 48, Regions.NOXS_BAYOU_SWAMP_SHACK,
     )
 
     NB_SWAMP_SHACK_KEAR = (
-        "NB Swamp Shack Kear", 49, Regions.NOXS_BAYOU_SWAMP_SHACK,
+        "NB Swamp Shack Shop Kear", 49, Regions.NOXS_BAYOU_SWAMP_SHACK,
     )
 
     NB_SWAMP_SHACK_WEAPON_CHEST = (

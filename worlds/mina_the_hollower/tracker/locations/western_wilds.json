@@ -33,8 +33,8 @@
         "map_locations": [
             {
                 "map": "Western Wilds",
-                "x": 534,
-                "y": 172
+                "x": 528,
+                "y": 178
             }
         ]
     },
@@ -94,6 +94,7 @@
         "name": "Fish/Dugin",
         "sections": [
             {"name": "WW Fish Glomper Stalk"},
+            {"name": "Defeat Dugin 2"},
             {"name": "Dugin Fight 2 Trinket"}
         ],
         "map_locations": [
@@ -133,8 +134,8 @@
     {
         "name": "Poppit Shop",
         "sections": [
-            {"name": "WW Molten Foundry Poppit Trinket"},
-            {"name": "WW Molten Foundry Poppit Kear"}
+            {"name": "WW Molten Foundry Poppit Shop Trinket"},
+            {"name": "WW Molten Foundry Poppit Shop Kear"}
         ],
         "map_locations": [
             {
@@ -207,7 +208,7 @@
         "map_locations": [
             {
                 "map": "Western Wilds",
-                "x": 1374,
+                "x": 1378,
                 "y": 57
             }
         ]
@@ -215,32 +216,32 @@
     {
         "name": "Molten Foundry",
         "sections": [
-            {"name": "WW Molten Foundry Poppit Trinket"},
-            {"name": "WW Molten Foundry Poppit Kear"},
+            {"name": "WW Molten Foundry Poppit Shop Trinket"},
+            {"name": "WW Molten Foundry Poppit Shop Kear"},
             {"name": "WW Molten Foundry Dark Chest"},
             {"name": "WW Molten Foundry Trinket"}
         ],
         "map_locations": [
             {
                 "map": "Western Wilds",
-                "x": 1262,
-                "y": 50
+                "x": 1265,
+                "y": 48
             }
         ]
     },
     {
         "name": "Molten Foundry",
         "sections": [
-            {"name": "WW Molten Foundry Poppit Trinket"},
-            {"name": "WW Molten Foundry Poppit Kear"},
+            {"name": "WW Molten Foundry Poppit Shop Trinket"},
+            {"name": "WW Molten Foundry Poppit Shop Kear"},
             {"name": "WW Molten Foundry Dark Chest"},
             {"name": "WW Molten Foundry Trinket"}
         ],
         "map_locations": [
             {
                 "map": "Western Wilds",
-                "x": 1487,
-                "y": 50
+                "x": 1489,
+                "y": 48
             }
         ]
     }

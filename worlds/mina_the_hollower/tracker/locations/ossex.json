@@ -20,8 +20,8 @@
         "map_locations": [
             {
                 "map": "Ossex Courtyard",
-                "x": 80,
-                "y": 80
+                "x": 82,
+                "y": 78
             }
         ]
     },
@@ -46,8 +46,8 @@
         "map_locations": [
             {
                 "map": "Ossex Goddred's Tomb",
-                "x": 373,
-                "y": 117
+                "x": 368,
+                "y": 112
             }
         ]
     },
@@ -77,7 +77,7 @@
             {
                 "map": "Ossex Main Interiors",
                 "x": 81,
-                "y": 348
+                "y": 346
             }
         ]
     },
@@ -88,7 +88,8 @@
             {"name": "OS Legovich's Arms Hammer"},
             {"name": "OS Legovich's Arms Daggers"},
             {"name": "OS Legovich's Arms Battery Buster"},
-            {"name": "OS Legovich's Arms Guardian Casket"}
+            {"name": "OS Legovich's Arms Guardian Casket"},
+            {"name": "OS Defeat Armand"}
         ],
         "map_locations": [
             {
@@ -233,6 +234,7 @@
     {
         "name": "Trinket",
         "sections": [
+            {"name": "OS Defeat Wonder Willis"},
             {"name": "OS Music Hall Wonder Willis Trinket"}
         ],
         "map_locations": [
@@ -252,7 +254,7 @@
             {
                 "map": "Ossex Bowery Interiors",
                 "x": 215,
-                "y": 417
+                "y": 400
             }
         ]
     },
@@ -264,7 +266,7 @@
         "map_locations": [
             {
                 "map": "Ossex Bowery Interiors",
-                "x": 116,
+                "x": 118,
                 "y": 693
             }
         ]
@@ -277,8 +279,8 @@
         "map_locations": [
             {
                 "map": "Ossex Bowery Interiors",
-                "x": 435,
-                "y": 575
+                "x": 414,
+                "y": 574
             }
         ]
     },
@@ -299,8 +301,8 @@
         "map_locations": [
             {
                 "map": "Ossex Main Interiors",
-                "x": 80,
-                "y": 201
+                "x": 79,
+                "y": 200
             }
         ]
     },
@@ -375,7 +377,7 @@
         "map_locations": [
             {
                 "map": "Ossex High Street Interiors",
-                "x": 336,
+                "x": 334,
                 "y": 363
             }
         ]
@@ -389,8 +391,8 @@
         "map_locations": [
             {
                 "map": "Ossex High Street Interiors",
-                "x": 334,
-                "y": 232
+                "x": 347,
+                "y": 214
             }
         ]
     },
@@ -430,8 +432,8 @@
         "map_locations": [
             {
                 "map": "Ossex High Street Interiors",
-                "x": 29,
-                "y": 89
+                "x": 25,
+                "y": 90
             }
         ]
     },
@@ -443,7 +445,7 @@
         "map_locations": [
             {
                 "map": "Ossex High Street Interiors",
-                "x": 411,
+                "x": 412,
                 "y": 90
             }
         ]
@@ -457,7 +459,7 @@
             {
                 "map": "Ossex High Street Interiors",
                 "x": 435,
-                "y": 52
+                "y": 47
             }
         ]
     },
@@ -513,7 +515,7 @@
         "map_locations": [
             {
                 "map": "Ossex Bowery Interiors",
-                "x": 400,
+                "x": 412,
                 "y": 345
             }
         ]
@@ -527,7 +529,7 @@
         "map_locations": [
             {
                 "map": "Ossex Main Interiors",
-                "x": 616,
+                "x": 613,
                 "y": 226
             }
         ]
@@ -550,15 +552,15 @@
         "map_locations": [
             {
                 "map": "Ossex Main Interiors",
-                "x": 518,
-                "y": 244
+                "x": 519,
+                "y": 242
             }
         ]
     },
     {
         "name": "Chest",
         "sections": [
-            {"name": "OS Train Chest"}
+            {"name": "Train Chest"}
         ],
         "map_locations": [
             {
@@ -571,7 +573,7 @@
     {
         "name": "Shroud",
         "sections": [
-            {"name": "OS Train Safety Shroud"}
+            {"name": "Train Safety Shroud"}
         ],
         "map_locations": [
             {
@@ -639,6 +641,7 @@
         "name": "Music Hall",
         "sections": [
             {"name": "OS Music Hall Chest"},
+            {"name": "OS Defeat Wonder Willis"},
             {"name": "OS Music Hall Wonder Willis Trinket"}
         ],
         "map_locations": [
@@ -696,15 +699,15 @@
         "map_locations": [
             {
                 "map": "Ossex",
-                "x": 1968,
-                "y": 433
+                "x": 1970,
+                "y": 435
             }
         ]
     },
     {
         "name": "Vita's Shop",
         "sections": [
-            {"name": "SF Train Vita's Shop"}
+            {"name": "SF Train Vita's Shop Trinket"}
         ],
         "map_locations": [
             {
@@ -717,6 +720,7 @@
     {
         "name": "Defeat Evra",
         "sections": [
+            {"name": "OS Defeat Evra"},
             {"name": "OS Evra Fight Reward"}
         ],
         "map_locations": [
@@ -737,6 +741,32 @@
                 "map": "Ossex",
                 "x": 307,
                 "y": 499
+            }
+        ]
+    },
+    {
+        "name": "Defeat Evra",
+        "sections": [
+            {"name": "OS Defeat Evra"}
+        ],
+        "map_locations": [
+            {
+                "map": "Ossex Goddred's Tomb",
+                "x": 448,
+                "y": 415
+            }
+        ]
+    },
+    {
+        "name": "Defeat Armand",
+        "sections": [
+            {"name": "OS Defeat Armand"}
+        ],
+        "map_locations": [
+            {
+                "map": "Ossex Main Interiors",
+                "x": 136,
+                "y": 345
             }
         ]
     }

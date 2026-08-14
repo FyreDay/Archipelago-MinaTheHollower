@@ -52,8 +52,8 @@ class Locations(LocationTypeEnum):
 
 class OptionalLocations(LocationTypeEnum):
     LL_CAPTAINS_GIFT = ("LL Captain's Gift", 24, Regions.LONERS_LANDING_SHIPWRECK)
-    LL_HULK_TROOPER = ("LL Hulk Trooper", 1024, Regions.SOUTHERN_OUTSKIRTS_COMMONS_OSSEX_ENTRY)
-    LL_THORNE_1 = ("LL Thorne 1", 1024, Regions.OSSEX_COURTYARD)
+    LL_HULK_TROOPER = ("LL Defeat Hulk Trooper", 1024, Regions.SOUTHERN_OUTSKIRTS_COMMONS_OSSEX_ENTRY)
+    LL_THORNE_1 = ("LL Defeat Thorne 1", 1024, Regions.OSSEX_COURTYARD)
 
 
 

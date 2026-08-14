@@ -80,11 +80,11 @@ class Locations(LocationTypeEnum):
     )
 
     EH_POPPIT_CAVE_WILLOW = (
-        "EH Poppit Cave Willow", 239, Regions.EASTERN_HEATH_POPPIT,
+        "EH Poppit Cave Shop Trinket", 239, Regions.EASTERN_HEATH_POPPIT,
     )
 
     EH_POPPIT_CAVE_KEAR = (
-        "EH Poppit Cave Kear", 240, Regions.EASTERN_HEATH_POPPIT,
+        "EH Poppit Cave Shop Kear", 240, Regions.EASTERN_HEATH_POPPIT,
     )
 
     EH_FROZEN_PASS_TRINKET = (
@@ -92,4 +92,4 @@ class Locations(LocationTypeEnum):
     )
 
 class BossLocations(LocationTypeEnum):
-    EH_DEFEAT_MAXI = ("NB Defeat Maxi", 1018, Regions.EASTERN_HEATH_GRASSLAND, RepairedGeneratorCount(count=1) & PowerLevelThreshold(power=25))
+    EH_DEFEAT_MAXI = ("EH Defeat Maxi", 1018, Regions.EASTERN_HEATH_GRASSLAND, RepairedGeneratorCount(count=1) & PowerLevelThreshold(power=25))

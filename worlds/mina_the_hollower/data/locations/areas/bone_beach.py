@@ -34,11 +34,11 @@ class Locations(LocationTypeEnum):
     )
 
     BB_BRAC_S_TENT_TRINKET = (
-        "BB Brac's Tent Trinket", 80, Regions.BONE_BEACH_BRACS_TENT,
+        "BB Brac's Tent Shop Trinket", 80, Regions.BONE_BEACH_BRACS_TENT,
     )
 
     BB_BRAC_S_TENT_KEAR = (
-        "BB Brac's Tent Kear", 81, Regions.BONE_BEACH_BRACS_TENT,
+        "BB Brac's Tent Shop Kear", 81, Regions.BONE_BEACH_BRACS_TENT,
     )
 
     BB_SECRET_SHOALS_TRINKET = (

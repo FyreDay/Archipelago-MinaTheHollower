@@ -326,17 +326,17 @@ class Locations(LocationTypeEnum):
     )
 
     OS_TRAIN_CHEST = (
-        "OS Train Chest",360,Regions.OSSEX_TRAIN_PRIVATE_CABIN_LEFT,CanBurrow() & HasKear(kear=SingleKears.OSSEX_TRAIN_KEAR_1.value),
+        "Train Chest",360,Regions.OSSEX_TRAIN_PRIVATE_CABIN_LEFT,CanBurrow() & HasKear(kear=SingleKears.OSSEX_TRAIN_KEAR_1.value),
     )
 
     OS_TRAIN_SAFETY_SHROUD = (
-        "OS Train Safety Shroud",357,Regions.OSSEX_TRAIN_PRIVATE_CABIN_LEFT,CanBurrow()
+        "Train Safety Shroud",357,Regions.OSSEX_TRAIN_PRIVATE_CABIN_LEFT,CanBurrow()
         & HasKear(kear=SingleKears.OSSEX_TRAIN_KEAR_1.value)
         & HasKear(kear=SingleKears.OSSEX_TRAIN_KEAR_2.value),
     )
 # "OS Station Train Ticket Donation": LocationData(149, "Ossex Station", progress_type=LocationProgressType.EXCLUDED),
 # "OS Forgotten Cave Disturbing Dance": LocationData(351, "Ossex City Center Main", CanBurrow() & CanBounce() & CanClimb()),
 class BossLocations(LocationTypeEnum):
-    OS_DEFEAT_ARMOND = ("OS Defeat Armond", 1021, Regions.OSSEX_LEGOVICHS_ARMS_BASEMENT,CanBurrow() & PowerLevelThreshold(power=20))
+    OS_DEFEAT_ARMOND = ("OS Defeat Armand", 1021, Regions.OSSEX_LEGOVICHS_ARMS_BASEMENT,CanBurrow() & PowerLevelThreshold(power=20))
     OS_DEFEAT_EVRA = ("OS Defeat Evra", 1022, Regions.OSSEX_GODDREDS_GRAVE_ARENA,PowerLevelThreshold(power=60))
-    OS_DEFEAT_WILLY = ("OS Defeat Willy", 1020, Regions.OSSEX_MUSIC_HALL, CanCarry() & CanBurrow() & CanSwim() & CanClimb() & PowerLevelThreshold(power=30))
+    OS_DEFEAT_WILLY = ("OS Defeat Wonder Willis", 1020, Regions.OSSEX_MUSIC_HALL, CanCarry() & CanBurrow() & CanSwim() & CanClimb() & PowerLevelThreshold(power=30))
