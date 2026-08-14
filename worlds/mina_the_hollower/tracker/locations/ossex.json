@@ -234,6 +234,7 @@
     {
         "name": "Trinket",
         "sections": [
+            {"name": "OS Defeat Wonder Willis"},
             {"name": "OS Music Hall Wonder Willis Trinket"}
         ],
         "map_locations": [
@@ -253,7 +254,7 @@
             {
                 "map": "Ossex Bowery Interiors",
                 "x": 215,
-                "y": 417
+                "y": 400
             }
         ]
     },
@@ -265,7 +266,7 @@
         "map_locations": [
             {
                 "map": "Ossex Bowery Interiors",
-                "x": 116,
+                "x": 118,
                 "y": 693
             }
         ]
@@ -278,8 +279,8 @@
         "map_locations": [
             {
                 "map": "Ossex Bowery Interiors",
-                "x": 435,
-                "y": 575
+                "x": 414,
+                "y": 574
             }
         ]
     },
@@ -514,7 +515,7 @@
         "map_locations": [
             {
                 "map": "Ossex Bowery Interiors",
-                "x": 400,
+                "x": 412,
                 "y": 345
             }
         ]
@@ -753,6 +754,19 @@
                 "map": "Ossex Goddred's Tomb",
                 "x": 448,
                 "y": 415
+            }
+        ]
+    },
+    {
+        "name": "Defeat Armand",
+        "sections": [
+            {"name": "OS Defeat Armand"}
+        ],
+        "map_locations": [
+            {
+                "map": "Ossex Main Interiors",
+                "x": 136,
+                "y": 345
             }
         ]
     }
