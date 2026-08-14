@@ -81,8 +81,8 @@
     {
         "name": "Shop",
         "sections": [
-            {"name": "BB Brac's Tent Trinket"},
-            {"name": "BB Brac's Tent Kear"}
+            {"name": "BB Brac's Tent Shop Trinket"},
+            {"name": "BB Brac's Tent Shop Kear"}
         ],
         "map_locations": [
             {
