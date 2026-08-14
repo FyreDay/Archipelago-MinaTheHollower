@@ -51,11 +51,11 @@ class Locations(LocationTypeEnum):
     )
 
     QC_MIRROR_ROOM_BELVEDERE_TRINKET = (
-        "QC Mirror Room Belvedere Trinket",66,Regions.QUEENSBURY_CRYPT_MIRROR_ROOM_WEST,
+        "QC Mirror Room Belvedere Shop Trinket",66,Regions.QUEENSBURY_CRYPT_MIRROR_ROOM_WEST,
     )
 
     QC_MIRROR_ROOM_BELVEDERE_KEAR = (
-        "QC Mirror Room Belvedere Kear",67,Regions.QUEENSBURY_CRYPT_MIRROR_ROOM_WEST,
+        "QC Mirror Room Belvedere Shop Kear",67,Regions.QUEENSBURY_CRYPT_MIRROR_ROOM_WEST,
     )
 
     QC_MIDDEN_2_BONESTONE = (
