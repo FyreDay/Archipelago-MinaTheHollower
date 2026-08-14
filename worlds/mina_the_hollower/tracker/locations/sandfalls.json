@@ -163,7 +163,7 @@
         "map_locations": [
             {
                 "map": "Sandfalls",
-                "x": 1682,
+                "x": 1712,
                 "y": 840
             }
         ]
@@ -189,8 +189,8 @@
         "map_locations": [
             {
                 "map": "Sandfalls",
-                "x": 1106,
-                "y": 207
+                "x": 1107,
+                "y": 203
             }
         ]
     },
@@ -218,7 +218,7 @@
             {
                 "map": "Sandfalls",
                 "x": 1185,
-                "y": 465
+                "y": 463
             }
         ]
     },
@@ -258,7 +258,7 @@
             {
                 "map": "Sandfalls",
                 "x": 1060,
-                "y": 1343
+                "y": 1346
             }
         ]
     }
@@ -272,7 +272,7 @@
             {
                 "map": "Sandfalls",
                 "x": 1315,
-                "y": 1343
+                "y": 1346
             }
         ]
     },
@@ -285,7 +285,33 @@
             {
                 "map": "Sandfalls Interiors",
                 "x": 35,
-                "y": 879
+                "y": 880
+            }
+        ]
+    },
+    {
+        "name": "Major Miner",
+        "sections": [
+            {"name": "SF Defeat Major Miner"}
+        ],
+        "map_locations": [
+            {
+                "map": "Sandfalls",
+                "x": 928,
+                "y": 812
+            }
+        ]
+    },
+    {
+        "name": "Major Miner",
+        "sections": [
+            {"name": "SF Defeat Major Miner"}
+        ],
+        "map_locations": [
+            {
+                "map": "Sandfalls Mine",
+                "x": 673,
+                "y": 747
             }
         ]
     }
