@@ -20,7 +20,7 @@
         "map_locations": [
             {
                 "map": "Mirror's End",
-                "x": 1725,
+                "x": 1714,
                 "y": 462
             }
         ]
@@ -80,26 +80,26 @@
     {
         "name": "Chest",
         "sections": [
-            {"name": "AO Stellarium East Chest"}
+            {"name": "AO Stellarium Weapon Chest"}
         ],
         "map_locations": [
             {
                 "map": "Astral Orrery Stellarium",
-                "x": 600,
-                "y": 198
+                "x": 608,
+                "y": 205
             }
         ]
     },
     {
         "name": "Shop",
         "sections": [
-            {"name": "AO Tubert Trinket"},
-            {"name": "AO Tubert Kear"}
+            {"name": "AO Tubert Shop Trinket"},
+            {"name": "AO Tubert Shop Kear"}
         ],
         "map_locations": [
             {
                 "map": "Astral Orrery Stellarium",
-                "x": 38,
+                "x": 44,
                 "y": 213
             }
         ]
@@ -222,8 +222,9 @@
         ]
     },
     {
-        "name": "Rose",
+        "name": "The Congealed",
         "sections": [
+            {"name": "AO Defeat The Congealed"},
             {"name": "AO The Congealed Fight Reward"}
         ],
         "map_locations": [
@@ -288,6 +289,19 @@
                 "map": "Astral Orrery Stellarium",
                 "x": 551,
                 "y": 776
+            }
+        ]
+    },
+    {
+        "name": "Lumenarks",
+        "sections": [
+            {"name": "AO Defeat Lumenarks"}
+        ],
+        "map_locations": [
+            {
+                "map": "Astral Orrery Hall Of Schalars",
+                "x": 178,
+                "y": 63
             }
         ]
     }
