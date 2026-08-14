@@ -641,7 +641,7 @@
         "name": "Music Hall",
         "sections": [
             {"name": "OS Music Hall Chest"},
-            {"name": "OS Defeat Wonder Willis"}
+            {"name": "OS Defeat Wonder Willis"},
             {"name": "OS Music Hall Wonder Willis Trinket"}
         ],
         "map_locations": [
