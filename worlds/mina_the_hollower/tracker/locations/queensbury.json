@@ -186,7 +186,7 @@
     {
         "name": "Duchess",
         "sections": [
-            {"name": "QC Defeat The Duchess"}
+            {"name": "QC Defeat The Duchess"},
             {"name": "QC The Duchess Fight Reward"}
         ],
         "map_locations": [
