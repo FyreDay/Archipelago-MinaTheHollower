@@ -90,7 +90,7 @@ class Locations(LocationTypeEnum):
     )
 
 class BossLocations(LocationTypeEnum):
-    QB_DEFEAT_MIDDEN = ("QB Defeat Midden", 1028, Regions.QUEENSBURY_CRYPT_RANCID_ROOM, PowerLevelThreshold(power=25))
-    QB_DEFEAT_THE_DUCHESS = ("QB Defeat The Duchess", 1001, Regions.QUEENSBURY_CRYPT_SOLEMN_GENERATOR, PowerLevelThreshold(power=25))
+    QB_DEFEAT_MIDDEN = ("QC Defeat Midden", 1028, Regions.QUEENSBURY_CRYPT_RANCID_ROOM, PowerLevelThreshold(power=25))
+    QB_DEFEAT_THE_DUCHESS = ("QC Defeat The Duchess", 1001, Regions.QUEENSBURY_CRYPT_SOLEMN_GENERATOR, PowerLevelThreshold(power=25))
     # QB_SOLEMN_GENERATOR = ("QB Solemn Generator Repaired", 6001, Regions.QUEENSBURY_CRYPT_SOLEMN_GENERATOR)
 
