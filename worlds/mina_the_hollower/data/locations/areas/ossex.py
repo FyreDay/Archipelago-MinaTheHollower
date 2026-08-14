@@ -326,11 +326,11 @@ class Locations(LocationTypeEnum):
     )
 
     OS_TRAIN_CHEST = (
-        "OS Train Chest",360,Regions.OSSEX_TRAIN_PRIVATE_CABIN_LEFT,CanBurrow() & HasKear(kear=SingleKears.OSSEX_TRAIN_KEAR_1.value),
+        "Train Chest",360,Regions.OSSEX_TRAIN_PRIVATE_CABIN_LEFT,CanBurrow() & HasKear(kear=SingleKears.OSSEX_TRAIN_KEAR_1.value),
     )
 
     OS_TRAIN_SAFETY_SHROUD = (
-        "OS Train Safety Shroud",357,Regions.OSSEX_TRAIN_PRIVATE_CABIN_LEFT,CanBurrow()
+        "Train Safety Shroud",357,Regions.OSSEX_TRAIN_PRIVATE_CABIN_LEFT,CanBurrow()
         & HasKear(kear=SingleKears.OSSEX_TRAIN_KEAR_1.value)
         & HasKear(kear=SingleKears.OSSEX_TRAIN_KEAR_2.value),
     )
