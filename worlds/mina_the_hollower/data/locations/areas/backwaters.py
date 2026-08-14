@@ -35,11 +35,11 @@ class Locations(LocationTypeEnum):
     )
 
     BW_PINKYS_PARLOR_TRINKET = (
-        "BW Pinky's Parlor Trinket", 297, Regions.BACKWATERS_PINKY_SHOP,
+        "BW Pinky's Parlor Shop Trinket", 297, Regions.BACKWATERS_PINKY_SHOP,
     )
 
     BW_PINKYS_PARLOR_KEAR = (
-        "BW Pinky's Parlor Kear", 298, Regions.BACKWATERS_PINKY_SHOP,
+        "BW Pinky's Parlor Shop Kear", 298, Regions.BACKWATERS_PINKY_SHOP,
     )
 
     BW_PINKYS_PARLOR_JOULE_BOX = (
