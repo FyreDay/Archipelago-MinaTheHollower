@@ -59,7 +59,7 @@
         "map_locations": [
             {
                 "map": "Radiant Manor East Wing",
-                "x": 2160,
+                "x": 2179,
                 "y": 716
             }
         ]
@@ -113,6 +113,19 @@
                 "map": "Radiant Manor Ballroom",
                 "x": 1265,
                 "y": 980
+            }
+        ]
+    },
+    {
+        "name": "Furgus",
+        "sections": [
+            {"name": "RM Defeat Furgus"}
+        ],
+        "map_locations": [
+            {
+                "map": "Radiant Manor East Wing",
+                "x": 2179,
+                "y": 191
             }
         ]
     }
