@@ -44,11 +44,11 @@ class Locations(LocationTypeEnum):
     )
 
     WW_MOLTEN_FOUNDRY_POPPIT_TRINKET = (
-        "WW Molten Foundry Poppit Trinket",256,Regions.WESTERN_WILDS_MOLTEN_FOUNDRY_DARK_POPPIT,
+        "WW Molten Foundry Poppit Shop Trinket",256,Regions.WESTERN_WILDS_MOLTEN_FOUNDRY_DARK_POPPIT,
     )
 
     WW_MOLTEN_FOUNDRY_POPPIT_KEAR = (
-        "WW Molten Foundry Poppit Kear",257,Regions.WESTERN_WILDS_MOLTEN_FOUNDRY_DARK_POPPIT,
+        "WW Molten Foundry Poppit Shop Kear",257,Regions.WESTERN_WILDS_MOLTEN_FOUNDRY_DARK_POPPIT,
     )
 
     WW_MOLTEN_FOUNDRY_DARK_CHEST = (
