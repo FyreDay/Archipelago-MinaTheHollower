@@ -2,7 +2,8 @@
     {
         "name": "Beat Maxi",
         "sections": [
-            {"name": "EH Maxi Fight Reward"}
+            {"name": "EH Maxi Fight Reward"},
+            {"name": "EH Defeat Maxi"}
         ],
         "map_locations": [
             {
