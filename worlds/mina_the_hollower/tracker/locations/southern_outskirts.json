@@ -93,8 +93,8 @@
     {
         "name": "Poppit",
         "sections": [
-            {"name": "SO Poppit Keri"},
-            {"name": "SO Poppit Kear"}
+            {"name": "SO Poppit Shop Trinket"},
+            {"name": "SO Poppit Shop Kear"}
         ],
         "map_locations": [
             {
@@ -227,8 +227,8 @@
     {
         "name": "Poppit Cave",
         "sections": [
-            {"name": "SO Poppit Keri"},
-            {"name": "SO Poppit Kear"}
+            {"name": "SO Poppit Shop Trinket"},
+            {"name": "SO Poppit Shop Kear"}
         ],
         "map_locations": [
             {
