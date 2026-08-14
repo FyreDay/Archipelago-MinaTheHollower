@@ -9,7 +9,7 @@ from ...rules.movement_rules import CanJumpTiles
 
 class Locations(LocationTypeEnum):
     AO_STELLARIUM_EAST_CHEST = (
-        "AO Stellarium East Chest", 129, Regions.ASTRAL_ORRERY_STELLARIUM, HasKear(kear=SingleKears.ASTRAL_ORRERY_STELLARIUM_KEAR.value),
+        "AO Stellarium Weapon Chest", 129, Regions.ASTRAL_ORRERY_STELLARIUM, HasKear(kear=SingleKears.ASTRAL_ORRERY_STELLARIUM_KEAR.value),
     )
 
     AO_TUBERT_TRINKET = (
