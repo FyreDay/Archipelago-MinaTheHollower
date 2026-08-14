@@ -42,8 +42,8 @@
     {
         "name": "Poppit Shop",
         "sections": [
-            {"name": "EH Poppit Cave Willow"},
-            {"name": "EH Poppit Cave Kear"}
+            {"name": "EH Poppit Cave Shop Trinket"},
+            {"name": "EH Poppit Cave Shop Kear"}
         ],
         "map_locations": [
             {
@@ -187,8 +187,8 @@
         "name": "Poppit Cave",
         "sections": [
             {"name": "EH Poppit Cave Chest"},
-            {"name": "EH Poppit Cave Willow"},
-            {"name": "EH Poppit Cave Kear"}
+            {"name": "EH Poppit Cave Shop Trinket"},
+            {"name": "EH Poppit Cave Shop Kear"}
         ],
         "map_locations": [
             {
