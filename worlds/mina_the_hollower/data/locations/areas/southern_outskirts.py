@@ -34,11 +34,11 @@ class Locations(LocationTypeEnum):
     )
 
     SO_POPPIT_KERI = (
-        "SO Poppit Keri",272,Regions.SOUTHERN_OUTSKIRTS_POPPIT,
+        "SO Poppit Shop Trinket",272,Regions.SOUTHERN_OUTSKIRTS_POPPIT,
     )
 
     SO_POPPIT_KEAR = (
-        "SO Poppit Kear",273,Regions.SOUTHERN_OUTSKIRTS_POPPIT,
+        "SO Poppit Shop Kear",273,Regions.SOUTHERN_OUTSKIRTS_POPPIT,
     )
 
     SO_PIT_ROOM_BONESTONE = (
