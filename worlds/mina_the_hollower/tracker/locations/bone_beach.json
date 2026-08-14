@@ -41,7 +41,7 @@
     {
         "name": "Bonestone",
         "sections": [
-            {"name": "BB Bounce Conveyer Challenge Chest"}
+            {"name": "BB Conveyer Jump Bonestone"}
         ],
         "map_locations": [
             {
@@ -54,14 +54,14 @@
     {
         "name": "Chest",
         "sections": [
-            {"name": "BB Conveyer Jump Bonestone"}
+            {"name": "BB Bounce Conveyer Challenge Chest"}
         ],
         "map_locations": [
             {
                 "map": "Bone Beach",
 
                 "x": 880,
-                "y": 113
+                "y": 125
             }
         ]
     },
