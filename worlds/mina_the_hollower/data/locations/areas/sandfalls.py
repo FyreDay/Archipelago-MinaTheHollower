@@ -51,7 +51,7 @@ class Locations(LocationTypeEnum):
     )
 
     SF_TRAIN_VITA_S_SHOP = (
-        "SF Train Vita's Shop",333,Regions.SANDFALLS_SANDY_STATION,Has(PermanentUpgrades.TRAIN_PASS.value) & Has(PermanentUpgrades.BAYOU_TICKET.value),
+        "SF Train Vita's Shop Trinket",333,Regions.SANDFALLS_SANDY_STATION,Has(PermanentUpgrades.TRAIN_PASS.value) & Has(PermanentUpgrades.BAYOU_TICKET.value),
     )
 
     BB_SANDWATER_JUNCTION_ANGLER_S_RAFT = (
