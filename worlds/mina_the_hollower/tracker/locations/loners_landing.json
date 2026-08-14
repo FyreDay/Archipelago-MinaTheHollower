@@ -86,7 +86,7 @@
             {
                 "map": "Blighted Docks Fences",
                 "x": 50,
-                "y": 300
+                "y": 304
             }
         ]
     },
@@ -111,7 +111,7 @@
         "map_locations": [
             {
                 "map": "Blighted Docks Bridge",
-                "x": 83,
+                "x": 81,
                 "y": 129
             }
         ]
@@ -150,8 +150,8 @@
         "map_locations": [
             {
                 "map": "Boardwalk",
-                "x": 1553,
-                "y": 645
+                "x": 1563,
+                "y": 641
             }
         ]
     },
@@ -163,8 +163,8 @@
         "map_locations": [
             {
                 "map": "Sandwater Junction",
-                "x": 80,
-                "y": 586
+                "x": 82,
+                "y": 590
             }
         ]
     },
