@@ -78,7 +78,7 @@ class Locations(LocationTypeEnum):
     )
 
 class BossLocations(LocationTypeEnum):
-    CTP_DEFEAT_THORNE_2 = ("CTP Defeat Thorne 2", 1009, Regions.COLTRANE_PEAK_THORNE_ARENA, PowerLevelThreshold(power=40))
+    CTP_DEFEAT_THORNE_2 = ("CTP Defeat Thorne 2", 1009, Regions.COLTRANE_PEAK_THORNE_ARENA, PowerLevelThreshold(power=40), LocationProgressType.EXCLUDED)
     CTP_DEFEAT_MIRREN = ("CTP Defeat Mirren", 1025, Regions.COLTRANE_PEAK_MIRREN_ROOM, PowerLevelThreshold(power=40))
     CTP_DEFEAT_FROZEN_HORROR = ("CTP Defeat Frozen Horror", 1015, Regions.COLTRANE_PEAK_FROZEN_HORROR_ARENA, PowerLevelThreshold(power=40))
     CTP_DEFEAT_LOCOMOTRESS_AGNESS = ("CTP Defeat Locomotress", 1005, Regions.COLTRANE_PEAK_AGNES_EXPRESS_ARENA, PowerLevelThreshold(power=40))

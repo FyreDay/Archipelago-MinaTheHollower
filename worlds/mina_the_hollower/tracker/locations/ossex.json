@@ -769,5 +769,20 @@
                 "y": 345
             }
         ]
+    },
+    {
+        "name": "Thorne 1",
+        "sections": [
+            {
+                "name": "LL Defeat Thorne 1"
+            }
+        ],
+        "map_locations": [
+            {
+                "map": "Ossex Courtyard",
+                "x": 1025,
+                "y": 350
+            }
+        ]
     }
 ]

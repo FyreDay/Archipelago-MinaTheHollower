@@ -128,5 +128,31 @@
                 "y": 191
             }
         ]
+    },
+    {
+        "name": "Lionel",
+        "sections": [
+            {"name": "RM Defeat Lionel"}
+        ],
+        "map_locations": [
+            {
+                "map": "Radiant Manor Generator",
+                "x": 1602,
+                "y": 1223
+            }
+        ]
+    },
+    {
+        "name": "Radiant Lionel",
+        "sections": [
+            {"name": "RM Defeat Radiant Lionel"}
+        ],
+        "map_locations": [
+            {
+                "map": "Radiant Manor Generator",
+                "x": 1602,
+                "y": 332
+            }
+        ]
     }
 ]

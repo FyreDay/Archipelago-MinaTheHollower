@@ -237,5 +237,18 @@
                 "y": 1063
             }
         ]
+    },
+    {
+        "name": "Hulk Trooper",
+        "sections": [
+            {"name": "LL Defeat Hulk Trooper"}
+        ],
+        "map_locations": [
+            {
+                "map": "Southern Outskirts",
+                "x": 1538,
+                "y": 82
+            }
+        ]
     }
 ]
