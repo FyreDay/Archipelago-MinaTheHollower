@@ -26,7 +26,7 @@ class Locations(LocationTypeEnum):
     )
 
     BB_BOUNCE_CONVEYER_CHALLENGE_CHEST = (
-        "BB Above Tent Chest", 78, Regions.BONE_BEACH_WORMS_BACK_SPLIT, CanJumpTiles(distance=2),
+        "BB Zigzag Conveyor Chest", 78, Regions.BONE_BEACH_WORMS_BACK_SPLIT, CanJumpTiles(distance=2),
     )
 
     BB_MESSAGE_IN_A_BOTTLE_CHEST = (
