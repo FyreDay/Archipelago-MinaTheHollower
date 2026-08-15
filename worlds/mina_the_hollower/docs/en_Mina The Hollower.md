@@ -1,12 +1,4 @@
 # Mina The Hollower
-## State of the Implementation
-The Archipelago Mod and AP World are currently in a beta state. It is stable and we are primarily looking for help finding logic bugs and reporting any issues with the mod.
-
-### Known Issues and how to report
-- The mod breaks whenever any game update comes out. Wait for a new mod release to play.
-- If you find a logic bug or are unsure what is causing the issue, create an issue on the [AP World Issue Tracker](https://github.com/FyreDay/Archipelago-MinaTheHollower/issues).
-- If you know the problem is with the mod itself, create an issue on the [Mod Issue Tracker](https://github.com/Axertin/mth-apclient/issues)
-
 ## What does randomization do to this game?
 
 In the Archipelago Randomizer, all trinkets, player upgrades, underlab improvements, and train tickets are items you can find. Every chest, trinket, bonestone, and shop inventories are locations where items can be.
@@ -28,6 +20,12 @@ There is a map tracker built for Universal Tracker (UT) built into the Mina the 
 There is also support for additional commands You can use ```/explain Max Jump``` To see what AP thinks your best trinket combo is at the moment and ```/explain Generators``` to see which generators are on and which ones you can repair with your items
 
 We would also appreciate feedback on how the map tracker is organized and whether you find it useful.
+
+### Known Issues and how to report
+- The mod breaks whenever any game update comes out. Wait for a new mod release to play.
+- If you find a logic bug or are unsure what is causing the issue, create an issue on the [AP World Issue Tracker](https://github.com/FyreDay/Archipelago-MinaTheHollower/issues).
+- If you know the problem is with the mod itself, create an issue on the [Mod Issue Tracker](https://github.com/Axertin/mth-apclient/issues)
+
 
 ## Installing
 
