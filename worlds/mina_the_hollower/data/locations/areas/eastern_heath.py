@@ -68,7 +68,7 @@ class Locations(LocationTypeEnum):
     )
 
     EH_BUCKLER_S_BLUFF_JOULE_BOX = (
-        "EH Buckler's Bluff Joule Box", 229, Regions.EASTERN_HEATH_BUCKLERS_BLUFF_CLIFF, CanClimb()
+        "EH Buckler's Bluff Chest", 229, Regions.EASTERN_HEATH_BUCKLERS_BLUFF_CLIFF, CanClimb()
         & (
             Has(PlayerUpgrades.JOULE_BOX.value, count=2)
             & Has(Sidearms.DRIVER_DRILL.value)
