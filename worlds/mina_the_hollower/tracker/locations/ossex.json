@@ -784,5 +784,20 @@
                 "y": 350
             }
         ]
+    },
+    {
+        "name": "Bonestone",
+        "sections": [
+            {
+                "name": "OS Gutterways Bonestone"
+            }
+        ],
+        "map_locations": [
+            {
+                "map": "Ossex Bike Sewer",
+                "x": 2290,
+                "y": 206
+            }
+        ]
     }
 ]
