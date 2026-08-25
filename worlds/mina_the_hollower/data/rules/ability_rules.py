@@ -6,10 +6,11 @@ from NetUtils import JSONMessagePart
 from rule_builder.options import OptionFilter
 from rule_builder.rules import Rule, Has, True_
 from ..items import Abilities, PlayerUpgrades, all_movement_items, \
-    all_power_items, upgrade_powers, trinket_powers, Trinkets, Sidearms, PermanentUpgrades, FishingUpgrades
+    all_power_items, upgrade_powers, trinket_powers, Trinkets, Sidearms, PermanentUpgrades, FishingUpgrades, BoneUps, \
+    GenericBoneUp
 
 from ...constants import MINA_THE_HOLLOWER
-from ...options import AbilityRando
+from ...options import AbilityRando, BoneUpCap
 from ...world_base import MinaTheHollowerBase
 
 def HasReachingSideArm():
@@ -93,15 +94,25 @@ class PowerLevelThreshold(Rule[MinaTheHollowerBase], game=MINA_THE_HOLLOWER):
     @override
     def _instantiate(self, world: MinaTheHollowerBase) -> Rule.Resolved:
         # caching_enabled only needs to be passed in when your world inherits from CachedRuleBuilderWorld
-        return self.Resolved(power=self.power, player=world.player, caching_enabled=False)
+        return self.Resolved(power=self.power, generic_bone_ups=world.options.bone_up_cap ,player=world.player, caching_enabled=False)
 
     class Resolved(Rule.Resolved):
         power: int
         ability_rando = False
+        generic_bone_ups: BoneUpCap
 
         @override
         def _evaluate(self, state: CollectionState) -> bool:
             total_power = 0
+            #force at least level 3 attack and defense for all bosses
+            if self.generic_bone_ups == BoneUpCap.option_allUpgrade:
+                if not state.has(GenericBoneUp.ALL_BONE_UP_CAP.value, self.player, 2):
+                    return False
+            else:
+                if not state.has(BoneUps.DEFENSE_BONE_UP_CAP.value, self.player, 2):
+                     return False
+                if not state.has(BoneUps.ATTACK_BONE_UP_CAP.value, self.player, 2):
+                    return False
 
             for item in upgrade_powers:
 

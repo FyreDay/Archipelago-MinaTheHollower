@@ -119,6 +119,7 @@ class MapName(IntEnum):
     RADIANT_MANOR_RAFTERS = 110
     RADIANT_MANOR_EAST_WING = 111
     RADIANT_MANOR_GENERATOR = 112
+    OSSEX_BIKE_SEWER = 113
 
 class GameState(IntEnum):
     DEVINIT = 0
@@ -391,7 +392,8 @@ RoomLookup: dict[GameState, RoomGroup] = {
         28:22,
         8:22,
         7:21,#trinket bazaar below
-        0:21 #armond fight
+        0:21, #armond fight
+        41:int(MapName.OSSEX_BIKE_SEWER)
     }),
     GameState.EVRAARENA: RoomGroup("EVRA", {
         0:19,
@@ -485,7 +487,7 @@ RoomLookup: dict[GameState, RoomGroup] = {
         0:41
     }),
     GameState.CRYPT_OVERWORLD: RoomGroup("MM", {
-        2:int(MapName.MOURNERS_MILE_DEPRIVED_PATH),
+        2:int(MapName.MOURNERS_MILE_ENTRANCE),
         3:38,
         16:38,
         1:39,
@@ -496,7 +498,7 @@ RoomLookup: dict[GameState, RoomGroup] = {
         6:40,
         7:40,
         8:40,
-        0:42,
+        0:int(MapName.MOURNERS_MILE_DEPRIVED_PATH),
         12:43,
 
     }),

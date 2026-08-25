@@ -128,5 +128,6 @@
   {"name": "Radiant Manor West Wing", "img": "area_images/radiant_manor/west.png", "location_size": 32, "location_border_thickness": 2},
   {"name": "Radiant Manor Rafters", "img": "area_images/radiant_manor/rafters.png", "location_size": 32, "location_border_thickness": 2},
   {"name": "Radiant Manor East Wing", "img": "area_images/radiant_manor/east.png", "location_size": 32, "location_border_thickness": 2},
-  {"name": "Radiant Manor Generator", "img": "area_images/radiant_manor/generator.png", "location_size": 32, "location_border_thickness": 2}
+  {"name": "Radiant Manor Generator", "img": "area_images/radiant_manor/generator.png", "location_size": 32, "location_border_thickness": 2},
+  {"name": "Ossex Bike Sewer", "img": "area_images/ossex/bike.png", "location_size": 32, "location_border_thickness": 2}
 ]

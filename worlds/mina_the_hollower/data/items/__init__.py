@@ -141,7 +141,7 @@ trinket_powers: list[ItemPower] = [
     ItemPower(Trinkets.TWILL_WEAVE, 1),
     ItemPower(Trinkets.PNEUMATIC_ARMLET, 2),
     ItemPower(Trinkets.BLINKING_GLASS, 2),
-    ItemPower(Trinkets.DODGING_PENDULUM, 6),
+    ItemPower(Trinkets.DODGING_PENDULUM, 4),
     ItemPower(Trinkets.RECKLESS_BEASTIUM, 2),
     ItemPower(Trinkets.VIAL_SALVO, 2, PlayerUpgrades.HEALING_VIAL),
     ItemPower(Trinkets.WARDING_BEASTIUM, 2),
