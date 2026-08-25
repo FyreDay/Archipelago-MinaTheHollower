@@ -337,6 +337,6 @@ class Locations(LocationTypeEnum):
 # "OS Station Train Ticket Donation": LocationData(149, "Ossex Station", progress_type=LocationProgressType.EXCLUDED),
 # "OS Forgotten Cave Disturbing Dance": LocationData(351, "Ossex City Center Main", CanBurrow() & CanBounce() & CanClimb()),
 class BossLocations(LocationTypeEnum):
-    OS_DEFEAT_ARMOND = ("OS Defeat Armand", 1021, Regions.OSSEX_LEGOVICHS_ARMS_BASEMENT,CanBurrow() & PowerLevelThreshold(power=20))
+    OS_DEFEAT_ARMOND = ("OS Defeat Armand", 1021, Regions.OSSEX_LEGOVICHS_ARMS_BASEMENT,PowerLevelThreshold(power=20) & ShopPrice(cost=3000) & CanBurrow())
     OS_DEFEAT_EVRA = ("OS Defeat Evra", 1022, Regions.OSSEX_GODDREDS_GRAVE_ARENA,PowerLevelThreshold(power=60))
     OS_DEFEAT_WILLY = ("OS Defeat Wonder Willis", 1020, Regions.OSSEX_MUSIC_HALL, CanCarry() & CanBurrow() & CanSwim() & CanClimb() & PowerLevelThreshold(power=30))
