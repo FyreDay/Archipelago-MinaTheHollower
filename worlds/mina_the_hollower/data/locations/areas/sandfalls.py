@@ -31,7 +31,7 @@ class Locations(LocationTypeEnum):
     )
 
     SF_HIDDEN_CAVE_VIAL_POUCH = (
-        "SF Hidden Cave Vial Pouch",323,Regions.SANDFALLS_SIFTED_SANDS_HIDDEN_CAVE,CanBurrow() & HasKear(kear=SingleKears.SANDFALLS_HIDDEN_CAVE_KEAR.value),
+        "SF Hidden Cave Chest",323,Regions.SANDFALLS_SIFTED_SANDS_HIDDEN_CAVE,CanBurrow() & HasKear(kear=SingleKears.SANDFALLS_HIDDEN_CAVE_KEAR.value),
     )
 
     SF_RING_DIVE_PARLOR_TRINKET = (
