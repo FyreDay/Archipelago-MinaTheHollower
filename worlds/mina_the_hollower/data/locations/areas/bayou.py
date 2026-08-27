@@ -69,7 +69,7 @@ class Locations(LocationTypeEnum):
     )
 
     NB_NOX_S_BEAST_FIGHT_REWARD = (
-        "NB Nox's Beast Fight Reward", 34, Regions.NOXS_BAYOU_TAINTED_LAIR_ARENA, CanSwim(),
+        "NB Nox's Beast Fight Reward", 34, Regions.NOXS_BAYOU_TAINTED_LAIR_ARENA, CanSwim() & PowerLevelThreshold(power=25),
     )
 
     NB_GUTTER_TUNNEL_CHEST = ("NB Gutter Tunnel Chest", 46, Regions.NOXS_BAYOU_TAINTED_TUNNEL, CanBurrow(),)

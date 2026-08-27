@@ -16,7 +16,7 @@ class Locations(LocationTypeEnum):
         & CanCarry()
         & HasKear(
             kear=SingleKears.ASTRAL_ORREY_MIRROR_ROOM_RIGHT_SIDE_KEAR.value
-        ),
+        )
     )
 
     AO_MIRROR_S_END_LOCKED_TRINKET_BAG = (

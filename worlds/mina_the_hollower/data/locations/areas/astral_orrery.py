@@ -57,7 +57,7 @@ class Locations(LocationTypeEnum):
     )
 
     AO_THE_CONGEALED_FIGHT_REWARD = (
-        "AO The Congealed Fight Reward", 125, Regions.ASTRAL_ORRERY_SEALED_ARCHIVE_CONGEALED_CHAMBER,
+        "AO The Congealed Fight Reward", 125, Regions.ASTRAL_ORRERY_SEALED_ARCHIVE_CONGEALED_CHAMBER,PowerLevelThreshold(power=45)
     )
 
 class BossLocations(LocationTypeEnum):

@@ -46,6 +46,6 @@ class PermanentLocations(LocationTypeEnum):
 
 class BossLocations(LocationTypeEnum):
     RM_DEFEAT_FURGUS = ("RM Defeat Furgus", 1019, Regions.RADIANT_MANOR_SERVANTS_ARENA,PowerLevelThreshold(power=50))
-    RM_DEFEAT_LIONEL = ("RM Defeat Lionel", 1007, Regions.RADIANT_MANOR_STUDY, PowerLevelThreshold(power=60), LocationProgressType.EXCLUDED)
-    RM_DEFEAT_GIGA_LIONEL = ("RM Defeat Radiant Lionel", 1008, Regions.RADIANT_MANOR_PRIME_GENERATOR, PowerLevelThreshold(power=60), LocationProgressType.EXCLUDED)
+    RM_DEFEAT_LIONEL = ("RM Defeat Lionel", 1007, Regions.RADIANT_MANOR_STUDY, PowerLevelThreshold(power=60))
+    RM_DEFEAT_GIGA_LIONEL = ("RM Defeat Radiant Lionel", 1008, Regions.RADIANT_MANOR_PRIME_GENERATOR, PowerLevelThreshold(power=60))
 

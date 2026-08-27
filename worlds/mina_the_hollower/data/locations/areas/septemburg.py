@@ -63,11 +63,11 @@ class Locations(LocationTypeEnum):
     )
 
     SB_CARVING_MAN_FIGHT_REWARD = (
-        "SB The Carving Man Fight Reward",95,Regions.SEPTEMBURG_CARVING_SHACK_ARENA,
+        "SB The Carving Man Fight Reward",95,Regions.SEPTEMBURG_CARVING_SHACK_ARENA, PowerLevelThreshold(power=25)
     )
 
     SB_DARK_DELUXY_FIGHT_REWARD = (
-        "SB Dark Deluxy Fight Reward",353,Regions.SEPTEMBURG_WINDY_GENERATOR,CanBurrow() & RepairedGenerator(event=SEPTEMBURG_DATA) & HasSparks(count=2),
+        "SB Dark Deluxy Fight Reward",353,Regions.SEPTEMBURG_WINDY_GENERATOR,CanBurrow() & RepairedGenerator(event=SEPTEMBURG_DATA) & HasSparks(count=2) & PowerLevelThreshold(power=40),
     )
 
     SB_FISH_SPINCER_PINCERS = (

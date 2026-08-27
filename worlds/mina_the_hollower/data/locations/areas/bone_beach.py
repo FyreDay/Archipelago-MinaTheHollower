@@ -82,7 +82,7 @@ class Locations(LocationTypeEnum):
     )
 
     BB_MINED_MIND_FIGHT_REWARD = (
-        "BB Mined Mind Fight Reward", 83, Regions.BONE_BEACH_BRAIN_ALCOVE,
+        "BB Mined Mind Fight Reward", 83, Regions.BONE_BEACH_BRAIN_ALCOVE,PowerLevelThreshold(power=40),
     )
 
     OS_COUPLE_S_QUARTER_TRINKET = (

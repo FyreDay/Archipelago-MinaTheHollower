@@ -1,5 +1,5 @@
 from BaseClasses import LocationProgressType
-from rule_builder.rules import Has, CanReachLocation
+from rule_builder.rules import Has, CanReachLocation, True_
 from .._generated.regions import Regions
 from ... import LocationTypeEnum
 from ...items import SingleKears, PermanentUpgrades
@@ -25,7 +25,7 @@ class Locations(LocationTypeEnum):
     )
 
     CTP_MIRREN_FIGHT_REWARD = (
-        "CTP Mirren Fight Reward", 114, Regions.COLTRANE_PEAK_FROSTBITE_WOODS,
+        "CTP Mirren Fight Reward", 114, Regions.COLTRANE_PEAK_FROSTBITE_WOODS, PowerLevelThreshold(power=40)
     )
 
     CTP_RAIL_YARD_BESIDE_PIPE_CHEST = (
@@ -57,15 +57,15 @@ class Locations(LocationTypeEnum):
     )
 
     CTP_AGNES_EXPRESS_MIMIC_BONESTONE = (
-        "CTP Agnes Express Mimic Bonestone", 123, Regions.COLTRANE_PEAK_AGNES_EXPRESS_REAR,
+        "CTP Agnes Express Mimic Bonestone", 123, Regions.COLTRANE_PEAK_AGNES_EXPRESS_REAR, True_()
     )
 
     CTP_LOCOMOTRESS_FIGHT_REWARD = (
-        "CTP Locomotress Fight Reward", 124, Regions.COLTRANE_PEAK_AGNES_EXPRESS_ARENA,
+        "CTP Locomotress Fight Reward", 124, Regions.COLTRANE_PEAK_AGNES_EXPRESS_ARENA,PowerLevelThreshold(power=40)
     )
 
     CTP_FROZEN_PASS_CHEST = (
-        "CTP Frozen Pass Chest", 232, Regions.COLTRANE_PEAK_FROZEN_PASS,
+        "CTP Frozen Pass Chest", 232, Regions.COLTRANE_PEAK_FROZEN_PASS, True_()
     )
 
     WW_BALCONY_SNOWBALL_ESCORT_TRINKET = (

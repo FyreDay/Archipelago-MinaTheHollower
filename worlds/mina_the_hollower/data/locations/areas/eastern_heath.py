@@ -11,7 +11,7 @@ from ...rules.movement_rules import CanJumpTiles
 
 class Locations(LocationTypeEnum):
     EH_MAXI_FIGHT_REWARD = (
-        "EH Maxi Fight Reward", 221, Regions.EASTERN_HEATH_GRASSLAND, RepairedGeneratorCount(count=1),
+        "EH Maxi Fight Reward", 221, Regions.EASTERN_HEATH_GRASSLAND, RepairedGeneratorCount(count=1) & PowerLevelThreshold(power=25)
     )
 
     EH_FISH_DORK_EYES = (

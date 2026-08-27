@@ -67,15 +67,15 @@ class Locations(LocationTypeEnum):
     )
 
     QC_MIDDEN_FIGHT_REWARD = (
-        "QC Midden Fight Reward",59,Regions.QUEENSBURY_CRYPT_RANCID_ROOM,
+        "QC Midden Fight Reward",59,Regions.QUEENSBURY_CRYPT_RANCID_ROOM,PowerLevelThreshold(power=25)
     )
 
     QC_THE_DUCHESS_FIGHT_REWARD = (
-        "QC The Duchess Fight Reward",58,Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER,
+        "QC The Duchess Fight Reward",58,Regions.QUEENSBURY_CRYPT_ANCESTRAL_CHAMBER,PowerLevelThreshold(power=25)
     )
 
     QC_THE_DUKE_ESCORT_REWARD = (
-        "QC The Duke Escort Reward",60,Regions.QUEENSBURY_CRYPT_ROYAL_TOMB,HasVialsCount(count=2) & CanClimb(),
+        "QC The Duke Escort Reward",60,Regions.QUEENSBURY_CRYPT_ROYAL_TOMB,HasVialsCount(count=2) & CanClimb() & PowerLevelThreshold(power=25),
     )
 
     EH_POST_GENERATOR_HEAD_ESCORT_CHEST = (
