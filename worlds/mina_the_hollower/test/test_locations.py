@@ -12,7 +12,7 @@ def test_all_locations(base):
 
     for location in all_collectables:
         base.assertIn(location.value, world_location_names)
-    if base.world.options.ossex_start.value:
+    if base.world.ossex_start:
         base.assertNotIn(loners_landing.OptionalLocations.LL_CAPTAINS_GIFT.value, world_location_names)
         base.assertNotIn(loners_landing.OptionalLocations.LL_HULK_TROOPER.value, world_location_names)
         base.assertNotIn(loners_landing.OptionalLocations.LL_THORNE_1.value, world_location_names)
@@ -23,7 +23,7 @@ def test_all_locations(base):
 
 class TestCollectablesNoOssexStart(MinaTestBase):
     options = {
-        "ossex_start": "false",
+        "Abilty Rando": [],
         "goal": "radiantManorGenerator"
     }
 
@@ -33,7 +33,7 @@ class TestCollectablesNoOssexStart(MinaTestBase):
 
 class TestCollectablesOssexStart(MinaTestBase):
     options = {
-        "ossex_start": "true",
+        "Abilty Rando": [],
         "goal": "radiantManorGenerator",
     }
 
