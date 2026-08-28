@@ -36,7 +36,7 @@ def create_region(world: "MinaTheHollowerWorld", region_type: RegionTypeEnum, lo
         return region
 
     for data in locations_by_region[region_type]:
-        if data == loners_landing.OptionalLocations.LL_CAPTAINS_GIFT and world.options.ossex_start:
+        if data == loners_landing.OptionalLocations.LL_CAPTAINS_GIFT and world.ossex_start:
             continue
 
         location = Location(world.player, data.value, data.location_id, region)
@@ -111,7 +111,7 @@ def create_regions(world: "MinaTheHollowerWorld") -> list[int]:
 def create_entrances(world: "MinaTheHollowerWorld"):
 
     menu = world.get_region("Menu")
-    if world.options.ossex_start.value:
+    if world.ossex_start:
         world.create_entrance(menu, world.get_region(Regions.OSSEX_CITY_CENTER_MAIN.value), name="Menu To Ossex")
     world.create_entrance(menu, world.get_region(Regions.LONERS_LANDING_SHIPWRECK.value), name="Menu To Shipwreck")
 

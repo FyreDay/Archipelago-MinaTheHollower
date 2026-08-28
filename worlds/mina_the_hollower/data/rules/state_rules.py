@@ -26,7 +26,7 @@ class HasKear(Rule[MinaTheHollowerBase], game=MINA_THE_HOLLOWER):
     @override
     def _instantiate(self, world: MinaTheHollowerBase) -> Rule.Resolved:
         if world.options.kear_rando.value == world.options.kear_rando.option_vanilla:
-            if self.kear == SingleKears.LONERS_LANDING_BOARDWALK_KEAR.value and not world.options.ossex_start.value:
+            if self.kear == SingleKears.LONERS_LANDING_BOARDWALK_KEAR.value and not world.ossex_start:
                 return Has(Kear.UNIVERSAL_KEAR.value, 1).resolve(world)
             return Has(Kear.UNIVERSAL_KEAR.value, 40).resolve(world)
         elif world.options.kear_rando.value == world.options.kear_rando.option_apItems:
@@ -156,7 +156,7 @@ class HasTrinketCount(Rule[MinaTheHollowerBase], game=MINA_THE_HOLLOWER):
 class StartedInOssex(Rule[MinaTheHollowerBase], game=MINA_THE_HOLLOWER):
     @override
     def _instantiate(self, world: MinaTheHollowerBase) -> Rule.Resolved:
-        if world.options.ossex_start.value == 1:
+        if world.ossex_start:
             return True_().resolve(world)
         return False_().resolve(world)
 

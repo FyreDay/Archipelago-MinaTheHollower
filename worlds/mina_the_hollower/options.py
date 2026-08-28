@@ -1,7 +1,8 @@
 from dataclasses import dataclass
 
-from Options import DeathLink, DefaultOnToggle, Toggle, OptionSet, OptionDict, Choice, OptionGroup, \
+from Options import DefaultOnToggle, Toggle, OptionSet, OptionDict, Choice, OptionGroup, \
     PerGameCommonOptions, Range
+from schema import Schema
 
 
 class Goal(Choice):
@@ -32,6 +33,23 @@ class NumberOfGenerators(Range):
     range_end = 6
     default = 3
 
+class GeneratorPool(OptionSet):
+    """
+    This is the pool of generators that the randomizer will select X generators from, where X is your "Generators Required" Option
+    **WARNING** If this pool is smaller than the number of generators to goal, this will raise an option error
+    **WARNING** This cannot be empty
+
+    - **Queensbury Crypt**
+    - **Nox's Bayou**
+    - **Septemburg**
+    - **Bone Beach**
+    - **Coltrane Peak**
+    - **Astral Orrery**
+    """
+    display_name = "Generator Pool"
+    default = ["Queensbury Crypt", "Nox's Bayou", "Septemburg", "Bone Beach", "Coltrane Peak", "Astral Orrery"]
+    valid_keys = ["Queensbury Crypt", "Nox's Bayou", "Septemburg", "Bone Beach", "Coltrane Peak", "Astral Orrery"]
+
 class NumberOfBosses(Range):
     """
     The number of bosses required to goal.
@@ -43,19 +61,13 @@ class NumberOfBosses(Range):
 
 class MaximumStatLevel(Range):
     """
-    The maximum cap of each stat. Vanilla non-NG+ is 10, maximum at the end of the NG+es is 99.
-    Will be soft capped if location count is too small
+    The maximum cap of each stat. Vanilla non-NG+ is 10, maximum at the end of the NG+ is 99.
+    Will be soft capped if location count is too small, as this replaces filler items in the pool
     """
-    display_name = "Maximum Stat Caps"
+    display_name = "Maximum Level for Stats"
     range_start = 10
     range_end = 99
     default = 15
-
-class OssexStart(DefaultOnToggle):
-    """
-    Start In Ossex
-    """
-    display_name = "Ossex Start"
 
 class RandomizeStartingItems(Toggle):
     """
@@ -65,7 +77,10 @@ class RandomizeStartingItems(Toggle):
 
 class AbilityRando(OptionSet):
     """
-    Randomize abilities (You will not be able to perform the listed actions until sent them as items). You will always start in Ossex.
+    Randomize abilities (You will not be able to perform the listed actions until sent them as items).
+    If there are no abilities randomized, you will start in Loner's Landing. Otherwise you will start in Ossex
+
+    If you are ever stuck, there is a **Teleport Home** Button in the pause menu
 
     Valid Options:
     - **Burrow** - The ability to burrow. You will still be able to enter Underlabs.
@@ -133,21 +148,96 @@ class StartingWeapon(Choice):
     option_Guardian_Casket = 4
     default = 'random'
 
+class RandomizeAstralSwitches(DefaultOnToggle):
+    """
+    Instead of hitting the switches yourself, make them items in the multiworld
+    **WARNING** If this is OFF, you may be expected to go into non-required dungeons to flip switches
+    """
+    display_name = "Randomize Mirror's End Switches"
+
+class DeathLink(Toggle):
+    """When you die a sparkless death, everyone who enabled death link dies. Of course, the reverse is true too."""
+    display_name = "Death Link"
+    rich_text_doc = True
+
+class TrapPercentage(Range):
+    """
+    What percentage of filler do you want replaced with traps?
+    """
+    display_name = "Trap Percentage"
+    range_start = 0
+    range_end = 100
+    default = 0
+
+
+class DisabledTraps(OptionSet):
+    """
+    Select what traps you would NOT like to play with.
+
+    Valid Options:
+        - **Flip Controls Trap** - Invert your controls
+        - **Floor Is Lava Trap** - Leave a trail of lava
+        - **Giant Trap** - Mina gets larger
+        - **2x Giant Trap** - Mina gets VERY large
+        - **Giant Enemies Trap** - All enemies get larger
+        - **2x Giant Enemies Trap** - All enemies get VERY large
+        - **Invisible Trap** - Mina becomes invisible
+        - **No HUD Trap** - Remove your HUD
+        - **Rotate Camera Trap** - Slowly rotate your camera for a short time
+        - **Rotate Camera Input Trap** - Moving now rotates your camera slowly
+        - **Mirror Screen Trap** - Mirror your screen
+        - **Upsidedown Screen Trap** - Mirror your screen vertically
+    """
+    display_name = "Disabled Traps"
+    default = []
+    valid_keys = ["Flip Controls Trap", "Floor Is Lava Trap", "Giant Trap", "2x Giant Trap", "Giant Enemies Trap", "2x Giant Enemies Trap", "Invisible Trap", "No HUD Trap", "Rotate Camera Trap", "Rotate Camera Input Trap", "Mirror Screen Trap", "Upsidedown Screen Trap"]
+    # schema = Schema({
+    #     str: int
+    # })
+
+
+class TrapsWeights(OptionSet):
+    """
+    Select what traps you would NOT like to play with. This Option is here for simplicity,
+
+    Valid Options:
+        - **Flip Controls Trap** - Invert your controls
+        - **Floor Is Lava Trap** - Leave a trail of lava
+        - **Giant Trap** - Mina gets larger
+        - **2x Giant Trap** - Mina gets VERY large
+        - **Giant Enemies Trap** - All enemies get larger
+        - **2x Giant Enemies Trap** - All enemies get VERY large
+        - **Invisible Trap** - Mina becomes invisible
+        - **No HUD Trap** - Remove your HUD
+        - **Rotate Camera Trap** - Slowly rotate your camera for a short time
+        - **Rotate Camera Input Trap** - Moving now rotates your camera slowly
+        - **Mirror Screen Trap** - Mirror your screen
+        - **Upsidedown Screen Trap** - Mirror your screen vertically
+    """
+    display_name = "Disabled Traps"
+    default = []
+    valid_keys = ["Flip Controls Trap", "Floor Is Lava Trap", "Giant Trap", "2x Giant Trap", "Giant Enemies Trap",
+                  "2x Giant Enemies Trap", "Invisible Trap", "No HUD Trap", "Rotate Camera Trap",
+                  "Rotate Camera Input Trap", "Mirror Screen Trap", "Upsidedown Screen Trap"]
+
 
 mina_the_hollower_option_groups= [
     OptionGroup("AP Options", [
         Goal,
         BoneUpCap,
         NumberOfGenerators,
+        GeneratorPool,
         StartingWeapon,
         # NumberOfBosses,
         MaximumStatLevel,
-        OssexStart,
         KearRandomization,
         RandomizeStartingItems,
         # RandomizeEntrances,
         AbilityRando,
+        RandomizeAstralSwitches,
         DeathLink,
+        TrapPercentage,
+        DisabledTraps
     ]),
 ]
 
@@ -155,16 +245,18 @@ mina_the_hollower_option_groups= [
 class MinaTheHollowerOptions(PerGameCommonOptions):
     goal: Goal
     goal_generators: NumberOfGenerators
+    generator_pool: GeneratorPool
     # goal_bosses: NumberOfBosses
-    ossex_start: OssexStart
     starting_weapon: StartingWeapon
     kear_rando: KearRandomization
-    # excluded_areas : ExcludedAreas
     bone_up_cap: BoneUpCap
     max_stat_level: MaximumStatLevel
     random_starting_items: RandomizeStartingItems
     # entrance_rando: RandomizeEntrances
     ability_rando: AbilityRando
+    astral_switches: RandomizeAstralSwitches
     death_link: DeathLink
+    trap_percent: TrapPercentage
+    disabled_traps: DisabledTraps
     # shuffled_sidearms: ShuffledSidearms
     # shuffle_enemy_level: ShuffleEnemyLevel

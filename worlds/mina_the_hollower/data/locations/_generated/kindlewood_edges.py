@@ -56,7 +56,7 @@ class RegionConnections(ConnectionTypeEnum):
     KINDLEWOOD_WALLOWERS_PATH_KINDLEWOOD_WALLOWERS_PATH_END = ('Kindlewood Wallowers Path_Kindlewood Wallowers Path End', Regions.KINDLEWOOD_WALLOWERS_PATH, Regions.KINDLEWOOD_WALLOWERS_PATH_END, HasTrinket(trinket=Trinkets.WALLOWERS_GAUNTLETS.value) | CanJumpTiles(distance=7, has_wall=True))
 
 class RegionTransitions(TransitionTypeEnum):
-    KINDLEWOOD_BEHIND_MADD_HOUSE_SOUTH_BURROW = ('Kindlewood Behind Madd House South Burrow', Regions.KINDLEWOOD_BEHIND_MADD_HOUSE, Regions.KINDLEWOOD_OVERGROWTH_MADD_ARENA, DirectionType.SOUTH, TransitionType.BURROW, PowerLevelThreshold(power=25))
+    KINDLEWOOD_BEHIND_MADD_HOUSE_SOUTH_BURROW = ('Kindlewood Behind Madd House South Burrow', Regions.KINDLEWOOD_BEHIND_MADD_HOUSE, Regions.KINDLEWOOD_OVERGROWTH_MADD_ARENA, DirectionType.SOUTH, TransitionType.BURROW, PowerLevelThreshold(power=25) & CanBurrow())
     KINDLEWOOD_FARM_CROSSING_ABOVE_SCHOOL_EAST_BURROW = ('Kindlewood Farm Crossing Above School East Burrow', Regions.KINDLEWOOD_FARM_CROSSING_ABOVE_SCHOOL, Regions.KINDLEWOOD_FARM_CROSSING_PUMPKIN_PATCH, DirectionType.EAST, TransitionType.BURROW, CanBurrow())
     KINDLEWOOD_FARM_CROSSING_DO_NOT_RANDOMIZE_ENTRANCE = ('Kindlewood Farm Crossing Do_Not_Randomize_Entrance', Regions.KINDLEWOOD_FARM_CROSSING, Regions.OSSEX_TRAIN_CABOOSE, DirectionType.OVERWORLD, TransitionType.DO_NOT_RANDOMIZE_ENTRANCE, Has(PermanentUpgrades.TRAIN_PASS.value))
     KINDLEWOOD_FARM_CROSSING_PUMPKIN_PATCH_NORTH_BURROW = ('Kindlewood Farm Crossing Pumpkin Patch North Burrow', Regions.KINDLEWOOD_FARM_CROSSING_PUMPKIN_PATCH, Regions.KINDLEWOOD_FARM_CROSSING_SHACK, DirectionType.NORTH, TransitionType.BURROW, CanBurrow())
@@ -64,7 +64,7 @@ class RegionTransitions(TransitionTypeEnum):
     KINDLEWOOD_FARM_CROSSING_SHACK_EAST_BURROW = ('Kindlewood Farm Crossing Shack East Burrow', Regions.KINDLEWOOD_FARM_CROSSING_SHACK, Regions.KINDLEWOOD_FARM_CROSSING_SHACK_OUTSIDE, DirectionType.EAST, TransitionType.BURROW, CanBurrow())
     KINDLEWOOD_FARM_CROSSING_SHACK_OUTSIDE_WEST_BURROW = ('Kindlewood Farm Crossing Shack Outside West Burrow', Regions.KINDLEWOOD_FARM_CROSSING_SHACK_OUTSIDE, Regions.KINDLEWOOD_FARM_CROSSING_SHACK, DirectionType.WEST, TransitionType.BURROW, CanBurrow())
     KINDLEWOOD_FARM_CROSSING_SHACK_SOUTH_BURROW = ('Kindlewood Farm Crossing Shack South Burrow', Regions.KINDLEWOOD_FARM_CROSSING_SHACK, Regions.KINDLEWOOD_FARM_CROSSING_PUMPKIN_PATCH, DirectionType.SOUTH, TransitionType.BURROW, CanBurrow())
-    KINDLEWOOD_FARM_CROSSING_SOUTH_BURROW = ('Kindlewood Farm Crossing South Burrow', Regions.KINDLEWOOD_FARM_CROSSING, Regions.KINDLEWOOD_WALLOWERS_PATH, DirectionType.SOUTH, TransitionType.BURROW, True_())
+    KINDLEWOOD_FARM_CROSSING_SOUTH_BURROW = ('Kindlewood Farm Crossing South Burrow', Regions.KINDLEWOOD_FARM_CROSSING, Regions.KINDLEWOOD_WALLOWERS_PATH, DirectionType.SOUTH, TransitionType.BURROW, CanBurrow())
     KINDLEWOOD_FARM_CROSSING_WEST_TRANSITION = ('Kindlewood Farm Crossing West Transition', Regions.KINDLEWOOD_FARM_CROSSING, Regions.KINDLEWOOD_SCHOOL_YARD, DirectionType.WEST, TransitionType.SCREENS, True_())
     KINDLEWOOD_FARM_TOMATO_PIPE = ('Kindlewood Farm Tomato Pipe', Regions.KINDLEWOOD_FARM_TOMATO, Regions.KINDLEWOOD_FARM_CROSSING_PUMPKIN_PATCH, DirectionType.OVERWORLD, TransitionType.DO_NOT_RANDOMIZE_ENTRANCE, True_())
     KINDLEWOOD_OVERGROWTH_BEHIND_RESIDENCE_LAWN_SOUTH_BURROW = ('Kindlewood Overgrowth Behind Residence Lawn South Burrow', Regions.KINDLEWOOD_OVERGROWTH_BEHIND_RESIDENCE_LAWN, Regions.KINDLEWOOD_OVERGROWTH_RESIDENCE_BARN_BURROW, DirectionType.SOUTH, TransitionType.BURROW, CanBurrow())
@@ -100,5 +100,5 @@ class RegionTransitions(TransitionTypeEnum):
     KINDLEWOOD_SCHOOL_YARD_WEST_AREA_TRANSITION = ('Kindlewood School Yard West Area Transition', Regions.KINDLEWOOD_SCHOOL_YARD, Regions.SEPTEMBURG_WITHERED_FARMS_START_EAST, DirectionType.WEST, TransitionType.AREA_SCREENS, True_())
     KINDLEWOOD_TRAIN_TRACKS_EAST_TRANSITION = ('Kindlewood Train Tracks East Transition', Regions.KINDLEWOOD_TRAIN_TRACKS, Regions.KINDLEWOOD_RAIL_TUNNEL_TRACKS, DirectionType.EAST, TransitionType.SCREENS, True_())
     KINDLEWOOD_WALLOWERS_PATH_CLIFF_BUSH_EAST_BURROW = ("Kindlewood Wallower's Path Cliff Bush East Burrow", Regions.KINDLEWOOD_WALLOWERS_PATH_CLIFF_BUSH, Regions.KINDLEWOOD_OVERGROWTH_BONFIRE_LEFT, DirectionType.EAST, TransitionType.BURROW, True_())
-    KINDLEWOOD_WALLOWERS_PATH_NORTH_BURROW = ('Kindlewood Wallowers Path North Burrow', Regions.KINDLEWOOD_WALLOWERS_PATH, Regions.KINDLEWOOD_FARM_CROSSING, DirectionType.NORTH, TransitionType.BURROW, True_())
+    KINDLEWOOD_WALLOWERS_PATH_NORTH_BURROW = ('Kindlewood Wallowers Path North Burrow', Regions.KINDLEWOOD_WALLOWERS_PATH, Regions.KINDLEWOOD_FARM_CROSSING, DirectionType.NORTH, TransitionType.BURROW, CanBurrow())
 
