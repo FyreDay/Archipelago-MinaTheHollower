@@ -53,7 +53,7 @@ class Locations(LocationTypeEnum):
     )
 
     CTP_SPIRAL_SUMMIT_KEAR = (
-        "CTP Spiral Summit Kear", 116, Regions.COLTRANE_PEAK_SPIRAL_SUMMIT_SECRET, CanBurrow() & CanClimb(),
+        "CTP Spiral Summit Kear", 116, Regions.COLTRANE_PEAK_SPIRAL_SUMMIT_SECRET, True_(),
     )
 
     CTP_AGNES_EXPRESS_MIMIC_BONESTONE = (
