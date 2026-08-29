@@ -209,7 +209,7 @@ class MinaTheHollowerWorld(MinaTheHollowerBase):
             ],
             "removed_locations": self.removed_locations,
             "starting_weapon": ITEMS_OFFSET_PROGRESSIVES + self.options.starting_weapon.value,
-            "mirror_switch_rando": True
+            "mirror_switch_rando": self.options.astral_switches.value
         }
 
     @override

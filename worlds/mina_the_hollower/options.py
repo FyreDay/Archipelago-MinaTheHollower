@@ -39,6 +39,7 @@ class GeneratorPool(OptionSet):
     **WARNING** If this pool is smaller than the number of generators to goal, this will raise an option error
     **WARNING** This cannot be empty
 
+    Valid Options:
     - **Queensbury Crypt**
     - **Nox's Bayou**
     - **Septemburg**
@@ -150,8 +151,8 @@ class StartingWeapon(Choice):
 
 class RandomizeAstralSwitches(DefaultOnToggle):
     """
-    Instead of hitting the switches yourself, make them items in the multiworld
-    **WARNING** If this is OFF, you may be expected to go into non-required dungeons to flip switches
+    Instead of hitting the switches in Mirror's End yourself, make them items in the multiworld
+    **WARNING** If this is OFF, you may be expected to go into non-required dungeons to flip switches to access Astral Orrery Dungeon/checks
     """
     display_name = "Randomize Mirror's End Switches"
 
@@ -224,11 +225,11 @@ class TrapsWeights(OptionSet):
 mina_the_hollower_option_groups= [
     OptionGroup("AP Options", [
         Goal,
-        BoneUpCap,
         NumberOfGenerators,
         GeneratorPool,
         StartingWeapon,
         # NumberOfBosses,
+        BoneUpCap,
         MaximumStatLevel,
         KearRandomization,
         RandomizeStartingItems,
