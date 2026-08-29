@@ -222,7 +222,6 @@ def create_items(world: "MinaTheHollowerWorld"):
             trap for trap in all_trap_items
             if trap.type.value not in world.options.disabled_traps
         ]
-        print(my_trap_items)
         if len(my_trap_items) <= 0:
             junk_count += trap_count
             trap_count = 0
