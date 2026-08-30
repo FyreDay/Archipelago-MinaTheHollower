@@ -38,8 +38,6 @@ class HasKear(Rule[MinaTheHollowerBase], game=MINA_THE_HOLLOWER):
             else:
                 return False_().resolve(world)
 
-
-
 @dataclasses.dataclass(kw_only=True)
 class HasSparks(Rule[MinaTheHollowerBase], game=MINA_THE_HOLLOWER):
     count: int
@@ -275,3 +273,19 @@ class ShopPrice(Rule[MinaTheHollowerBase], game=MINA_THE_HOLLOWER):
             return True_().resolve(world)
 
         return RepairedGeneratorCount(count=amount).resolve(world)
+
+
+@dataclasses.dataclass(kw_only=True)
+class IsGeneratorRequired(Rule[MinaTheHollowerBase], game=MINA_THE_HOLLOWER):
+    generator: str
+    @override
+    def _instantiate(self, world: MinaTheHollowerBase) -> Rule.Resolved:
+
+        names = [
+            data.gen_name
+            for data in repair_generator_data
+            if data.index in world.broken_generators
+        ]
+        if self.generator in names:
+            return True_().resolve(world)
+        return False_().resolve(world)

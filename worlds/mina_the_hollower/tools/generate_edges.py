@@ -36,7 +36,7 @@ IMPORTS = (
     "from ...rules.state_rules import (\n"
     "   HasLadder, HasAccessToTorch, StartedInOssex, \n"
     "   AnyThreeAstralPlatforms, HasKear, HasSparks, \n"
-    "   RepairedGenerator, RepairedGeneratorCount,\n"
+    "   RepairedGenerator, RepairedGeneratorCount, IsGeneratorRequired, \n"
     ")\n"
     "from ...events import (\n"
     "   QUEENSBURY_CRYPT_DATA, NOXS_BAYOU_DATA, SEPTEMBURG_DATA, \n"
@@ -51,6 +51,7 @@ IMPORTS = (
     "from ...items.blockers import (\n"
     "   AstralPlatforms,\n"
     ")\n"
+    "from ....constants import *"
 )
 
 GENERATED_INIT = (

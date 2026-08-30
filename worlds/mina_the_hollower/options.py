@@ -152,7 +152,6 @@ class StartingWeapon(Choice):
 class RandomizeAstralSwitches(DefaultOnToggle):
     """
     Instead of hitting the switches in Mirror's End yourself, make them items in the multiworld
-    **WARNING** If this is OFF, you may be expected to go into non-required dungeons to flip switches to access Astral Orrery Dungeon/checks
     """
     display_name = "Randomize Mirror's End Switches"
 

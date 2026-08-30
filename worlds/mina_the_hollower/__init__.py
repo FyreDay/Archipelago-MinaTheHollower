@@ -95,18 +95,14 @@ class MinaTheHollowerWorld(MinaTheHollowerBase):
     def interpret_slot_data(slot_data: dict[str, Any]) -> dict[str, Any]:
         return slot_data
 
-    regions: set[str]
-    itempool: list[MinaTheHollowerItem]
-    entrance_rando: bool
-    hints: dict[int, str]
-    starting_items: list[MinaTheHollowerItem]
+
 
     def __init__(self, multiworld, player):
-        self.regions = set()
-        self.itempool = []
-        self.entrance_rando = False
-        self.hints = {}
-        self.starting_items = []
+        self.regions: set[str] = set()
+        self.itempool: list[MinaTheHollowerItem] = []
+        self.entrance_rando: bool = False
+        self.hints: dict[int, str] = {}
+        self.starting_items:list[MinaTheHollowerItem] = []
         self.lit_generators:list[int] = []
         self.broken_generators:list[int] = []
         self.removed_locations: list[int] = []

@@ -16,7 +16,7 @@ from ...rules.movement_rules import (
 from ...rules.state_rules import (
    HasLadder, HasAccessToTorch, StartedInOssex, 
    AnyThreeAstralPlatforms, HasKear, HasSparks, 
-   RepairedGenerator, RepairedGeneratorCount,
+   RepairedGenerator, RepairedGeneratorCount, IsGeneratorRequired, 
 )
 from ...events import (
    QUEENSBURY_CRYPT_DATA, NOXS_BAYOU_DATA, SEPTEMBURG_DATA, 
@@ -31,7 +31,7 @@ from ...items.kears import (
 from ...items.blockers import (
    AstralPlatforms,
 )
-
+from ....constants import *
 
 class RegionConnections(ConnectionTypeEnum):
     OSSEX_ENTRY_EASTERN_WALL_CHEST_SOUTHERN_OUTSKIRTS_COMMONS_OSSEX_ENTRY = ('Ossex Entry Eastern Wall Chest_Southern Outskirts Commons Ossex Entry', Regions.OSSEX_ENTRY_EASTERN_WALL_CHEST, Regions.SOUTHERN_OUTSKIRTS_COMMONS_OSSEX_ENTRY, True_())
