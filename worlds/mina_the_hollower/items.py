@@ -1,3 +1,4 @@
+from copy import deepcopy
 from typing import TYPE_CHECKING
 
 from BaseClasses import Item, Location, ItemClassification, CollectionRule
@@ -13,7 +14,7 @@ from .constants import MINA_THE_HOLLOWER, ITEMS_OFFSET_PROGRESSIVES
 from .data import ItemData, ItemTypeEnum, ItemFiller
 from .data.items import Kear, SingleKears, AreaKears, base_items, Abilities, BoneUps, GenericBoneUp, all_filler_items, \
     PermanentUpgrades, PlayerUpgrades, upgrade_items, Trinkets, BASE_ITEM_TOTAL, \
-    valid_power_types, FilledJug, FillerUpgrades, all_starting_upgrades, Weapons
+    valid_power_types, FilledJug, FillerUpgrades, all_starting_upgrades, Weapons, AstralPlatforms, all_trap_items
 
 from .data.rules.state_rules import sidearm_rules
 from .options import BoneUpCap, KearRandomization, Goal
@@ -187,38 +188,60 @@ def create_items(world: "MinaTheHollowerWorld"):
                 continue
             create_single_item(world, item_type)
 
-
+    if world.options.astral_switches.value:
+        for astral_switch in AstralPlatforms:
+            create_single_item(world, astral_switch)
 
     total_location_count = len(world.multiworld.get_unfilled_locations(world.player))
 
     # print(f"total locs at start {total_location_count}")
     # print(f"total Itempool at start {len(world.itempool)}")
-    remaining = total_location_count - len(world.itempool)
+    _remaining = total_location_count - len(world.itempool)
+    trap_count = round(_remaining * world.options.trap_percent.value / 100) if world.options.trap_percent.value > 0 else 0
+
+    junk_count = _remaining - trap_count
     if world.options.bone_up_cap == BoneUpCap.option_perUpgrade:
         for item_type in BoneUps:
-            for _ in range(world.options.max_stat_level.value-9):
+            for _ in range(world.options.max_stat_level.value-10):
                 create_item(world, ItemData(item_type, 1))
-                remaining -= 1
-                if remaining <= 20:
+                junk_count -= 1
+                if junk_count <= 20:
                     break
-            if remaining <= 20:
+            if junk_count <= 20:
                 break
     else:
         if world.options.max_stat_level.value > 10:
-            for _ in range(world.options.max_stat_level.value-9):
+            for _ in range(world.options.max_stat_level.value-10):
                 create_item(world, ItemData(GenericBoneUp.ALL_BONE_UP_CAP, 1))
-                remaining -= 1
-                if remaining <= 20:
+                junk_count -= 1
+                if junk_count <= 20:
                     break
-
+    my_trap_items = []
+    if trap_count > 0:
+        my_trap_items = [
+            trap for trap in all_trap_items
+            if trap.type.value not in world.options.disabled_traps
+        ]
+        if len(my_trap_items) <= 0:
+            junk_count += trap_count
+            trap_count = 0
 
     filler: list[ItemFiller] = world.random.choices(
         all_filler_items,
         weights=[item.weight for item in all_filler_items],
-        k=remaining
+        k=junk_count
     )
     for item_filler in filler:
         create_single_item(world, item_filler.type)
+
+    if trap_count > 0:
+        traps: list[ItemFiller] = world.random.choices(
+            my_trap_items,
+            weights=[item.weight for item in my_trap_items],
+            k=trap_count
+        )
+        for trap_filler in traps:
+            create_single_item(world, trap_filler.type)
 
     world.multiworld.itempool += world.itempool
 
@@ -248,9 +271,10 @@ def create_events(world: "MinaTheHollowerWorld"):
     for data in repair_generator_data:
         create_event(world, region_name=data.type.region, item_name=data.type.event_item,
                      loc_name=data.type.value, rule=data.type.rule)
-    for astral_switch in MirrorsEndSwitches:
-        create_event(world, region_name=astral_switch.region, item_name=astral_switch.event_item,
-                     loc_name=astral_switch.value, rule=astral_switch.rule)
+    if not world.options.astral_switches.value:
+        for astral_switch in MirrorsEndSwitches:
+            create_event(world, region_name=astral_switch.region, item_name=astral_switch.event_item,
+                         loc_name=astral_switch.value, rule=astral_switch.rule)
 
     if world.options.goal.value == Goal.option_radiantManorGenerator:
         create_event(world, region_name="Radiant Manor Prime Generator",

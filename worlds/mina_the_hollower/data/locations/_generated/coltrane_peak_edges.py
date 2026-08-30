@@ -16,7 +16,7 @@ from ...rules.movement_rules import (
 from ...rules.state_rules import (
    HasLadder, HasAccessToTorch, StartedInOssex, 
    AnyThreeAstralPlatforms, HasKear, HasSparks, 
-   RepairedGenerator, RepairedGeneratorCount,
+   RepairedGenerator, RepairedGeneratorCount, IsGeneratorRequired, 
 )
 from ...events import (
    QUEENSBURY_CRYPT_DATA, NOXS_BAYOU_DATA, SEPTEMBURG_DATA, 
@@ -31,7 +31,7 @@ from ...items.kears import (
 from ...items.blockers import (
    AstralPlatforms,
 )
-
+from ....constants import *
 
 class RegionConnections(ConnectionTypeEnum):
     COLTRANE_PEAK_AGNES_EXPRESS_GAUNTET_COLTRANE_PEAK_AGNES_EXPRESS_UNDERLAB = ('Coltrane Peak Agnes Express Gauntet_Coltrane Peak Agnes Express Underlab', Regions.COLTRANE_PEAK_AGNES_EXPRESS_GAUNTET, Regions.COLTRANE_PEAK_AGNES_EXPRESS_UNDERLAB, CanBurrow())

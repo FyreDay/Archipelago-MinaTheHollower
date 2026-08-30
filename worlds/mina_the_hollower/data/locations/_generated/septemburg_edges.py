@@ -16,7 +16,7 @@ from ...rules.movement_rules import (
 from ...rules.state_rules import (
    HasLadder, HasAccessToTorch, StartedInOssex, 
    AnyThreeAstralPlatforms, HasKear, HasSparks, 
-   RepairedGenerator, RepairedGeneratorCount,
+   RepairedGenerator, RepairedGeneratorCount, IsGeneratorRequired, 
 )
 from ...events import (
    QUEENSBURY_CRYPT_DATA, NOXS_BAYOU_DATA, SEPTEMBURG_DATA, 
@@ -31,7 +31,7 @@ from ...items.kears import (
 from ...items.blockers import (
    AstralPlatforms,
 )
-
+from ....constants import *
 
 class RegionConnections(ConnectionTypeEnum):
     SEPTEMBURG_CROW_TOWN_BRIDGE_WEST_SEPTEMBURG_CROW_TOWN_PIT = ('Septemburg Crow Town Bridge West_Septemburg Crow Town Pit', Regions.SEPTEMBURG_CROW_TOWN_BRIDGE_WEST, Regions.SEPTEMBURG_CROW_TOWN_PIT, True_())
@@ -42,10 +42,9 @@ class RegionConnections(ConnectionTypeEnum):
     SEPTEMBURG_CROW_TOWN_PIT_SEPTEMBURG_CROW_TOWN_TUNNEL_TOP = ('Septemburg Crow Town Pit_Septemburg Crow Town Tunnel Top', Regions.SEPTEMBURG_CROW_TOWN_PIT, Regions.SEPTEMBURG_CROW_TOWN_TUNNEL_TOP, CanBurrow())
     SEPTEMBURG_CROW_TOWN_TUNNEL_TOP_SEPTEMBURG_CROW_TOWN_BRIDGE_WEST = ('Septemburg Crow Town Tunnel Top_Septemburg Crow Town Bridge West', Regions.SEPTEMBURG_CROW_TOWN_TUNNEL_TOP, Regions.SEPTEMBURG_CROW_TOWN_BRIDGE_WEST, CanSpring())
     SEPTEMBURG_CROW_TOWN_TUNNEL_TOP_SEPTEMBURG_CROW_TOWN_PIT = ('Septemburg Crow Town Tunnel Top_Septemburg Crow Town Pit', Regions.SEPTEMBURG_CROW_TOWN_TUNNEL_TOP, Regions.SEPTEMBURG_CROW_TOWN_PIT, CanBurrow())
-    SEPTEMBURG_CROW_TOWN_TUNNEL_TOP_SEPTEMBURG_CROW_TOWN_TUNNEL = ('Septemburg Crow Town Tunnel Top_Septemburg Crow Town Tunnel', Regions.SEPTEMBURG_CROW_TOWN_TUNNEL_TOP, Regions.SEPTEMBURG_CROW_TOWN_TUNNEL, HasKear(kear=SingleKears.SEPTEMBURG_CROW_TOWN_TUNNEL_KEAR.value))
-    SEPTEMBURG_CROW_TOWN_TUNNEL_SEPTEMBURG_CROW_TOWN_TUNNEL_TOP = ('Septemburg Crow Town Tunnel_Septemburg Crow Town Tunnel Top', Regions.SEPTEMBURG_CROW_TOWN_TUNNEL, Regions.SEPTEMBURG_CROW_TOWN_TUNNEL_TOP, HasKear(kear=SingleKears.SEPTEMBURG_CROW_TOWN_TUNNEL_KEAR.value))
+    SEPTEMBURG_CROW_TOWN_TUNNEL_TOP_SEPTEMBURG_CROW_TOWN_TUNNEL = ('Septemburg Crow Town Tunnel Top_Septemburg Crow Town Tunnel', Regions.SEPTEMBURG_CROW_TOWN_TUNNEL_TOP, Regions.SEPTEMBURG_CROW_TOWN_TUNNEL, HasKear(kear=SingleKears.SEPTEMBURG_CROW_TOWN_TUNNEL_KEAR.value) & IsGeneratorRequired(generator=SEPTEMBURG))
+    SEPTEMBURG_CROW_TOWN_TUNNEL_SEPTEMBURG_CROW_TOWN_TUNNEL_TOP = ('Septemburg Crow Town Tunnel_Septemburg Crow Town Tunnel Top', Regions.SEPTEMBURG_CROW_TOWN_TUNNEL, Regions.SEPTEMBURG_CROW_TOWN_TUNNEL_TOP, HasKear(kear=SingleKears.SEPTEMBURG_CROW_TOWN_TUNNEL_KEAR.value) & IsGeneratorRequired(generator=NOXS_BAYOU))
     SEPTEMBURG_CROW_TOWN_UPPER_BRIDGE_SEPTEMBURG_CROW_TOWN_BRIDGE = ('Septemburg Crow Town Upper Bridge_Septemburg Crow Town Bridge', Regions.SEPTEMBURG_CROW_TOWN_UPPER_BRIDGE, Regions.SEPTEMBURG_CROW_TOWN_BRIDGE, CanSpring())
-    SEPTEMBURG_CROW_TOWN_UPPER_BRIDGE_SEPTEMBURG_CROW_TOWN_LOWER_BRIDGE = ('Septemburg Crow Town Upper Bridge_Septemburg Crow Town Lower Bridge', Regions.SEPTEMBURG_CROW_TOWN_UPPER_BRIDGE, Regions.SEPTEMBURG_CROW_TOWN_LOWER_BRIDGE, CanBurrow())
     SEPTEMBURG_CROW_TOWN_LOGS_BOTTOM_SEPTEMBURG_CROW_TOWN_LOGS_TOP = ('Septemburg Crow Town logs Bottom_Septemburg Crow Town logs Top', Regions.SEPTEMBURG_CROW_TOWN_LOGS_BOTTOM, Regions.SEPTEMBURG_CROW_TOWN_LOGS_TOP, CanBurrow())
     SEPTEMBURG_CROW_TOWN_LOGS_TOP_SEPTEMBURG_CROW_TOWN_LOGS_BOTTOM = ('Septemburg Crow Town logs Top_Septemburg Crow Town logs Bottom', Regions.SEPTEMBURG_CROW_TOWN_LOGS_TOP, Regions.SEPTEMBURG_CROW_TOWN_LOGS_BOTTOM, CanBurrow())
     SEPTEMBURG_ROTTEN_BARN_ENTRANCE_FENCE_SEPTEMBURG_ROTTEN_BARN_ENTRANCE = ('Septemburg Rotten Barn Entrance Fence_Septemburg Rotten Barn Entrance', Regions.SEPTEMBURG_ROTTEN_BARN_ENTRANCE_FENCE, Regions.SEPTEMBURG_ROTTEN_BARN_ENTRANCE, CanSpring())
@@ -71,6 +70,7 @@ class RegionConnections(ConnectionTypeEnum):
     SEPTEMBURG_WASTEWATER_LUXY_ROOM_SEPTEMBURG_WASTEWATER_LUXY_PIPE = ('Septemburg Wastewater Luxy Room_Septemburg Wastewater Luxy Pipe', Regions.SEPTEMBURG_WASTEWATER_LUXY_ROOM, Regions.SEPTEMBURG_WASTEWATER_LUXY_PIPE, CanBurrow())
     SEPTEMBURG_WINDY_PIPE_BOTTOM_SEPTEMBURG_WINDY_PIPE = ('Septemburg Windy Pipe Bottom_Septemburg Windy Pipe', Regions.SEPTEMBURG_WINDY_PIPE_BOTTOM, Regions.SEPTEMBURG_WINDY_PIPE, CanBurrow())
     SEPTEMBURG_WINDY_PIPE_SEPTEMBURG_WINDY_PIPE_BOTTOM = ('Septemburg Windy Pipe_Septemburg Windy Pipe Bottom', Regions.SEPTEMBURG_WINDY_PIPE, Regions.SEPTEMBURG_WINDY_PIPE_BOTTOM, CanBurrow())
+    SEPTEMBURG_WITHERED_FARMS_BUTTON_ROOM_SEPTEMBURG_WITHERED_FARMS_BUTTON_ROOM_END = ('Septemburg Withered Farms Button Room_Septemburg Withered Farms Button Room End', Regions.SEPTEMBURG_WITHERED_FARMS_BUTTON_ROOM, Regions.SEPTEMBURG_WITHERED_FARMS_BUTTON_ROOM_END, True_())
     SEPTEMBURG_WITHERED_FARMS_FENCES_START_SEPTEMBURG_WITHERED_FARMS_FENCES = ('Septemburg Withered Farms Fences Start_Septemburg Withered Farms Fences', Regions.SEPTEMBURG_WITHERED_FARMS_FENCES_START, Regions.SEPTEMBURG_WITHERED_FARMS_FENCES, CanBurrow() & CanSpring())
     SEPTEMBURG_WITHERED_FARMS_FENCES_SEPTEMBURG_WITHERED_FARMS_FENCES_START = ('Septemburg Withered Farms Fences_Septemburg Withered Farms Fences Start', Regions.SEPTEMBURG_WITHERED_FARMS_FENCES, Regions.SEPTEMBURG_WITHERED_FARMS_FENCES_START, CanBurrow() | CanSpring())
     SEPTEMBURG_WITHERED_FARMS_HILLS_BOTTOM_SEPTEMBURG_WITHERED_FARMS_HILLS_TOP = ('Septemburg Withered Farms Hills Bottom_Septemburg Withered Farms Hills Top', Regions.SEPTEMBURG_WITHERED_FARMS_HILLS_BOTTOM, Regions.SEPTEMBURG_WITHERED_FARMS_HILLS_TOP, CanBurrow() & CanSpring())
@@ -165,7 +165,7 @@ class RegionTransitions(TransitionTypeEnum):
     SEPTEMBURG_WITHERED_FARMS_BUSH_NORTH_TRANSITION = ('Septemburg Withered Farms Bush North Transition', Regions.SEPTEMBURG_WITHERED_FARMS_BUSH, Regions.SEPTEMBURG_WITHERED_FARMS_TRAIL, DirectionType.NORTH, TransitionType.SCREENS, True_())
     SEPTEMBURG_WITHERED_FARMS_BUSH_SOUTH_BURROW = ('Septemburg Withered Farms Bush South Burrow', Regions.SEPTEMBURG_WITHERED_FARMS_BUSH, Regions.SEPTEMBURG_WITHERED_FARMS_FENCES, DirectionType.SOUTH, TransitionType.BURROW, CanBurrow())
     SEPTEMBURG_WITHERED_FARMS_BUTTON_ROOM_EAST_TRANSITION = ('Septemburg Withered Farms Button Room East Transition', Regions.SEPTEMBURG_WITHERED_FARMS_BUTTON_ROOM, Regions.SEPTEMBURG_WITHERED_FARMS_TRAIL, DirectionType.EAST, TransitionType.SCREENS, True_())
-    SEPTEMBURG_WITHERED_FARMS_BUTTON_ROOM_WEST_BURROW = ('Septemburg Withered Farms Button Room West Burrow', Regions.SEPTEMBURG_WITHERED_FARMS_BUTTON_ROOM, Regions.SEPTEMBURG_WITHERED_FARMS_WINDY_FIELDS, DirectionType.WEST, TransitionType.BURROW, CanBurrow())
+    SEPTEMBURG_WITHERED_FARMS_BUTTON_ROOM_WEST_BURROW = ('Septemburg Withered Farms Button Room West Burrow', Regions.SEPTEMBURG_WITHERED_FARMS_BUTTON_ROOM_END, Regions.SEPTEMBURG_WITHERED_FARMS_WINDY_FIELDS, DirectionType.WEST, TransitionType.BURROW, CanBurrow())
     SEPTEMBURG_WITHERED_FARMS_FENCES_NORTH_BURROW = ('Septemburg Withered Farms Fences North Burrow', Regions.SEPTEMBURG_WITHERED_FARMS_FENCES, Regions.SEPTEMBURG_WITHERED_FARMS_BUSH, DirectionType.NORTH, TransitionType.BURROW, CanBurrow())
     SEPTEMBURG_WITHERED_FARMS_FENCES_START_SOUTH_TRANSITION = ('Septemburg Withered Farms Fences Start South Transition', Regions.SEPTEMBURG_WITHERED_FARMS_FENCES_START, Regions.SEPTEMBURG_WITHERED_FARMS_HILLS_TOP, DirectionType.SOUTH, TransitionType.SCREENS, True_())
     SEPTEMBURG_WITHERED_FARMS_FENCES_WEST_TRANSITION = ('Septemburg Withered Farms Fences West Transition', Regions.SEPTEMBURG_WITHERED_FARMS_FENCES, Regions.SEPTEMBURG_WITHERED_FARMS_SECRET_SPRINGS, DirectionType.WEST, TransitionType.SCREENS, CanSpring())
@@ -186,6 +186,6 @@ class RegionTransitions(TransitionTypeEnum):
     SEPTEMBURG_WITHERED_FARMS_TRAIL_SOUTH_TRANSITION = ('Septemburg Withered Farms Trail South Transition', Regions.SEPTEMBURG_WITHERED_FARMS_TRAIL, Regions.SEPTEMBURG_WITHERED_FARMS_BUSH, DirectionType.SOUTH, TransitionType.SCREENS, True_())
     SEPTEMBURG_WITHERED_FARMS_TRAIL_WEST_TRANSITION = ('Septemburg Withered Farms Trail West Transition', Regions.SEPTEMBURG_WITHERED_FARMS_TRAIL, Regions.SEPTEMBURG_WITHERED_FARMS_BUTTON_ROOM, DirectionType.WEST, TransitionType.SCREENS, True_())
     SEPTEMBURG_WITHERED_FARMS_WINDY_FIELDS_CAVE_WEST_TRANSITION = ('Septemburg Withered Farms Windy Fields Cave West Transition', Regions.SEPTEMBURG_WITHERED_FARMS_WINDY_FIELDS_CAVE, Regions.SEPTEMBURG_HIDDEN_MANDRAKE_ROOM, DirectionType.WEST, TransitionType.SCREENS, True_())
-    SEPTEMBURG_WITHERED_FARMS_WINDY_FIELDS_EAST_BURROW = ('Septemburg Withered Farms Windy Fields East Burrow', Regions.SEPTEMBURG_WITHERED_FARMS_WINDY_FIELDS, Regions.SEPTEMBURG_WITHERED_FARMS_BUTTON_ROOM, DirectionType.EAST, TransitionType.BURROW, CanBurrow())
+    SEPTEMBURG_WITHERED_FARMS_WINDY_FIELDS_EAST_BURROW = ('Septemburg Withered Farms Windy Fields East Burrow', Regions.SEPTEMBURG_WITHERED_FARMS_WINDY_FIELDS, Regions.SEPTEMBURG_WITHERED_FARMS_BUTTON_ROOM_END, DirectionType.EAST, TransitionType.BURROW, CanBurrow())
     SEPTEMBURG_WITHERED_FARMS_WINDY_FIELDS_FENCE_WEST_TRANSITION = ('Septemburg Withered Farms Windy Fields Fence West Transition', Regions.SEPTEMBURG_WITHERED_FARMS_WINDY_FIELDS_FENCE, Regions.SEPTEMBURG_WITHERED_FARMS_TRACTOR_START, DirectionType.WEST, TransitionType.SCREENS, True_())
 

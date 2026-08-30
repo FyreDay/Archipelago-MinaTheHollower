@@ -95,53 +95,42 @@ class MinaTheHollowerWorld(MinaTheHollowerBase):
     def interpret_slot_data(slot_data: dict[str, Any]) -> dict[str, Any]:
         return slot_data
 
-    regions: set[str]
-    itempool: list[MinaTheHollowerItem]
-    entrance_rando: bool
-    hints: dict[int, str]
-    starting_items: list[MinaTheHollowerItem]
+
 
     def __init__(self, multiworld, player):
-        self.regions = set()
-        self.itempool = []
-        self.entrance_rando = False
-        self.hints = {}
-        self.starting_items = []
+        self.regions: set[str] = set()
+        self.itempool: list[MinaTheHollowerItem] = []
+        self.entrance_rando: bool = False
+        self.hints: dict[int, str] = {}
+        self.starting_items:list[MinaTheHollowerItem] = []
         self.lit_generators:list[int] = []
         self.broken_generators:list[int] = []
         self.removed_locations: list[int] = []
         self.is_ut = False
+        self.ossex_start = True
         super().__init__(multiworld, player)
 
     def generate_early(self) -> None:
 
         if self.options.goal.value == self.options.goal.option_fixGenerators:
-
-            if self.options.goal_generators.value <= 2 and self.options.max_stat_level.value > 20:
+            if len(self.options.generator_pool.value) == 0:
+                raise OptionError("You must have at least one generator in your pool.")
+            if len(self.options.generator_pool.value) < self.options.goal_generators.value:
+                raise OptionError("Your pool of generators is too small for the amount you need to repair.")
+            if self.options.goal_generators == 1 and self.options.max_stat_level.value > 6:
+                    self.options.max_stat_level.value = 10
+            elif self.options.goal_generators.value == 2 and self.options.max_stat_level.value > 20:
                 self.options.max_stat_level.value = 20
 
-            if self.options.goal_generators.value <= 3:
-                valid_generators = [QUEENSBURY_CRYPT, NOXS_BAYOU, SEPTEMBURG, BONE_BEACH]
-                if self.options.goal_generators == 1:
-                    self.options.max_stat_level.value = 6
-                elif self.options.goal_generators == 2:
-                    self.options.max_stat_level.value = 10
-            elif self.options.goal_generators.value < 5:
-                valid_generators = [QUEENSBURY_CRYPT, NOXS_BAYOU, SEPTEMBURG, BONE_BEACH,
-                                    self.random.choice([COLTRANE_PEAK, ASTRAL_ORRERY])]
-            else:
-                valid_generators = [QUEENSBURY_CRYPT, NOXS_BAYOU, SEPTEMBURG, BONE_BEACH, COLTRANE_PEAK, ASTRAL_ORRERY]
-            selected_generators = self.random.sample(valid_generators, self.options.goal_generators.value)
+            selected_generators = self.random.sample(list(self.options.generator_pool.value), self.options.goal_generators.value)
             self.broken_generators =[gen.index for gen in repair_generator_data if gen.gen_name in selected_generators]
             self.lit_generators = [gen.index for gen in repair_generator_data if gen.gen_name not in selected_generators]
         elif self.options.goal.value == self.options.goal.option_radiantManorGenerator:
             self.options.goal_generators.value = 6
-            valid_generators = [QUEENSBURY_CRYPT, NOXS_BAYOU, SEPTEMBURG, BONE_BEACH, COLTRANE_PEAK, ASTRAL_ORRERY]
-            selected_generators = self.random.sample(valid_generators, self.options.goal_generators.value)
+            selected_generators = [QUEENSBURY_CRYPT, NOXS_BAYOU, SEPTEMBURG, BONE_BEACH, COLTRANE_PEAK, ASTRAL_ORRERY]
             self.broken_generators = [gen.index for gen in repair_generator_data if gen.gen_name in selected_generators]
 
-        if len(self.options.ability_rando.value) != 0:
-            self.options.ossex_start.value = self.options.ossex_start.option_true
+        self.ossex_start = len(self.options.ability_rando.value) != 0
 
 
         self.is_ut = (hasattr(self.multiworld, "re_gen_passthrough")
@@ -196,7 +185,7 @@ class MinaTheHollowerWorld(MinaTheHollowerBase):
             "goal_config": self.options.goal.value,
             "goal_generators": self.options.goal_generators.value,
             "goal_bosses": 0, #self.options.goal_bosses.value,
-            "ossex_start": self.options.ossex_start.value,
+            "ossex_start": self.ossex_start,
             "kear_rando": self.options.kear_rando.value,
             "max_stat_level": self.options.max_stat_level.value,
             "wallet_cap": False,
@@ -215,7 +204,8 @@ class MinaTheHollowerWorld(MinaTheHollowerBase):
                 for item in self.starting_items
             ],
             "removed_locations": self.removed_locations,
-            "starting_weapon": ITEMS_OFFSET_PROGRESSIVES + self.options.starting_weapon.value
+            "starting_weapon": ITEMS_OFFSET_PROGRESSIVES + self.options.starting_weapon.value,
+            "mirror_switch_rando": self.options.astral_switches.value
         }
 
     @override
@@ -286,7 +276,7 @@ class MinaTheHollowerWorld(MinaTheHollowerBase):
         # self.options.goal_bosses.value = slot_data["goal_bosses"]
         self.options.death_link.value = slot_data["death_link"]
         self.options.kear_rando.value = slot_data["kear_rando"]
-        self.options.ossex_start.value = slot_data["ossex_start"]
+        self.ossex_start = slot_data["ossex_start"]
         self.options.max_stat_level.value = slot_data["max_stat_level"]
         self.lit_generators = slot_data["lit_generators"]
         self.broken_generators = slot_data["broken_generators"]

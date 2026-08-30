@@ -16,7 +16,7 @@ from ...rules.movement_rules import (
 from ...rules.state_rules import (
    HasLadder, HasAccessToTorch, StartedInOssex, 
    AnyThreeAstralPlatforms, HasKear, HasSparks, 
-   RepairedGenerator, RepairedGeneratorCount,
+   RepairedGenerator, RepairedGeneratorCount, IsGeneratorRequired, 
 )
 from ...events import (
    QUEENSBURY_CRYPT_DATA, NOXS_BAYOU_DATA, SEPTEMBURG_DATA, 
@@ -31,7 +31,7 @@ from ...items.kears import (
 from ...items.blockers import (
    AstralPlatforms,
 )
-
+from ....constants import *
 
 class RegionConnections(ConnectionTypeEnum):
     MOURNERS_MILE_KNIGHTS_GUARD_GENERATOR_MOURNERS_MILE_KNIGHTS_GUARD_HILL = ("Mourner's Mile Knight's Guard Generator_Mourner's Mile Knight's Guard Hill", Regions.MOURNERS_MILE_KNIGHTS_GUARD_GENERATOR, Regions.MOURNERS_MILE_KNIGHTS_GUARD_HILL, CanBurrow())

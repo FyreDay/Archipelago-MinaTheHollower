@@ -682,6 +682,7 @@ class Regions(RegionTypeEnum):
     SEPTEMBURG_WINDY_PIPE_BOTTOM = 'Septemburg Windy Pipe Bottom'
     SEPTEMBURG_WITHERED_FARMS_BUSH = 'Septemburg Withered Farms Bush'
     SEPTEMBURG_WITHERED_FARMS_BUTTON_ROOM = 'Septemburg Withered Farms Button Room'
+    SEPTEMBURG_WITHERED_FARMS_BUTTON_ROOM_END = 'Septemburg Withered Farms Button Room End'
     SEPTEMBURG_WITHERED_FARMS_FENCES = 'Septemburg Withered Farms Fences'
     SEPTEMBURG_WITHERED_FARMS_FENCES_START = 'Septemburg Withered Farms Fences Start'
     SEPTEMBURG_WITHERED_FARMS_HILLS_BOTTOM = 'Septemburg Withered Farms Hills Bottom'

@@ -16,7 +16,7 @@ from ...rules.movement_rules import (
 from ...rules.state_rules import (
    HasLadder, HasAccessToTorch, StartedInOssex, 
    AnyThreeAstralPlatforms, HasKear, HasSparks, 
-   RepairedGenerator, RepairedGeneratorCount,
+   RepairedGenerator, RepairedGeneratorCount, IsGeneratorRequired, 
 )
 from ...events import (
    QUEENSBURY_CRYPT_DATA, NOXS_BAYOU_DATA, SEPTEMBURG_DATA, 
@@ -31,7 +31,7 @@ from ...items.kears import (
 from ...items.blockers import (
    AstralPlatforms,
 )
-
+from ....constants import *
 
 class RegionConnections(ConnectionTypeEnum):
     SANDFALLS_BONE_JUNCTION_SANDS_SANDFALLS_SIFTED_SANDS = ('Sandfalls Bone Junction Sands_Sandfalls Sifted Sands', Regions.SANDFALLS_BONE_JUNCTION_SANDS, Regions.SANDFALLS_SIFTED_SANDS, True_())

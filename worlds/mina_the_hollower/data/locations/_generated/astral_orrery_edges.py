@@ -16,7 +16,7 @@ from ...rules.movement_rules import (
 from ...rules.state_rules import (
    HasLadder, HasAccessToTorch, StartedInOssex, 
    AnyThreeAstralPlatforms, HasKear, HasSparks, 
-   RepairedGenerator, RepairedGeneratorCount,
+   RepairedGenerator, RepairedGeneratorCount, IsGeneratorRequired, 
 )
 from ...events import (
    QUEENSBURY_CRYPT_DATA, NOXS_BAYOU_DATA, SEPTEMBURG_DATA, 
@@ -31,20 +31,24 @@ from ...items.kears import (
 from ...items.blockers import (
    AstralPlatforms,
 )
-
+from ....constants import *
 
 class RegionConnections(ConnectionTypeEnum):
-    ASTRAL_ORRERY_BAYOU_MIRROR_ASTRAL_ORRERY_MIRRORS_END = ("Astral Orrery Bayou Mirror_Astral Orrery Mirror's End", Regions.ASTRAL_ORRERY_BAYOU_MIRROR, Regions.ASTRAL_ORRERY_MIRRORS_END, Has(AstralPlatforms.GREEN_ASTRAL_PLATFORMS.value))
-    ASTRAL_ORRERY_BONE_BEACH_MIRROR_ASTRAL_ORRERY_MIRRORS_END = ("Astral Orrery Bone Beach Mirror_Astral Orrery Mirror's End", Regions.ASTRAL_ORRERY_BONE_BEACH_MIRROR, Regions.ASTRAL_ORRERY_MIRRORS_END, Has(AstralPlatforms.RED_ASTRAL_PLATFORMS.value))
-    ASTRAL_ORRERY_COLTRANE_PEAK_MIRROR_ASTRAL_ORRERY_MIRRORS_END = ("Astral Orrery Coltrane Peak Mirror_Astral Orrery Mirror's End", Regions.ASTRAL_ORRERY_COLTRANE_PEAK_MIRROR, Regions.ASTRAL_ORRERY_MIRRORS_END, Has(AstralPlatforms.PURPLE_ASTRAL_PLATFORMS.value))
+    ASTRAL_ORRERY_BAYOU_MIRROR_ASTRAL_ORRERY_MIRRORS_END = ("Astral Orrery Bayou Mirror_Astral Orrery Mirror's End", Regions.ASTRAL_ORRERY_BAYOU_MIRROR, Regions.ASTRAL_ORRERY_MIRRORS_END, Has(AstralPlatforms.GREEN_ASTRAL_PLATFORMS.value) & IsGeneratorRequired(generator=NOXS_BAYOU))
+    ASTRAL_ORRERY_BONE_BEACH_MIRROR_ASTRAL_ORRERY_MIRRORS_END = ("Astral Orrery Bone Beach Mirror_Astral Orrery Mirror's End", Regions.ASTRAL_ORRERY_BONE_BEACH_MIRROR, Regions.ASTRAL_ORRERY_MIRRORS_END, Has(AstralPlatforms.RED_ASTRAL_PLATFORMS.value) & IsGeneratorRequired(generator=BONE_BEACH))
+    ASTRAL_ORRERY_COLTRANE_PEAK_MIRROR_ASTRAL_ORRERY_MIRRORS_END = ("Astral Orrery Coltrane Peak Mirror_Astral Orrery Mirror's End", Regions.ASTRAL_ORRERY_COLTRANE_PEAK_MIRROR, Regions.ASTRAL_ORRERY_MIRRORS_END, Has(AstralPlatforms.PURPLE_ASTRAL_PLATFORMS.value) & IsGeneratorRequired(generator=COLTRANE_PEAK))
     ASTRAL_ORRERY_MIRRORS_END_BLUE_STAIRS_ASTRAL_ORRERY_MIRRORS_END = ("Astral Orrery Mirror's End Blue Stairs_Astral Orrery Mirror's End", Regions.ASTRAL_ORRERY_MIRRORS_END_BLUE_STAIRS, Regions.ASTRAL_ORRERY_MIRRORS_END, Has(AstralPlatforms.BLUE_ASTRAL_PLATFORMS.value) | CanJumpTiles(distance=5, has_wall=True))
     ASTRAL_ORRERY_MIRRORS_END_MOVING_PLATFORMS_ASTRAL_ORRERY_MIRRORS_END_MOVING_STAIRS = ("Astral Orrery Mirror's End Moving Platforms_Astral Orrery Mirror's End Moving Stairs", Regions.ASTRAL_ORRERY_MIRRORS_END_MOVING_PLATFORMS, Regions.ASTRAL_ORRERY_MIRRORS_END_MOVING_STAIRS, CanBurrow() | CanJumpTiles(distance=2))
     ASTRAL_ORRERY_MIRRORS_END_MOVING_STAIRS_ASTRAL_ORRERY_MIRRORS_END_MOVING_PLATFORMS = ("Astral Orrery Mirror's End Moving Stairs_Astral Orrery Mirror's End Moving Platforms", Regions.ASTRAL_ORRERY_MIRRORS_END_MOVING_STAIRS, Regions.ASTRAL_ORRERY_MIRRORS_END_MOVING_PLATFORMS, CanClimb() | CanBurrow() | CanJumpTiles(distance=2))
     ASTRAL_ORRERY_MIRRORS_END_TOP_ASTRAL_ORRERY_MIRRORS_END = ("Astral Orrery Mirror's End Top_Astral Orrery Mirror's End", Regions.ASTRAL_ORRERY_MIRRORS_END_TOP, Regions.ASTRAL_ORRERY_MIRRORS_END, CanBurrow() & AnyThreeAstralPlatforms())
+    ASTRAL_ORRERY_MIRRORS_END_ASTRAL_ORRERY_BAYOU_MIRROR = ("Astral Orrery Mirror's End_Astral Orrery Bayou Mirror", Regions.ASTRAL_ORRERY_MIRRORS_END, Regions.ASTRAL_ORRERY_BAYOU_MIRROR, Has(AstralPlatforms.GREEN_ASTRAL_PLATFORMS.value) & IsGeneratorRequired(generator=NOXS_BAYOU))
+    ASTRAL_ORRERY_MIRRORS_END_ASTRAL_ORRERY_BONE_BEACH_MIRROR = ("Astral Orrery Mirror's End_Astral Orrery Bone Beach Mirror", Regions.ASTRAL_ORRERY_MIRRORS_END, Regions.ASTRAL_ORRERY_BONE_BEACH_MIRROR, Has(AstralPlatforms.RED_ASTRAL_PLATFORMS.value) & IsGeneratorRequired(generator=BONE_BEACH))
     ASTRAL_ORRERY_MIRRORS_END_ASTRAL_ORRERY_MIRRORS_END_BLUE_STAIRS = ("Astral Orrery Mirror's End_Astral Orrery Mirror's End Blue Stairs", Regions.ASTRAL_ORRERY_MIRRORS_END, Regions.ASTRAL_ORRERY_MIRRORS_END_BLUE_STAIRS, Has(AstralPlatforms.BLUE_ASTRAL_PLATFORMS.value) | CanJumpTiles(distance=5, has_wall=True))
     ASTRAL_ORRERY_MIRRORS_END_ASTRAL_ORRERY_MIRRORS_END_TOP = ("Astral Orrery Mirror's End_Astral Orrery Mirror's End Top", Regions.ASTRAL_ORRERY_MIRRORS_END, Regions.ASTRAL_ORRERY_MIRRORS_END_TOP, CanBurrow() & AnyThreeAstralPlatforms())
-    ASTRAL_ORRERY_QUEENSBURY_MIRROR_ASTRAL_ORRERY_MIRRORS_END = ("Astral Orrery Queensbury Mirror_Astral Orrery Mirror's End", Regions.ASTRAL_ORRERY_QUEENSBURY_MIRROR, Regions.ASTRAL_ORRERY_MIRRORS_END, Has(AstralPlatforms.BLUE_ASTRAL_PLATFORMS.value))
-    ASTRAL_ORRERY_SEPTEMBURG_MIRROR_ASTRAL_ORRERY_MIRRORS_END = ("Astral Orrery Septemburg Mirror_Astral Orrery Mirror's End", Regions.ASTRAL_ORRERY_SEPTEMBURG_MIRROR, Regions.ASTRAL_ORRERY_MIRRORS_END, Has(AstralPlatforms.YELLOW_ASTRAL_PLATFORMS.value))
+    ASTRAL_ORRERY_MIRRORS_END_ASTRAL_ORRERY_QUEENSBURY_MIRROR = ("Astral Orrery Mirror's End_Astral Orrery Queensbury Mirror", Regions.ASTRAL_ORRERY_MIRRORS_END, Regions.ASTRAL_ORRERY_QUEENSBURY_MIRROR, Has(AstralPlatforms.BLUE_ASTRAL_PLATFORMS.value) & IsGeneratorRequired(generator=QUEENSBURY_CRYPT))
+    ASTRAL_ORRERY_MIRRORS_END_ASTRAL_ORRERY_SEPTEMBURG_MIRROR = ("Astral Orrery Mirror's End_Astral Orrery Septemburg Mirror", Regions.ASTRAL_ORRERY_MIRRORS_END, Regions.ASTRAL_ORRERY_SEPTEMBURG_MIRROR, Has(AstralPlatforms.YELLOW_ASTRAL_PLATFORMS.value) & IsGeneratorRequired(generator=SEPTEMBURG))
+    ASTRAL_ORRERY_QUEENSBURY_MIRROR_ASTRAL_ORRERY_MIRRORS_END = ("Astral Orrery Queensbury Mirror_Astral Orrery Mirror's End", Regions.ASTRAL_ORRERY_QUEENSBURY_MIRROR, Regions.ASTRAL_ORRERY_MIRRORS_END, Has(AstralPlatforms.BLUE_ASTRAL_PLATFORMS.value) & IsGeneratorRequired(generator=QUEENSBURY_CRYPT))
+    ASTRAL_ORRERY_SEPTEMBURG_MIRROR_ASTRAL_ORRERY_MIRRORS_END = ("Astral Orrery Septemburg Mirror_Astral Orrery Mirror's End", Regions.ASTRAL_ORRERY_SEPTEMBURG_MIRROR, Regions.ASTRAL_ORRERY_MIRRORS_END, Has(AstralPlatforms.YELLOW_ASTRAL_PLATFORMS.value) & IsGeneratorRequired(generator=SEPTEMBURG))
     ASTRAL_ORRERY_STELLARIUM_COG_SWITCH_ASTRAL_ORRERY_STELLARIUM = ('Astral Orrery Stellarium Cog Switch_Astral Orrery Stellarium', Regions.ASTRAL_ORRERY_STELLARIUM_COG_SWITCH, Regions.ASTRAL_ORRERY_STELLARIUM, True_())
     ASTRAL_ORRERY_STELLARIUM_GRAVITY_SWITCH_ASTRAL_ORRERY_STELLARIUM = ('Astral Orrery Stellarium Gravity Switch_Astral Orrery Stellarium', Regions.ASTRAL_ORRERY_STELLARIUM_GRAVITY_SWITCH, Regions.ASTRAL_ORRERY_STELLARIUM, True_())
     ASTRAL_ORRERY_STELLARIUM_MUTANT_SWITCH_ASTRAL_ORRERY_STELLARIUM = ('Astral Orrery Stellarium Mutant Switch_Astral Orrery Stellarium', Regions.ASTRAL_ORRERY_STELLARIUM_MUTANT_SWITCH, Regions.ASTRAL_ORRERY_STELLARIUM, CanClimb())

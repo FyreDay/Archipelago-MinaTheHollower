@@ -16,7 +16,7 @@ from ...rules.movement_rules import (
 from ...rules.state_rules import (
    HasLadder, HasAccessToTorch, StartedInOssex, 
    AnyThreeAstralPlatforms, HasKear, HasSparks, 
-   RepairedGenerator, RepairedGeneratorCount,
+   RepairedGenerator, RepairedGeneratorCount, IsGeneratorRequired, 
 )
 from ...events import (
    QUEENSBURY_CRYPT_DATA, NOXS_BAYOU_DATA, SEPTEMBURG_DATA, 
@@ -31,7 +31,7 @@ from ...items.kears import (
 from ...items.blockers import (
    AstralPlatforms,
 )
-
+from ....constants import *
 
 class RegionConnections(ConnectionTypeEnum):
     BONE_BEACH_BEACHED_CREATURE_HEAD_BONE_BEACH_BEACHED_CREATURE_MOUTH = ('Bone Beach Beached Creature Head_Bone Beach Beached Creature Mouth', Regions.BONE_BEACH_BEACHED_CREATURE_HEAD, Regions.BONE_BEACH_BEACHED_CREATURE_MOUTH, CanBurrow())

@@ -26,7 +26,7 @@ class HasKear(Rule[MinaTheHollowerBase], game=MINA_THE_HOLLOWER):
     @override
     def _instantiate(self, world: MinaTheHollowerBase) -> Rule.Resolved:
         if world.options.kear_rando.value == world.options.kear_rando.option_vanilla:
-            if self.kear == SingleKears.LONERS_LANDING_BOARDWALK_KEAR.value and not world.options.ossex_start.value:
+            if self.kear == SingleKears.LONERS_LANDING_BOARDWALK_KEAR.value and not world.ossex_start:
                 return Has(Kear.UNIVERSAL_KEAR.value, 1).resolve(world)
             return Has(Kear.UNIVERSAL_KEAR.value, 40).resolve(world)
         elif world.options.kear_rando.value == world.options.kear_rando.option_apItems:
@@ -37,8 +37,6 @@ class HasKear(Rule[MinaTheHollowerBase], game=MINA_THE_HOLLOWER):
                 return Has(area_kear.value).resolve(world)
             else:
                 return False_().resolve(world)
-
-
 
 @dataclasses.dataclass(kw_only=True)
 class HasSparks(Rule[MinaTheHollowerBase], game=MINA_THE_HOLLOWER):
@@ -156,7 +154,7 @@ class HasTrinketCount(Rule[MinaTheHollowerBase], game=MINA_THE_HOLLOWER):
 class StartedInOssex(Rule[MinaTheHollowerBase], game=MINA_THE_HOLLOWER):
     @override
     def _instantiate(self, world: MinaTheHollowerBase) -> Rule.Resolved:
-        if world.options.ossex_start.value == 1:
+        if world.ossex_start:
             return True_().resolve(world)
         return False_().resolve(world)
 
@@ -275,3 +273,19 @@ class ShopPrice(Rule[MinaTheHollowerBase], game=MINA_THE_HOLLOWER):
             return True_().resolve(world)
 
         return RepairedGeneratorCount(count=amount).resolve(world)
+
+
+@dataclasses.dataclass(kw_only=True)
+class IsGeneratorRequired(Rule[MinaTheHollowerBase], game=MINA_THE_HOLLOWER):
+    generator: str
+    @override
+    def _instantiate(self, world: MinaTheHollowerBase) -> Rule.Resolved:
+
+        names = [
+            data.gen_name
+            for data in repair_generator_data
+            if data.index in world.broken_generators
+        ]
+        if self.generator in names:
+            return True_().resolve(world)
+        return False_().resolve(world)

@@ -3,7 +3,7 @@ from worlds.mina_the_hollower import CanJumpTiles
 from .._generated.regions import Regions
 from ... import  LocationTypeEnum
 from ...items import SingleKears, AstralPlatforms
-from ...rules.ability_rules import CanBurrow, HasFishingRod, CanCarry
+from ...rules.ability_rules import CanBurrow, HasFishingRod, CanCarry, PowerLevelThreshold
 from ...rules.state_rules import HasKear
 
 class Locations(LocationTypeEnum):
@@ -40,7 +40,7 @@ class Locations(LocationTypeEnum):
     )
 
     AO_MIRROR_S_END_FISH_TRUNKSTAR_CORE = (
-        "AO Mirror's End Fish Trunkstar Core", 282, Regions.ASTRAL_ORRERY_MIRRORS_END, HasFishingRod(),
+        "AO Mirror's End Fish Trunkstar Core", 282, Regions.ASTRAL_ORRERY_MIRRORS_END, HasFishingRod() & PowerLevelThreshold(power=25),
     )
 
     AO_MIRROR_S_END_BLUE_SWITCH_PATH_CHEST = (

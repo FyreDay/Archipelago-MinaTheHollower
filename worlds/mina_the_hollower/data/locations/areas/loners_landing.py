@@ -1,7 +1,7 @@
 from .._generated.regions import Regions
 from ... import LocationTypeEnum
 from ...items import SingleKears, Wallets
-from ...rules.ability_rules import CanBurrow, CanBounce, CanClimb, CanCarry, HasFishingRod, CanSwim
+from ...rules.ability_rules import CanBurrow, CanBounce, CanClimb, CanCarry, HasFishingRod, CanSwim, PowerLevelThreshold
 from ...rules.state_rules import HasKear, HasLadder
 from ...rules.movement_rules import CanJumpTiles
 
@@ -35,7 +35,7 @@ class Locations(LocationTypeEnum):
     )
 
     LL_FISH_TRIGGER_ANTENNAE = (
-        "LL Fish Trigger Antennae", 32, Regions.LONERS_LANDING_BOAT_SIDE, HasFishingRod() & CanBurrow(),
+        "LL Fish Trigger Antennae", 32, Regions.LONERS_LANDING_BOAT_SIDE, HasFishingRod() & CanBurrow() & PowerLevelThreshold(power=25),
     )
 
     LL_BELOWDECKS_LEFT_UNCHOSEN_WEAPON = (

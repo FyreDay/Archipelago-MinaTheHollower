@@ -16,7 +16,7 @@ from ...rules.movement_rules import (
 from ...rules.state_rules import (
    HasLadder, HasAccessToTorch, StartedInOssex, 
    AnyThreeAstralPlatforms, HasKear, HasSparks, 
-   RepairedGenerator, RepairedGeneratorCount,
+   RepairedGenerator, RepairedGeneratorCount, IsGeneratorRequired, 
 )
 from ...events import (
    QUEENSBURY_CRYPT_DATA, NOXS_BAYOU_DATA, SEPTEMBURG_DATA, 
@@ -31,7 +31,7 @@ from ...items.kears import (
 from ...items.blockers import (
    AstralPlatforms,
 )
-
+from ....constants import *
 
 class RegionConnections(ConnectionTypeEnum):
     RADIANT_MANOR_BACKLIT_CORRIDOR_ROPE_RADIANT_MANOR_BACKLIT_CORRIDOR = ('Radiant Manor Backlit Corridor Rope_Radiant Manor Backlit Corridor', Regions.RADIANT_MANOR_BACKLIT_CORRIDOR_ROPE, Regions.RADIANT_MANOR_BACKLIT_CORRIDOR, CanClimb() & CanBurrow())
