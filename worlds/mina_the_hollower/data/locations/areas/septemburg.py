@@ -92,5 +92,5 @@ class Locations(LocationTypeEnum):
 
 class BossLocations(LocationTypeEnum):
     SB_DEFEAT_THE_CARVING_MAN = ("SB Defeat The Carving Man", 1003, Regions.SEPTEMBURG_CARVING_SHACK_ARENA, PowerLevelThreshold(power=25))
-    SB_DEFEAT_DARK_DELUXY = ("SB Defeat Dark Deluxy", 1024, Regions.SEPTEMBURG_WINDY_GENERATOR, PowerLevelThreshold(power=40))
+    SB_DEFEAT_DARK_DELUXY = ("SB Defeat Dark Deluxy", 1024, Regions.SEPTEMBURG_WINDY_GENERATOR, CanBurrow() & RepairedGenerator(event=SEPTEMBURG_DATA) & HasSparks(count=2) & PowerLevelThreshold(power=40))
     # SB_WINDY_GENERATOR = ("SB Windy Generator Repaired", 6002, Regions.SEPTEMBURG_WINDY_GENERATOR)

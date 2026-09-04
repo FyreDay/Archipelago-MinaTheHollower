@@ -4,8 +4,7 @@ from typing import TYPE_CHECKING
 from BaseClasses import Item, Location, ItemClassification, CollectionRule
 from rule_builder.rules import True_, Rule
 from worlds.mina_the_hollower.data.events.events import MirrorsEndSwitches
-from . import repair_generator_data
-from .data.events import all_generator_data
+from .data.events import all_generator_data, repair_generator_data
 from .data.items.kears import kear_area_lookup
 from .data.locations import Regions
 from .data.locations.areas import backwaters
@@ -14,7 +13,7 @@ from .constants import MINA_THE_HOLLOWER, ITEMS_OFFSET_PROGRESSIVES
 from .data import ItemData, ItemTypeEnum, ItemFiller
 from .data.items import Kear, SingleKears, AreaKears, base_items, Abilities, BoneUps, GenericBoneUp, all_filler_items, \
     PermanentUpgrades, PlayerUpgrades, upgrade_items, Trinkets, BASE_ITEM_TOTAL, \
-    valid_power_types, FilledJug, FillerUpgrades, all_starting_upgrades, Weapons, AstralPlatforms, all_trap_items
+    valid_power_types, FilledJug, FillerUpgrades, all_starting_upgrades, Weapons, AstralPlatforms
 
 from .data.rules.state_rules import sidearm_rules
 from .options import BoneUpCap, KearRandomization, Goal
@@ -35,6 +34,8 @@ def create_item(world: "MinaTheHollowerWorld", item: ItemData):
 def create_single_item(world: "MinaTheHollowerWorld", item_type: ItemTypeEnum):
     world.itempool.append(world.create_item(item_type.value))
 
+def create_item_unchecked(world: "MinaTheHollowerWorld", item_value: str):
+    world.itempool.append(world.create_item(item_value))
 
 def create_items(world: "MinaTheHollowerWorld"):
 
@@ -216,13 +217,7 @@ def create_items(world: "MinaTheHollowerWorld"):
                 junk_count -= 1
                 if junk_count <= 20:
                     break
-    my_trap_items = []
-    if trap_count > 0:
-        my_trap_items = [
-            trap for trap in all_trap_items
-            if trap.type.value not in world.options.disabled_traps
-        ]
-        if len(my_trap_items) <= 0:
+    if trap_count > 0 and 0 == sum(world.options.trap_weights.value.values()):
             junk_count += trap_count
             trap_count = 0
 
@@ -235,13 +230,13 @@ def create_items(world: "MinaTheHollowerWorld"):
         create_single_item(world, item_filler.type)
 
     if trap_count > 0:
-        traps: list[ItemFiller] = world.random.choices(
-            my_trap_items,
-            weights=[item.weight for item in my_trap_items],
+        traps: list[str] = world.random.choices(
+            list(world.options.trap_weights.value.keys()),
+            weights=list(world.options.trap_weights.value.values()),
             k=trap_count
         )
-        for trap_filler in traps:
-            create_single_item(world, trap_filler.type)
+        for trap_name in traps:
+            create_item_unchecked(world, trap_name)
 
     world.multiworld.itempool += world.itempool
 

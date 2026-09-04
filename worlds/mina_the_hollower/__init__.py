@@ -8,8 +8,6 @@ from Options import OptionError
 from entrance_rando import bake_target_group_lookup, randomize_entrances
 
 from Utils import visualize_regions
-from rule_builder.rules import Has
-from .data.events import repair_generator_data
 from .data.rules.ability_rules import PowerLevelThreshold
 from .data.rules.movement_rules import CanJumpTiles, max_jump
 from .data.rules.state_rules import repair_generator_lookup
@@ -19,7 +17,7 @@ from ..AutoWorld import WebWorld
 from . import items, locations, tracker
 from .constants import *
 from .data import get_target_groups
-from .data.items import all_filler_items, all_items
+from .data.items import all_filler_items, all_items, Traps
 from .data.locations import all_locations
 from .items import MinaTheHollowerItem
 from .options import ABILITY_RANDO_SLOT_KEYS, mina_the_hollower_option_groups, Goal
@@ -113,6 +111,10 @@ class MinaTheHollowerWorld(MinaTheHollowerBase):
     def generate_early(self) -> None:
 
         if self.options.goal.value == self.options.goal.option_fixGenerators:
+            for trap_name in self.options.trap_weights.keys():
+                if not trap_name in [trap.value for trap in Traps]:
+                    raise OptionError(f"Invalid Trap Name {trap_name}.")
+
             if len(self.options.generator_pool.value) == 0:
                 raise OptionError("You must have at least one generator in your pool.")
             if len(self.options.generator_pool.value) < self.options.goal_generators.value:
@@ -123,12 +125,12 @@ class MinaTheHollowerWorld(MinaTheHollowerBase):
                 self.options.max_stat_level.value = 20
 
             selected_generators = self.random.sample(list(self.options.generator_pool.value), self.options.goal_generators.value)
-            self.broken_generators =[gen.index for gen in repair_generator_data if gen.gen_name in selected_generators]
-            self.lit_generators = [gen.index for gen in repair_generator_data if gen.gen_name not in selected_generators]
+            self.broken_generators =[index for gen, index in constants.repair_generator_indexes.items() if gen in selected_generators]
+            self.lit_generators = [index for gen, index in constants.repair_generator_indexes.items() if gen not in selected_generators]
         elif self.options.goal.value == self.options.goal.option_radiantManorGenerator:
             self.options.goal_generators.value = 6
             selected_generators = [QUEENSBURY_CRYPT, NOXS_BAYOU, SEPTEMBURG, BONE_BEACH, COLTRANE_PEAK, ASTRAL_ORRERY]
-            self.broken_generators = [gen.index for gen in repair_generator_data if gen.gen_name in selected_generators]
+            self.broken_generators = [index for gen, index in constants.repair_generator_indexes.items() if gen in selected_generators]
 
         self.ossex_start = len(self.options.ability_rando.value) != 0
 

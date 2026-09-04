@@ -1,8 +1,10 @@
 from dataclasses import dataclass
 
 from Options import DefaultOnToggle, Toggle, OptionSet, OptionDict, Choice, OptionGroup, \
-    PerGameCommonOptions, Range
+    PerGameCommonOptions, Range, OptionCounter
 from schema import Schema
+
+from .data.items.traps import get_default_dict
 
 
 class Goal(Choice):
@@ -26,7 +28,7 @@ class BoneUpCap(Choice):
 
 class NumberOfGenerators(Range):
     """
-    The number of generators required to goal.
+    If your goal is 'Fix Generators', how many should you need to repair?.
     """
     display_name = "Generators Required"
     range_start = 1
@@ -169,10 +171,9 @@ class TrapPercentage(Range):
     range_end = 100
     default = 0
 
-
-class DisabledTraps(OptionSet):
+class TrapWeights(OptionCounter):
     """
-    Select what traps you would NOT like to play with.
+    Change the weights of each trap
 
     Valid Options:
         - **Flip Controls Trap** - Invert your controls
@@ -188,56 +189,33 @@ class DisabledTraps(OptionSet):
         - **Mirror Screen Trap** - Mirror your screen
         - **Upsidedown Screen Trap** - Mirror your screen vertically
     """
-    display_name = "Disabled Traps"
-    default = []
-    valid_keys = ["Flip Controls Trap", "Floor Is Lava Trap", "Giant Trap", "2x Giant Trap", "Giant Enemies Trap", "2x Giant Enemies Trap", "Invisible Trap", "No HUD Trap", "Rotate Camera Trap", "Rotate Camera Input Trap", "Mirror Screen Trap", "Upsidedown Screen Trap"]
-    # schema = Schema({
-    #     str: int
-    # })
-
-
-class TrapsWeights(OptionSet):
-    """
-    Select what traps you would NOT like to play with. This Option is here for simplicity,
-
-    Valid Options:
-        - **Flip Controls Trap** - Invert your controls
-        - **Floor Is Lava Trap** - Leave a trail of lava
-        - **Giant Trap** - Mina gets larger
-        - **2x Giant Trap** - Mina gets VERY large
-        - **Giant Enemies Trap** - All enemies get larger
-        - **2x Giant Enemies Trap** - All enemies get VERY large
-        - **Invisible Trap** - Mina becomes invisible
-        - **No HUD Trap** - Remove your HUD
-        - **Rotate Camera Trap** - Slowly rotate your camera for a short time
-        - **Rotate Camera Input Trap** - Moving now rotates your camera slowly
-        - **Mirror Screen Trap** - Mirror your screen
-        - **Upsidedown Screen Trap** - Mirror your screen vertically
-    """
-    display_name = "Disabled Traps"
-    default = []
-    valid_keys = ["Flip Controls Trap", "Floor Is Lava Trap", "Giant Trap", "2x Giant Trap", "Giant Enemies Trap",
-                  "2x Giant Enemies Trap", "Invisible Trap", "No HUD Trap", "Rotate Camera Trap",
-                  "Rotate Camera Input Trap", "Mirror Screen Trap", "Upsidedown Screen Trap"]
+    display_name = "Trap Weights"
+    default = get_default_dict()
+    min = 0
+    valid_keys = get_default_dict().keys()
 
 
 mina_the_hollower_option_groups= [
-    OptionGroup("AP Options", [
+    OptionGroup("Game Options", [
+        DeathLink
+    ]),
+    OptionGroup("Goal Options", [
         Goal,
         NumberOfGenerators,
         GeneratorPool,
+    ]),
+    OptionGroup("Item Options", [
         StartingWeapon,
-        # NumberOfBosses,
+        RandomizeStartingItems,
         BoneUpCap,
         MaximumStatLevel,
         AbilityRando,
-        RandomizeStartingItems,
         KearRandomization,
         RandomizeAstralSwitches,
-        # RandomizeEntrances,
-        DeathLink,
+    ]),
+    OptionGroup("Filler Options", [
         TrapPercentage,
-        DisabledTraps
+        TrapWeights,
     ]),
 ]
 
@@ -248,15 +226,17 @@ class MinaTheHollowerOptions(PerGameCommonOptions):
     generator_pool: GeneratorPool
     # goal_bosses: NumberOfBosses
     starting_weapon: StartingWeapon
-    kear_rando: KearRandomization
+    random_starting_items: RandomizeStartingItems
+    ability_rando: AbilityRando
     bone_up_cap: BoneUpCap
     max_stat_level: MaximumStatLevel
-    random_starting_items: RandomizeStartingItems
+
     # entrance_rando: RandomizeEntrances
-    ability_rando: AbilityRando
+
+    kear_rando: KearRandomization
     astral_switches: RandomizeAstralSwitches
     death_link: DeathLink
     trap_percent: TrapPercentage
-    disabled_traps: DisabledTraps
+    trap_weights: TrapWeights
     # shuffled_sidearms: ShuffledSidearms
     # shuffle_enemy_level: ShuffleEnemyLevel

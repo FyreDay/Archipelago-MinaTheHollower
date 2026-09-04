@@ -63,21 +63,6 @@ all_filler_items: list[ItemFiller] = [
     # ItemFiller(JunkFiller.MAGIC_SMALL, 16),
 ]
 
-all_trap_items: list[ItemFiller] = [
-    ItemFiller(Traps.FLIP_CONTROLS_TRAP, 50),
-    ItemFiller(Traps.FLOOR_IS_LAVA_TRAP, 50),
-    ItemFiller(Traps.GIANT_TRAP, 50),
-    ItemFiller(Traps.X2_GIANT_TRAP, 50),
-    ItemFiller(Traps.GIANT_ENEMIES_TRAP, 50),
-    ItemFiller(Traps.X2_GIANT_ENEMIES_TRAP, 50),
-    ItemFiller(Traps.INVISIBLE_TRAP, 50),
-    ItemFiller(Traps.NO_HUD_TRAP, 50),
-    ItemFiller(Traps.ROTATE_CAMERA_TRAP, 50),
-    ItemFiller(Traps.ROTATE_CAMERA_INPUT_TRAP, 50),
-    ItemFiller(Traps.MIRROR_SCREEN_TRAP, 50),
-    ItemFiller(Traps.UPSIDEDOWN_SCREEN_TRAP, 50),
-]
-
 BASE_ITEM_TOTAL = 15
 
 base_items: list[ItemData] = [

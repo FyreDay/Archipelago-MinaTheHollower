@@ -1,10 +1,14 @@
+
+from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum, IntEnum
-from typing import NamedTuple, Any, Union, Optional, Callable
+from typing import NamedTuple, Any, Union, Optional, Callable, TYPE_CHECKING
 
 from BaseClasses import ItemClassification, LocationProgressType, CollectionState, CollectionRule, Item
 from rule_builder.rules import Rule, True_
-from ..world_base import MinaTheHollowerBase
+
+if TYPE_CHECKING:
+    from ..world_base import MinaTheHollowerBase
 
 
 

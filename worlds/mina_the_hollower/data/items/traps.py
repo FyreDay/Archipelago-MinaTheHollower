@@ -16,3 +16,10 @@ class Traps(ItemTypeEnum):
     ROTATE_CAMERA_INPUT_TRAP = ("Rotate Camera Input Trap", ITEMS_OFFSET_TRAPS + 203, ItemClassification.trap)
     MIRROR_SCREEN_TRAP = ("Mirror Screen Trap", ITEMS_OFFSET_TRAPS + 204, ItemClassification.trap)
     UPSIDEDOWN_SCREEN_TRAP = ("Upsidedown Screen Trap", ITEMS_OFFSET_TRAPS + 205, ItemClassification.trap)
+
+
+def get_default_dict():
+    return {
+        trap.value: 50
+        for trap in Traps
+    }

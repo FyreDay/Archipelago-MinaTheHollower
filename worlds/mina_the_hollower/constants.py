@@ -17,5 +17,16 @@ SEPTEMBURG = "Septemburg"
 BONE_BEACH = "Bone Beach"
 NOXS_BAYOU = "Nox's Bayou"
 
+repair_generator_indexes: dict[str, int] = {
+    QUEENSBURY_CRYPT : 1,
+    NOXS_BAYOU: 0,
+    SEPTEMBURG: 2,
+    BONE_BEACH: 3,
+    COLTRANE_PEAK: 4,
+    ASTRAL_ORRERY: 5
+}
+
+
+
 ALL_GENERATOR_KEYS = [QUEENSBURY_CRYPT, NOXS_BAYOU, SEPTEMBURG, BONE_BEACH, COLTRANE_PEAK, ASTRAL_ORRERY]
 

@@ -289,3 +289,59 @@ class IsGeneratorRequired(Rule[MinaTheHollowerBase], game=MINA_THE_HOLLOWER):
         if self.generator in names:
             return True_().resolve(world)
         return False_().resolve(world)
+
+@dataclasses.dataclass(kw_only=True)
+class CanReachRegionWithLadder(Rule[MinaTheHollowerBase], game=MINA_THE_HOLLOWER):
+    """A rule that checks if the given region is reachable by the current player"""
+
+    region_name: str
+    """The name of the region to test access to"""
+
+    @override
+    def _instantiate(self, world: MinaTheHollowerBase) -> Rule.Resolved:
+        return self.Resolved(
+            self.region_name,
+            player=world.player,
+            caching_enabled=getattr(world, "rule_caching_enabled", False),
+        )
+
+    @override
+    def __str__(self) -> str:
+        options = f", options={self.options}" if self.options else ""
+        return f"{self.__class__.__name__}({self.region_name}{options})"
+
+    class Resolved(Rule.Resolved):
+        region_name: str
+
+        @override
+        def _evaluate(self, state: CollectionState) -> bool:
+            return state.can_reach_region(self.region_name, self.player)
+
+        @override
+        def region_dependencies(self) -> dict[str, set[int]]:
+            return {self.region_name: {id(self)}}
+
+        @override
+        def explain_json(self, state: CollectionState | None = None) -> list[JSONMessagePart]:
+            if state is None:
+                verb = "Can reach"
+            elif self(state):
+                verb = "Reached"
+            else:
+                verb = "Cannot reach"
+            return [
+                {"type": "text", "text": f"{verb} region "},
+                {"type": "color", "color": "yellow", "text": self.region_name},
+            ]
+
+        @override
+        def explain_str(self, state: CollectionState | None = None) -> str:
+            if state is None:
+                return str(self)
+            prefix = "Reached" if self(state) else "Cannot reach"
+            return f"{prefix} region {self.region_name}"
+
+        @override
+        def __str__(self) -> str:
+            return f"Can reach region {self.region_name}"
+
