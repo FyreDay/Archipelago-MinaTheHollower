@@ -13,9 +13,10 @@ from .constants import MINA_THE_HOLLOWER, ITEMS_OFFSET_PROGRESSIVES
 from .data import ItemData, ItemTypeEnum, ItemFiller
 from .data.items import Kear, SingleKears, AreaKears, base_items, Abilities, BoneUps, GenericBoneUp, all_filler_items, \
     PermanentUpgrades, PlayerUpgrades, upgrade_items, Trinkets, BASE_ITEM_TOTAL, \
-    valid_power_types, FilledJug, FillerUpgrades, all_starting_upgrades, Weapons, AstralPlatforms
+    valid_power_types, FilledJug, FillerUpgrades, all_starting_upgrades, Weapons, AstralPlatforms, \
+    restrictive_upgrade_items
 
-from .data.rules.state_rules import sidearm_rules
+from .data.rules.state_rules import sidearm_rules, get_universal_kear_count
 from .options import BoneUpCap, KearRandomization, Goal
 
 if TYPE_CHECKING:
@@ -47,9 +48,14 @@ def create_items(world: "MinaTheHollowerWorld"):
     bags_selected = 0
     bone_caps_selected = 0
 
-    for item in upgrade_items:
-        for _ in range(item.amount):
-            all_items.append(ItemData(item.type, 1))
+    if world.options.goal == world.options.goal.option_fixGenerators and world.options.goal_generators.value == 1:
+        for item in restrictive_upgrade_items:
+            for _ in range(item.amount):
+                all_items.append(ItemData(item.type, 1))
+    else:
+        for item in upgrade_items:
+            for _ in range(item.amount):
+                all_items.append(ItemData(item.type, 1))
 
     for item_type in PermanentUpgrades:
         all_items.append(ItemData(item_type, 1))
@@ -67,80 +73,66 @@ def create_items(world: "MinaTheHollowerWorld"):
         for _ in range(9):
             all_items.append(ItemData(GenericBoneUp.ALL_BONE_UP_CAP, 1))
 
-    starting_items: list[Item] = [] if not world.is_ut else world.starting_items
 
+    starting_items = []
     # starting items
     if world.options.random_starting_items:
         for item in base_items:
             for _ in range(item.amount):
                 all_items.append(ItemData(item.type, 1))
-        if world.is_ut:
-            for item in starting_items:
-                item_data = next(
-                    (x for x in all_items if x.type.item_id == item.code),
-                    None
-                )
 
-                if item_data is None:
-                    continue
-
-                item_data.amount -= 1
-
-                if item_data.amount <= 0:
-                    all_items.remove(item_data)
-        else:
-            for i in range(BASE_ITEM_TOTAL):
-                if i < (BASE_ITEM_TOTAL * 2) // 3:
-                    candidates = [
+        for i in range(BASE_ITEM_TOTAL):
+            if i < (BASE_ITEM_TOTAL * 2) // 3:
+                candidates = [
+                    item
+                    for item in all_items
+                    if item.type in valid_power_types
+                ]
+                if bags_selected < 2:
+                    candidates += [
                         item
                         for item in all_items
-                        if item.type in valid_power_types
+                        if item.type == PlayerUpgrades.TRINKET_BAG
                     ]
-                    if bags_selected < 2:
-                        candidates += [
-                            item
-                            for item in all_items
-                            if item.type == PlayerUpgrades.TRINKET_BAG
-                        ]
-                else:
-                    candidates = list(all_items)
+            else:
+                candidates = list(all_items)
 
-                if trinkets_selected > bags_selected:
-                    filtered = [
-                        item
-                        for item in candidates
-                        if item.type not in trinket_types
-                    ]
-                    if filtered:
-                        candidates = filtered
+            if trinkets_selected > bags_selected:
+                filtered = [
+                    item
+                    for item in candidates
+                    if item.type not in trinket_types
+                ]
+                if filtered:
+                    candidates = filtered
 
-                if bone_caps_selected >= bone_cap_cap:
-                    filtered = [
-                        item
-                        for item in candidates
-                        if item.type not in bone_cap_types
-                    ]
-                    if filtered:
-                        candidates = filtered
+            if bone_caps_selected >= bone_cap_cap:
+                filtered = [
+                    item
+                    for item in candidates
+                    if item.type not in bone_cap_types
+                ]
+                if filtered:
+                    candidates = filtered
 
-                item_data = world.random.choice(candidates)
+            item_data = world.random.choice(candidates)
 
-                starting_items.append(world.create_item(item_data.type.value))
+            starting_items.append(world.create_item(item_data.type.value))
 
-                if item_data.type == PlayerUpgrades.TRINKET_BAG:
-                    bags_selected += 1
-                elif item_data.type in trinket_types:
-                    trinkets_selected += 1
-                elif item_data.type in bone_cap_types:
-                    bone_caps_selected += 1
+            if item_data.type == PlayerUpgrades.TRINKET_BAG:
+                bags_selected += 1
+            elif item_data.type in trinket_types:
+                trinkets_selected += 1
+            elif item_data.type in bone_cap_types:
+                bone_caps_selected += 1
 
-                item_data.amount -= 1
+            item_data.amount -= 1
 
-                if item_data.type.value == PlayerUpgrades.TRINKET_BAG.value:
-                    added_trinket_pouch = True
+            if item_data.type.value == PlayerUpgrades.TRINKET_BAG.value:
+                added_trinket_pouch = True
 
-                if item_data.amount <= 0:
-                    all_items.remove(item_data)
+            if item_data.amount <= 0:
+                all_items.remove(item_data)
 
     else:
         for item in base_items:
@@ -165,15 +157,9 @@ def create_items(world: "MinaTheHollowerWorld"):
         create_item(world, item)
 
     if world.options.kear_rando == KearRandomization.option_vanilla:
-        create_item(world, ItemData(Kear.UNIVERSAL_KEAR, 42))
-    if world.options.kear_rando == KearRandomization.option_vanilla:
-        for i in range(8):
-            world.itempool.append(MinaTheHollowerItem(
-            Kear.UNIVERSAL_KEAR.value,
-            ItemClassification.useful,
-            Kear.UNIVERSAL_KEAR.item_id,
-            world.player,
-        ))
+        universal_kear_count = get_universal_kear_count(world)
+
+        create_item(world, ItemData(Kear.UNIVERSAL_KEAR, universal_kear_count + 8))
     elif world.options.kear_rando == KearRandomization.option_apItems:
         excluded_kears = [data.kear_item_type for data in all_generator_data if data.index in world.lit_generators]
         for item_type in SingleKears:
@@ -198,25 +184,29 @@ def create_items(world: "MinaTheHollowerWorld"):
     # print(f"total locs at start {total_location_count}")
     # print(f"total Itempool at start {len(world.itempool)}")
     _remaining = total_location_count - len(world.itempool)
-    trap_count = round(_remaining * world.options.trap_percent.value / 100) if world.options.trap_percent.value > 0 else 0
 
-    junk_count = _remaining - trap_count
     if world.options.bone_up_cap == BoneUpCap.option_perUpgrade:
         for item_type in BoneUps:
             for _ in range(world.options.max_stat_level.value-10):
-                create_item(world, ItemData(item_type, 1))
-                junk_count -= 1
-                if junk_count <= 20:
+                if _remaining <= 20:
                     break
-            if junk_count <= 20:
+                create_item(world, ItemData(item_type, 1))
+                _remaining -= 1
+            if _remaining <= 20:
                 break
     else:
         if world.options.max_stat_level.value > 10:
             for _ in range(world.options.max_stat_level.value-10):
-                create_item(world, ItemData(GenericBoneUp.ALL_BONE_UP_CAP, 1))
-                junk_count -= 1
-                if junk_count <= 20:
+                if _remaining <= 20:
                     break
+                create_item(world, ItemData(GenericBoneUp.ALL_BONE_UP_CAP, 1))
+                _remaining -= 1
+
+    trap_count = round(
+        _remaining * world.options.trap_percent.value / 100) if world.options.trap_percent.value > 0 else 0
+
+    junk_count = _remaining - trap_count
+
     if trap_count > 0 and 0 == sum(world.options.trap_weights.value.values()):
             junk_count += trap_count
             trap_count = 0

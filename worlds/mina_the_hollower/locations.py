@@ -23,7 +23,7 @@ def create_location(world, data: LocationTypeEnum):
     region = world.get_region(data.region.value)
     location = Location(world.player, data.value, data.location_id, region)
     location.progress_type = data.progress_type
-    # location.item_rule = data.item_rule
+    location.item_rule = data.item_rule
 
     region.locations.append(location)
     world.set_rule(location, data.rule)
@@ -41,7 +41,7 @@ def create_region(world: "MinaTheHollowerWorld", region_type: RegionTypeEnum, lo
 
         location = Location(world.player, data.value, data.location_id, region)
         location.progress_type = data.progress_type
-        # location.item_rule = data.item_rule
+        location.item_rule = data.item_rule
         region.locations.append(location)
         world.set_rule(location, data.rule)
 

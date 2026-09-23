@@ -152,14 +152,14 @@ class TransitionTypeEnum(Enum):
         self.rule = rule
 
 class LocationTypeEnum(Enum):
-    def __init__(self, value: str, location_id: int, region: RegionTypeEnum,rule: CollectionRule | Rule[MinaTheHollowerBase] = True_(), progress_type: LocationProgressType = LocationProgressType.DEFAULT):#, item_rule: Callable[[Item], bool] =  lambda item: True_()):
+    def __init__(self, value: str, location_id: int, region: RegionTypeEnum,rule: CollectionRule | Rule[MinaTheHollowerBase] = True_(), progress_type: LocationProgressType = LocationProgressType.DEFAULT, item_rule: Callable[[Item], bool] =  lambda item: True):
         # self._value_ must be set to the first element to support lookup by value
         self._value_ = value
         self.region = region
         self.location_id = location_id
         self.rule = rule
         self.progress_type = progress_type
-        # self.item_rule: Callable[[Item], bool] = item_rule
+        self.item_rule: Callable[[Item], bool] = item_rule
 
 class EventTypeEnum(Enum):
     def __init__(self, value: str, region:str, event_item:str,  rule: CollectionRule | Rule[MinaTheHollowerBase] = True_()):

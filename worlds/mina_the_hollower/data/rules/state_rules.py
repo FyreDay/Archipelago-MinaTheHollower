@@ -1,7 +1,7 @@
 import dataclasses
 import math
 from operator import truediv
-from typing import override
+from typing import override, TYPE_CHECKING
 
 from BaseClasses import CollectionState
 from NetUtils import JSONMessagePart
@@ -10,7 +10,7 @@ from rule_builder.rules import Rule, Has, True_, False_
 from .ability_rules import CanSwim, CanCarry, CanBurrow, CanClimb
 from .movement_rules import CanJumpTiles
 from .. import ShortCutItem, RepairEventData
-from ..events import repair_generator_data
+from ..events import repair_generator_data, all_generator_data
 from ..items import Kear, SingleKears, AreaKears, Trinkets, AstralPlatforms, Sidearms, PlayerUpgrades, \
     PermanentUpgrades, Wallets
 from ..items.blockers import GeneratorsComplete
@@ -20,6 +20,28 @@ from ...world_base import MinaTheHollowerBase
 
 repair_generator_lookup = {data.index: data for data in repair_generator_data}
 
+
+def get_universal_kear_count(world: "MinaTheHollowerBase") -> int:
+    excluded_kear_areas = {
+        data.kear_item_type
+        for data in all_generator_data
+        if data.index in world.lit_generators
+    }
+
+    count = 0
+
+    for single_kear_name, area_kear in kear_area_lookup.items():
+        if area_kear in excluded_kear_areas:
+            continue
+
+        if (single_kear_name == SingleKears.RADIANT_MANOR_MEOWSTRO_ROOM_KEAR.value
+            and world.options.goal.value != world.options.goal.option_radiantManorGenerator):
+            continue
+
+        count += 1
+
+    return count
+
 @dataclasses.dataclass(kw_only=True)
 class HasKear(Rule[MinaTheHollowerBase], game=MINA_THE_HOLLOWER):
     kear: str
@@ -28,7 +50,7 @@ class HasKear(Rule[MinaTheHollowerBase], game=MINA_THE_HOLLOWER):
         if world.options.kear_rando.value == world.options.kear_rando.option_vanilla:
             if self.kear == SingleKears.LONERS_LANDING_BOARDWALK_KEAR.value and not world.ossex_start:
                 return Has(Kear.UNIVERSAL_KEAR.value, 1).resolve(world)
-            return Has(Kear.UNIVERSAL_KEAR.value, 40).resolve(world)
+            return Has(Kear.UNIVERSAL_KEAR.value, get_universal_kear_count(world)).resolve(world)
         elif world.options.kear_rando.value == world.options.kear_rando.option_apItems:
             return Has(self.kear).resolve(world)
         else:
@@ -78,14 +100,15 @@ class HasAllKears(Rule[MinaTheHollowerBase], game=MINA_THE_HOLLOWER):
     @override
     def _instantiate(self, world: MinaTheHollowerBase) -> Rule.Resolved:
         # caching_enabled only needs to be passed in when your world inherits from CachedRuleBuilderWorld
-        return self.Resolved(kear_rando=world.options.kear_rando.value, player=world.player, caching_enabled=False)
+        return self.Resolved(kear_rando=world.options.kear_rando.value, univarsal_kear_count=get_universal_kear_count(world), player=world.player, caching_enabled=False)
 
     class Resolved(Rule.Resolved):
         kear_rando:int
+        univarsal_kear_count:int
         @override
         def _evaluate(self, state: CollectionState) -> bool:
             if self.kear_rando == 0:
-                return state.has(Kear.UNIVERSAL_KEAR.value, self.player,40)
+                return state.has(Kear.UNIVERSAL_KEAR.value, self.player, self.univarsal_kear_count)
             elif self.kear_rando == 1:
                 count = 0
                 for item in SingleKears:

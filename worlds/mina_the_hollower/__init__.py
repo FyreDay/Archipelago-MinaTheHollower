@@ -1,7 +1,8 @@
 import json
 from importlib.resources import files
-from typing import Any, ClassVar, override
+from typing import Any, ClassVar, override, Union
 
+import settings
 from BaseClasses import ItemClassification, Location, Tutorial, CollectionState
 from NetUtils import JSONMessagePart
 from Options import OptionError
@@ -43,20 +44,25 @@ def load_manifest():
         files(__package__).joinpath("archipelago.json").read_text("utf-8")
     )
 
-
 class MinaTheHollowerWorld(MinaTheHollowerBase):
 
     manifest = load_manifest()
 
     game = MINA_THE_HOLLOWER
     web = MinaTheHollowerWeb()
-
     item_name_to_id: ClassVar[dict[str, int]] = {
         item.value: item.item_id for item in all_items
     }
     location_name_to_id: ClassVar[dict[str, int]] = {
         loc.value: loc.location_id for loc in all_locations
     }
+
+    # item_name_groups: ClassVar[dict[str, set[str]]] = {
+    #     "Area Lock" : set(),
+    #     "Lock" : set(),
+    #     "Ability": set(),
+    #     "Underlab Upgrade" : set()
+    # }
 
     item_lookup = {item.value: item for item in all_items}
 
@@ -109,6 +115,12 @@ class MinaTheHollowerWorld(MinaTheHollowerBase):
         super().__init__(multiworld, player)
 
     def generate_early(self) -> None:
+        self.is_ut = (hasattr(self.multiworld, "re_gen_passthrough")
+                      and isinstance(self.multiworld.re_gen_passthrough, dict)
+                      and self.game in self.multiworld.re_gen_passthrough)
+        if self.is_ut:
+            self.handle_ut_yamless(None)
+            return
 
         if self.options.goal.value == self.options.goal.option_fixGenerators:
             for trap_name in self.options.trap_weights.keys():
@@ -124,7 +136,10 @@ class MinaTheHollowerWorld(MinaTheHollowerBase):
             elif self.options.goal_generators.value == 2 and self.options.max_stat_level.value > 20:
                 self.options.max_stat_level.value = 20
 
-            selected_generators = self.random.sample(list(self.options.generator_pool.value), self.options.goal_generators.value)
+            selected_generators = self.random.sample(
+                sorted(self.options.generator_pool.value, key=lambda x: x),
+                self.options.goal_generators.value
+            )
             self.broken_generators =[index for gen, index in constants.repair_generator_indexes.items() if gen in selected_generators]
             self.lit_generators = [index for gen, index in constants.repair_generator_indexes.items() if gen not in selected_generators]
         elif self.options.goal.value == self.options.goal.option_radiantManorGenerator:
@@ -135,10 +150,7 @@ class MinaTheHollowerWorld(MinaTheHollowerBase):
         self.ossex_start = len(self.options.ability_rando.value) != 0
 
 
-        self.is_ut = (hasattr(self.multiworld, "re_gen_passthrough")
-            and isinstance(self.multiworld.re_gen_passthrough, dict)
-            and self.game in self.multiworld.re_gen_passthrough)
-        self.handle_ut_yamless(None)
+
 
     def create_regions(self):
         self.removed_locations = locations.create_regions(self)
@@ -201,13 +213,10 @@ class MinaTheHollowerWorld(MinaTheHollowerBase):
                 for option_key, slot_keys in ABILITY_RANDO_SLOT_KEYS.items()
                 for slot_key in slot_keys
             },
-            "starting_items": [
-                item.name
-                for item in self.starting_items
-            ],
             "removed_locations": self.removed_locations,
             "starting_weapon": ITEMS_OFFSET_PROGRESSIVES + self.options.starting_weapon.value,
-            "mirror_switch_rando": self.options.astral_switches.value
+            "mirror_switch_rando": self.options.astral_switches.value,
+            "bone_up_cap": self.options.bone_up_cap.value,
         }
 
     @override
@@ -291,7 +300,6 @@ class MinaTheHollowerWorld(MinaTheHollowerBase):
         # self.options.shuffled_sidearms.value = slot_data["shuffled_sidearms"]
         # self.options.shuffle_enemy_level.value = slot_data["shuffle_enemy_level"]
         # self.options.shuffled_items.value = slot_data["shuffled_items"]
-
-        for item_name in slot_data["starting_items"]:
-            self.starting_items.append(MinaTheHollowerItem(item_name, ItemClassification.progression, self.item_name_to_id[item_name], self.player))
+        self.options.bone_up_cap.value = slot_data["bone_up_cap"]
+        self.options.astral_switches.value = slot_data["mirror_switch_rando"]
         return slot_data

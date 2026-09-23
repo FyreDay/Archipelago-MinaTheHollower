@@ -85,6 +85,16 @@ upgrade_items: list[ItemData] = [
     # ItemData(MapUpgrades.PROGRESSIVE_MAP, 2)
 ]
 
+restrictive_upgrade_items: list[ItemData] = [
+    ItemData(PlayerUpgrades.HEALTH_ROSE, 7),
+    ItemData(PlayerUpgrades.TRINKET_BAG, 5),
+    ItemData(PlayerUpgrades.JOULE_BOX, 6),
+    ItemData(PlayerUpgrades.HEALING_VIAL, 5),
+    ItemData(PlayerUpgrades.SPARK_CONTAINER, 3),
+    ItemData(FishingUpgrades.FISHING_ROD, 3),
+    # ItemData(MapUpgrades.PROGRESSIVE_MAP, 2)
+]
+
 movement_sidearms: list[ItemTypeEnum] = [
     Sidearms.DEFLECTOR_PARASOL,
     Sidearms.DRIVER_DRILL,
