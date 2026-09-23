@@ -58,6 +58,13 @@ class MinaTheHollowerWorld(MinaTheHollowerBase):
         loc.value: loc.location_id for loc in all_locations
     }
 
+    # item_name_groups: ClassVar[dict[str, set[str]]] = {
+    #     "Area Lock" : set(),
+    #     "Lock" : set(),
+    #     "Ability": set(),
+    #     "Underlab Upgrade" : set()
+    # }
+
     item_lookup = {item.value: item for item in all_items}
 
     ut_can_gen_without_yaml = True
