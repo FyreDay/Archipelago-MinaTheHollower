@@ -38,13 +38,13 @@ class PermanentUpgrades(ItemTypeEnum):
     DOUBLE_SIDEARM_PERMIT = ("Dual Sidearm Permit", 78, ItemClassification.progression)
     VITALITY_VEST = ("Vitality Vest", 79, ItemClassification.progression)
     SAFETY_SHROUD = ("Safety Shroud", 80, ItemClassification.progression)
-    ARMOR_CUSTOM = ("Custom Fitting", 81, ItemClassification.useful)
+    ARMOR_CUSTOM = ("Custom Fitting", 81, ItemClassification.filler)
     # "ArmorDefault" : ItemData(92, ItemClassification.progression),
     # "ArmorUpgradeAll" : ItemData(93, ItemClassification.progression),
     JOULE_ALMEMBIC = ("Joule Alembic", 82, ItemClassification.progression)
     SIDEARM_SAVER = ("Sidearm Recoverer", 83, ItemClassification.progression)
     SIDEARM_KEEPER = ("Sidearm Duplicator", 84, ItemClassification.progression)
-    PHONOGRAPH = ("Phonograph", 86, ItemClassification.useful)
+    PHONOGRAPH = ("Phonograph", 86, ItemClassification.filler)
     TRAIN_PASS = ("Train Pass",94, ItemClassification.progression)
     # OSSEX_TICKET = ("Ossex Ticket", 95, ItemClassification.progression)
     BAYOU_TICKET = ("Bayou Ticket",96, ItemClassification.progression)

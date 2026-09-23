@@ -1,9 +1,10 @@
-from rule_builder.rules import Has
+from BaseClasses import LocationProgressType
+from rule_builder.rules import Has, True_
 from .._generated.regions import Regions
 
 from ... import LocationTypeEnum
 from ...items import Weapons, PlayerUpgrades, Sidearms, PermanentUpgrades, BoneUps, GenericBoneUp, Trinkets, \
-        SingleKears, Wallets
+    SingleKears, Wallets, Kear
 from ...items.abilities import ABILITY_NAMES
 from ...rules.ability_rules import CanBurrow, CanBounce, HasVialsCount, CanClimb, \
         HasReachingSideArm, HasFishingRod, CanCarry, HasBeastiumTransform, HasTrinket, CanSwim, PowerLevelThreshold
@@ -44,7 +45,7 @@ class Locations(LocationTypeEnum):
     )
 
     OS_COUPLES_QUARTER_CHEST = (
-        "OS Couple's Quarter Chest",165,Regions.OSSEX_COUPLES_QUARTER,CanBurrow() | HasReachingSideArm()
+        "OS Couple's Quarter Chest",165,Regions.OSSEX_COUPLES_QUARTER, True_(), LocationProgressType.DEFAULT, lambda item : item.name != Kear.UNIVERSAL_KEAR.value
     )
 
     OS_HOLLOWERS_GUILD_BACK_ROOM_KEAR_CHEST = (
@@ -102,23 +103,23 @@ class Locations(LocationTypeEnum):
     )
 
     OS_KEAR_INSTITUTE_KEAR_1 = (
-        "OS Kear Institute Kear #1",199,Regions.OSSEX_KEAR_INSTITUTE,ShopPrice(cost=300)
+        "OS Kear Institute Kear #1",199,Regions.OSSEX_KEAR_INSTITUTE,ShopPrice(cost=300), LocationProgressType.DEFAULT, lambda item : item.name != Kear.UNIVERSAL_KEAR.value
     )
 
     OS_KEAR_INSTITUTE_KEAR_2 = (
-        "OS Kear Institute Kear #2",200,Regions.OSSEX_KEAR_INSTITUTE,ShopPrice(cost=500),
+        "OS Kear Institute Kear #2",200,Regions.OSSEX_KEAR_INSTITUTE,ShopPrice(cost=500), LocationProgressType.DEFAULT, lambda item : item.name != Kear.UNIVERSAL_KEAR.value
     )
 
     OS_KEAR_INSTITUTE_KEAR_3 = (
-        "OS Kear Institute Kear #3",201,Regions.OSSEX_KEAR_INSTITUTE,ShopPrice(cost=750),
+        "OS Kear Institute Kear #3",201,Regions.OSSEX_KEAR_INSTITUTE,ShopPrice(cost=750), LocationProgressType.DEFAULT, lambda item : item.name != Kear.UNIVERSAL_KEAR.value
     )
 
     OS_KEAR_INSTITUTE_KEAR_4 = (
-        "OS Kear Institute Kear #4",202,Regions.OSSEX_KEAR_INSTITUTE,ShopPrice(cost=875),
+        "OS Kear Institute Kear #4",202,Regions.OSSEX_KEAR_INSTITUTE,ShopPrice(cost=875), LocationProgressType.DEFAULT, lambda item : item.name != Kear.UNIVERSAL_KEAR.value
     )
 
     OS_KEAR_INSTITUTE_KEAR_5 = (
-        "OS Kear Institute Kear #5",203,Regions.OSSEX_KEAR_INSTITUTE,ShopPrice(cost=1000),
+        "OS Kear Institute Kear #5",203,Regions.OSSEX_KEAR_INSTITUTE,ShopPrice(cost=1000), LocationProgressType.DEFAULT, lambda item : item.name != Kear.UNIVERSAL_KEAR.value
     )
 
     OS_KEAR_INSTITUTE_KEAR_6 = (
@@ -142,11 +143,11 @@ class Locations(LocationTypeEnum):
     )
 
     OS_EMPORIUM_HEALTH_ROSE_1 = (
-        "OS Emporium Health Rose #1",186,Regions.OSSEX_EMPORIUM,ShopPrice(cost=500),
+        "OS Emporium Health Rose #1",186,Regions.OSSEX_EMPORIUM,ShopPrice(cost=500), LocationProgressType.DEFAULT, lambda item : item.name != Kear.UNIVERSAL_KEAR.value
     )
 
     OS_EMPORIUM_HEALTH_ROSE_2 = (
-        "OS Emporium Health Rose #2",187,Regions.OSSEX_EMPORIUM,ShopPrice(cost=1000),
+        "OS Emporium Health Rose #2",187,Regions.OSSEX_EMPORIUM,ShopPrice(cost=1000), LocationProgressType.DEFAULT, lambda item : item.name != Kear.UNIVERSAL_KEAR.value
     )
 
     OS_EMPORIUM_HEALTH_ROSE_3 = (
@@ -154,7 +155,7 @@ class Locations(LocationTypeEnum):
     )
 
     OS_EMPORIUM_JOULE_BOX_1 = (
-        "OS Emporium Joule Box #1",193,Regions.OSSEX_EMPORIUM,ShopPrice(cost=500),
+        "OS Emporium Joule Box #1",193,Regions.OSSEX_EMPORIUM,ShopPrice(cost=500), LocationProgressType.DEFAULT, lambda item : item.name != Kear.UNIVERSAL_KEAR.value
     )
 
     OS_EMPORIUM_JOULE_BOX_2 = (
@@ -166,7 +167,7 @@ class Locations(LocationTypeEnum):
     )
 
     OS_EMPORIUM_TRINKET_BAG_1 = (
-        "OS Emporium Trinket Bag #1",196,Regions.OSSEX_EMPORIUM,ShopPrice(cost=1500),
+        "OS Emporium Trinket Bag #1",196,Regions.OSSEX_EMPORIUM,ShopPrice(cost=1500), LocationProgressType.DEFAULT, lambda item : item.name != Kear.UNIVERSAL_KEAR.value
     )
 
     OS_EMPORIUM_TRINKET_BAG_2 = (
@@ -178,7 +179,7 @@ class Locations(LocationTypeEnum):
     )
 
     OS_EMPORIUM_VIAL_POUCH_1 = (
-        "OS Emporium Vial Pouch #1",189,Regions.OSSEX_EMPORIUM,ShopPrice(cost=1000),
+        "OS Emporium Vial Pouch #1",189,Regions.OSSEX_EMPORIUM,ShopPrice(cost=1000), LocationProgressType.DEFAULT, lambda item : item.name != Kear.UNIVERSAL_KEAR.value
     )
 
     OS_EMPORIUM_VIAL_POUCH_2 = (
