@@ -71,7 +71,7 @@ class MinaTheHollowerWorld(MinaTheHollowerBase):
     tracker_world: ClassVar = {
         "map_page_folder": "tracker",
         "map_page_maps": "maps/maps.json",
-        "map_page_locations": {
+        "map_page_locations": [
             "locations/eastern_heath.json",
             "locations/ossex.json",
             "locations/loners_landing.json",
@@ -90,7 +90,7 @@ class MinaTheHollowerWorld(MinaTheHollowerBase):
             "locations/radiant_manor.json",
             "locations/overview.json",
 
-        },
+        ],
         "map_page_index": tracker.map_page_index,
         "map_page_setting_key": "MTH_level_{team}_{player}",
     }
