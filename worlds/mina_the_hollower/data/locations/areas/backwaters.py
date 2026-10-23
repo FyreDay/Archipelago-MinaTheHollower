@@ -16,14 +16,7 @@ class Locations(LocationTypeEnum):
 
     BW_SIDE_ROOM_CHEST = (
         "BW Side Room Chest", 296, Regions.BACKWATERS_UPPER_SWAMP_SECRET_ROOM,
-        CanSwim() & (
-            (
-                CanJumpTiles(distance=2, no_sidearms=True)
-                | CanJumpTiles(distance=4, has_wall=True)
-                | CanBurrow()
-            )
-            | (CanBurrow() & HasTrinket(trinket=Trinkets.WALLOWERS_GAUNTLETS.value))
-        ),
+        CanSwim(),
     )
 
     BW_LANTERN_CAVE_BONESTONE = (
